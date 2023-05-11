@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_1.c                                      :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/11 13:47:57 by aachfenn         ###   ########.fr       */
+/*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
+/*   Updated: 2023/05/11 13:43:37 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef	MINISHELL_H
+#define	MINISHELL_H
 
-int main(int ac, char **av)
-{
-	int	i;
-	int	j;
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "../minishell/utils/ft_libft/libft.h"
 
-	i = 0;
-	j = 0;
 
-}
+
+#endif

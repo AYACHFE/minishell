@@ -1,23 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_1.c                                      :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/11 13:47:57 by aachfenn         ###   ########.fr       */
+/*   Created: 2022/10/04 10:03:58 by aachfenn          #+#    #+#             */
+/*   Updated: 2022/10/20 17:57:32 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+char	*ft_strdup(const char *s1)
 {
-	int	i;
-	int	j;
+	int		i;
+	char	*ss1;
 
 	i = 0;
-	j = 0;
-
+	while (s1[i])
+	{
+		i++;
+	}
+	ss1 = malloc((i + 1) * (sizeof(char)));
+	if (!ss1)
+		return (0);
+	i = 0;
+	while (s1[i])
+	{
+		ss1[i] = s1[i];
+		i++;
+	}
+	ss1[i] = '\0';
+	return (ss1);
 }

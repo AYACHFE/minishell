@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_1.c                                      :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/11 13:47:57 by aachfenn         ###   ########.fr       */
+/*   Created: 2022/10/01 12:53:52 by aachfenn          #+#    #+#             */
+/*   Updated: 2022/10/20 17:56:52 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+int	ft_toupper(int str)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-
+	if (str >= 'a' && str <= 'z')
+	{
+		str -= 32;
+	}
+	return (str);
 }

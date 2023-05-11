@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_1.c                                      :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/11 13:47:57 by aachfenn         ###   ########.fr       */
+/*   Created: 2022/10/04 12:09:41 by aachfenn          #+#    #+#             */
+/*   Updated: 2022/10/20 17:58:30 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+void	*ft_calloc(size_t count, size_t size)
 {
-	int	i;
-	int	j;
+	char	*s1;
 
-	i = 0;
-	j = 0;
-
+	if (count > 65521 && size > 65521)
+		return (0);
+	s1 = (char *)malloc(count * size);
+	if (!s1)
+	{
+		return (NULL);
+	}
+	return (ft_memset(s1, 0, size * count));
 }

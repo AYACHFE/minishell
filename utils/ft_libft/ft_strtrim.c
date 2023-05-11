@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_1.c                                      :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/11 13:47:57 by aachfenn         ###   ########.fr       */
+/*   Created: 2022/10/11 14:24:23 by aachfenn          #+#    #+#             */
+/*   Updated: 2022/10/21 16:26:37 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+char	*ft_strtrim(char const *s1, char const *set)
 {
-	int	i;
-	int	j;
+	size_t	first;
+	size_t	last;
+	int		i;
 
+	if (!s1)
+		return (0);
+	if (!set)
+		return (ft_strdup(s1));
 	i = 0;
-	j = 0;
-
+	first = 0;
+	last = ft_strlen(s1) - 1;
+	if (first == ft_strlen(s1))
+		return (ft_strdup(""));
+	while (ft_strchr(set, s1[first]) && s1[first])
+		first++;
+	while (ft_strrchr(set, s1[last]))
+		last--;
+	return (ft_substr(s1, first, last - first + 1));
 }

@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_1.c                                      :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/11 13:47:57 by aachfenn         ###   ########.fr       */
+/*   Created: 2022/10/03 10:33:35 by aachfenn          #+#    #+#             */
+/*   Updated: 2022/10/20 17:58:00 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	int	i;
-	int	j;
+	unsigned char	*ss1;
+	unsigned char	*ss2;
+	size_t			i;
 
 	i = 0;
-	j = 0;
-
+	ss1 = (unsigned char *)s1;
+	ss2 = (unsigned char *)s2;
+	while (n > i)
+	{
+		if (ss1[i] != ss2[i])
+		{
+			return (ss1[i] - ss2[i]);
+		}
+		i++;
+	}
+	return (0);
 }

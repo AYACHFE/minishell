@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_1.c                                      :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/11 13:47:57 by aachfenn         ###   ########.fr       */
+/*   Created: 2022/09/30 16:03:30 by aachfenn          #+#    #+#             */
+/*   Updated: 2022/10/21 15:07:43 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	int	i;
-	int	j;
+	char	*des;
+	char	*sr;
+	size_t	i;
 
 	i = 0;
-	j = 0;
-
+	des = dest;
+	sr = (char *)src;
+	if (!des && !src)
+	{
+		return (0);
+	}
+	while (n > i)
+	{
+		des[i] = sr[i];
+		i++;
+	}
+	return (des);
 }

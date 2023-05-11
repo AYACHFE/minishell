@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_1.c                                      :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/11 13:47:57 by aachfenn         ###   ########.fr       */
+/*   Created: 2022/10/03 13:16:56 by aachfenn          #+#    #+#             */
+/*   Updated: 2022/10/21 15:31:12 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+char	*ft_strrchr(const char *s, int c)
 {
-	int	i;
-	int	j;
+	int	len;
 
-	i = 0;
-	j = 0;
-
+	len = ft_strlen(s);
+	if (!(s))
+	{
+		return (0);
+	}
+	while (len >= 0)
+	{
+		if (s[len] == (char )c)
+		{
+			return ((char *)&s[len]);
+		}
+		len--;
+	}
+	return (0);
 }

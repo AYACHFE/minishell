@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_1.c                                      :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/11 13:47:57 by aachfenn         ###   ########.fr       */
+/*   Created: 2022/10/03 16:25:48 by aachfenn          #+#    #+#             */
+/*   Updated: 2022/10/20 17:58:03 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-
+	while (n)
+	{
+		if (*(unsigned char *)s == (unsigned char)c)
+		{
+			return ((void *)s);
+		}
+		s++;
+		n--;
+	}
+	return (0);
 }

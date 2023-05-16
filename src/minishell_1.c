@@ -6,24 +6,11 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/16 15:47:40 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/16 17:05:41 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-
-int	ft_cd(char *str)
-{
-	char *s;
-
-	s = ft_substr(str, 3, ft_strlen(str) - 2);
-	if (chdir(s) != 0) 
-	{
-		perror("cd");
-		return (1);
-	}
-	return (0);
-}
+#include "minishell.h"
 
 int main(int ac, char **av, char **env)
 {
@@ -40,22 +27,19 @@ int main(int ac, char **av, char **env)
 	char *argecho[10];
 	args[0] = ft_strdup("ls");
 	args[1] = NULL;
-	argecho[0] = ft_strdup("echo");
-	argecho[1] = NULL;
-	// getcwd();
 	while (1)
 	{ 
 		str = readline("AYAC-->");
 		if ((fork() == 0))
 		{
+			printf("test");
 			if (str[0] == 'e')
+			{
 				execve("/bin/echo", argecho, env);
+			}
 			if ((str[0] == 'l' && str[1] == 's'))
 				execve("/bin/ls", args, env);
-			else if (str[0] == 'c' && str[1] == 'd')
-			{
-				ft_cd(str);
-			}
+			// puts("");
 		}
 		wait (NULL);
 	}

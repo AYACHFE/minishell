@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/16 18:52:38 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/16 19:18:56 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int main(int ac, char **av, char **env)
 	int		j;
 	char	*str;
 	int status;
-	// t_minishell	*mini;
+	t_minishell	mini;
 
 	i = 0;
 	j = 0;
@@ -31,14 +31,14 @@ int main(int ac, char **av, char **env)
 	while (1)
 	{ 
 		str = readline("MINISHELL-3.2$ ");
-		// mini->str = ft_split(str, ' ');
+		mini.str = ft_split(str, ' ');
 		if ((fork() == 0))
 		{
-			if (str[0] == 'e' && str[1] == 'c')
+			if (ft_strncmp(mini.str[0], "echo", ft_strlen(mini.str[0])) == 0)
 			{
 				ft_echo(str);
 			}
-			else if (str[0] == 'c' && str[1] == 'd')
+			else if (ft_strncmp(mini.str[0], "cd", ft_strlen(mini.str[0])) == 0)
 			{
 				ft_cd(str);
 			}

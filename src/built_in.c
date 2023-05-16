@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/16 12:23:26 by aachfenn         ###   ########.fr       */
+/*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
+/*   Updated: 2023/05/16 15:45:29 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	MINISHELL_H
-#define	MINISHELL_H
- 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "../utils/ft_libft/libft.h"
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "../minishell.h"
 
+// int	ft_cd(char *str)
+// {
+// 	char *s;
 
-#endif
+// 	s = ft_substr(str, 3, ft_strlen(str) - 2);
+// 	// printf("s == '%s'\n", s);
+// 	if (chdir(s) != 0) 
+// 	{
+// 		perror("cd");
+// 		return (1);
+// 	}
+// 	return (0);
+// }

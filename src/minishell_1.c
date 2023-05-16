@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/16 18:17:48 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:52:38 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int main(int ac, char **av, char **env)
 	int		j;
 	char	*str;
 	int status;
+	// t_minishell	*mini;
 
 	i = 0;
 	j = 0;
@@ -30,6 +31,7 @@ int main(int ac, char **av, char **env)
 	while (1)
 	{ 
 		str = readline("MINISHELL-3.2$ ");
+		// mini->str = ft_split(str, ' ');
 		if ((fork() == 0))
 		{
 			if (str[0] == 'e' && str[1] == 'c')
@@ -40,11 +42,11 @@ int main(int ac, char **av, char **env)
 			{
 				ft_cd(str);
 			}
-			else if (str[0] == 'p' && str[1] == 'w' && str[2] == 'd')
+			else if (ft_strncmp(str, "pwd", 3) == 0)
 			{
 				ft_pwd();
 			}
-			else if (str[0] == 'e' && str[1] == 'x')
+			else if (ft_strncmp(str, "exit", 4) == 0)
 			{
 				exit(42);
 			}
@@ -52,12 +54,13 @@ int main(int ac, char **av, char **env)
 			{
 				execve("/bin/ls", args, env);
 			}
+			else
+			{
+				perror(str);
+			}
 		}
 		wait(&status);
-		if (WIFEXITED(status))
-		{
-			if (WEXITSTATUS(status) == 42)
-				exit(0);
-		}
+		if (WEXITSTATUS(status) == 42)
+			exit(0);
 	}
 }

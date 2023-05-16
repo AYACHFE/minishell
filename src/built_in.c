@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/16 17:57:46 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:49:49 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ int	ft_cd(char *str)
 	s = ft_substr(str, 3, ft_strlen(str) - 2);
 	s = ft_strtrim(s, " ");
 	home = getenv("HOME");
-	// printf("s == '%s'\n", s);
 	if (ft_strlen(s) == 0)
 	{
-		// printf("str == '%s'\n", str);
 		chdir(home);
 	}
 	else if (chdir(s) != 0) 

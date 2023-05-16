@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/16 18:39:22 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/16 21:14:31 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ typedef struct s_minishell
 
 void    ft_echo(char *str);
 
-int		ft_cd(char *str);
+
+void	built_in_cmd(t_minishell	*mini, char **env);
+int		ft_cd(t_minishell	*mini);
 void	ft_pwd();
+void	ft_env(char	**env);
 
 #endif

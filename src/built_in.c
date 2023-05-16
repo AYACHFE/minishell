@@ -6,53 +6,44 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/16 21:20:43 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/16 21:34:25 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	built_in_cmd(t_minishell	*mini, char **env)
+void	built_in_cmd_2(t_minishell	*mini, char **env)
 {
-	int 	status;
-	char	*str;
 	char	*args[10];
 
 	args[0] = ft_strdup("ls");
 	args[1] = NULL;
+	if (ft_strncmp(mini->str[0], "echo", ft_strlen(mini->str[0])) == 0)
+		ft_echo(mini);
+	else if (ft_strncmp(mini->str[0], "cd", ft_strlen(mini->str[0])) == 0)
+		ft_cd(mini);
+	else if (ft_strncmp(mini->str[0], "pwd", ft_strlen(mini->str[0])) == 0)
+		ft_pwd();
+	else if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
+		exit(42);
+	else if (ft_strncmp(mini->str[0], "env", ft_strlen(mini->str[0])) == 0)
+		ft_env(env);
+	else if (ft_strncmp(mini->str[0], "ls", ft_strlen(mini->str[0])) == 0)
+		execve("/bin/ls", args, env);
+	else
+		perror(mini->str[0]);
+}
+
+void	built_in_cmd(t_minishell	*mini, char **env)
+{
+	int 	status;
+	char	*str;
+
 	str = readline("MINISHELL-3.2$ ");
 	mini->str = ft_split(str, ' ');
 	if ((fork() == 0))
 	{
-		if (ft_strncmp(mini->str[0], "echo", ft_strlen(mini->str[0])) == 0)
-		{
-			ft_echo(str);
-		}
-		else if (ft_strncmp(mini->str[0], "cd", ft_strlen(mini->str[0])) == 0)
-		{
-			ft_cd(mini);
-		}
-		else if (ft_strncmp(mini->str[0], "pwd", ft_strlen(mini->str[0])) == 0)
-		{
-			ft_pwd();
-		}
-		else if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
-		{
-			puts("---");
-			exit(42);
-		}
-		else if (ft_strncmp(mini->str[0], "env", ft_strlen(mini->str[0])) == 0)
-		{
-			ft_env(env);
-		}
-		else if ((str[0] == 'l' && str[1] == 's'))
-		{
-			execve("/bin/ls", args, env);
-		}
-		else
-		{
-			perror(str);
-		}
+		built_in_cmd_2(mini, env);
 	}
 	wait(&status);
 	if (WIFEXITED(status) != 0)

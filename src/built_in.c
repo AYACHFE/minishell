@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/16 21:34:25 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/16 22:26:57 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	built_in_cmd_2(t_minishell	*mini, char **env)
 		ft_cd(mini);
 	else if (ft_strncmp(mini->str[0], "pwd", ft_strlen(mini->str[0])) == 0)
 		ft_pwd();
-	else if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
-		exit(42);
+	// else if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
+	// 	exit(42);
 	else if (ft_strncmp(mini->str[0], "env", ft_strlen(mini->str[0])) == 0)
 		ft_env(env);
 	else if (ft_strncmp(mini->str[0], "ls", ft_strlen(mini->str[0])) == 0)
@@ -41,6 +41,8 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 
 	str = readline("MINISHELL-3.2$ ");
 	mini->str = ft_split(str, ' ');
+	if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
+		exit(42);
 	if ((fork() == 0))
 	{
 		built_in_cmd_2(mini, env);

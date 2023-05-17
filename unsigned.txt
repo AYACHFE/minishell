@@ -1,31 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   built_in.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/17 21:01:45 by aachfenn         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../minishell.h"
-
-//free the memory allocated by the split
-void	free_split(t_minishell	 *mini)
-{
-	int	i;
-
-	i = 0;
-	while (i < mini->count_str)
-	{
-		free(mini->str[i]);
-		i++;
-	}
-	free(mini->str);
-}
-
 void	built_in_cmd_2(t_minishell	*mini, char **env)
 {
 	char	*args[10];
@@ -49,6 +21,21 @@ void	built_in_cmd_2(t_minishell	*mini, char **env)
 		perror(mini->str[0]);
 }
 
+//free the memory allocated by the split
+void	free_split(t_minishell	 *mini)
+{
+	int	i;
+
+	i = 0;
+	while (i < mini->count_str)
+	{
+		free(mini->str[i]);
+		i++;
+	}
+	free(mini->str);
+}
+
+
 void	built_in_cmd(t_minishell	*mini, char **env)
 {
 	int 	status;
@@ -65,7 +52,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 		exit(42);
 	if ((fork() == 0))
 	{
-		add_history(str);
+		// add_history(str);
 		built_in_cmd_2(mini, env);
 		// if (WEXITSTATUS(status) == 42)
 		// {
@@ -77,10 +64,10 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	if (WIFEXITED(status) != 0)
 	{
 		if (WEXITSTATUS(status) == 42)
-			exit (0);
+			exit (0);	
 	}
-	free(str);
-	free_split(mini);
+	// free(str);
+	// free_split(mini);
 }	
 
 int	ft_cd(t_minishell	*mini)

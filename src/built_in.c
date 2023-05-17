@@ -6,14 +6,27 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/17 12:35:48 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/17 19:07:15 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 
-char **ft_env(char **env, t_minishell *mini)
+void	ft_env(char **env, t_minishell *mini)
+{
+	int i;
+
+	i = 0;
+	while(env[i])
+	{
+		mini->my_env[i] = ft_strdup(env[i]);
+		printf("%s\n", mini->my_env[i]);
+		i++;	
+	}
+}
+
+char **ft_env_1(char **env, t_minishell *mini)
 {
 	int i;
 
@@ -25,7 +38,6 @@ char **ft_env(char **env, t_minishell *mini)
 	while(env[i])
 	{
 		mini->my_env[i] = ft_strdup(env[i]);
-		printf("%s\n", mini->my_env[i]);
 		i++;	
 	}
 	mini->my_env[i] = 0;
@@ -39,14 +51,13 @@ void	built_in_cmd_2(t_minishell	*mini, char **env)
 
 	args[0] = ft_strdup("ls");
 	args[1] = NULL;
+	ft_env_1(env, mini);
 	if (ft_strncmp(mini->str[0], "echo", ft_strlen(mini->str[0])) == 0)
 		ft_echo(mini);
 	else if (ft_strncmp(mini->str[0], "cd", ft_strlen(mini->str[0])) == 0)
 		ft_cd(mini);
 	else if (ft_strncmp(mini->str[0], "pwd", ft_strlen(mini->str[0])) == 0)
 		ft_pwd();
-	// else if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
-	// 	exit(42);
 	else if (ft_strncmp(mini->str[0], "env", ft_strlen(mini->str[0])) == 0)
 		ft_env(env, mini);
 	else if (ft_strncmp(mini->str[0], "ls", ft_strlen(mini->str[0])) == 0)
@@ -69,8 +80,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 		return ;
 	mini->str = ft_split(str, ' ');
 	mini->count_str = count(str, ' ');
-	printf("%d\n", mini->count_str);
-	// ft_env(env, mini);
 	if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
 		exit(42);
 	if ((fork() == 0))
@@ -80,7 +89,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	wait(&status);
 	if (WIFEXITED(status) != 0)
 	{
-		printf("%d\n", WEXITSTATUS(status));
 		if (WEXITSTATUS(status) == 42)
 			exit (0);
 	}
@@ -111,88 +119,84 @@ void	ft_pwd()
 	printf("%s\n", str);
 }
 
-// void	ft_env(char	**env)
-// {
-// 	int	i;
+int ft_cnt (char *str)
+{
+	int i;
+	i = 0;
+	while(str[i] != '=' && str[i] != '\0')
+		i++;
+	return(i);	
+}
 
-// 	i = 0;
-// 	while (env[i])
-// 	{
-// 		printf("%s\n", env[i]);
-// 		i++;
-// 	}	
-// }
-
-
-char **ft_unste(t_minishell *mini)
+void	ft_unste(t_minishell *mini)
 {
 	int		i;
 	int		j;
 	int		l;
 
-	i = 1;
+	i = 0;
 	l = 0;
 	while(mini->str[i])
-	{
+	{	
 		j = 0;
 		while(mini->my_env[j])
 		{
-			if (ft_strncmp(mini->str[i], mini->my_env[j], ft_strlen(mini->str[i])) == 0)
+			if (ft_strncmp(mini->str[i], mini->my_env[j], ft_cnt(mini->str[i])) != 0)
+				j++;
+			else
 			{
-				// ft_rem_var(mini->str[i], mini);
 				j++;
 				l++;
+				break;
 			}
-			else
-				j++;
 		}
-		i++;		
+		i++;
 	}
 	ft_rem_var(mini->str, mini, l);
-	return (mini->my_env);
 }
 
-// char **ft_add_var()
-// {
-	
-// }
-char **ft_rem_var(char **str, t_minishell *mini, int l)
+void	ft_rem_var(char **str, t_minishell *mini, int l)
 {
 	int 	i;
 	int		j;
-	int 	tmp1;
+	int		d;
 	char 	**my_tmp;
 
-	i = 0;
-	while (mini->my_env[i])
+	j = 0;
+	while (mini->my_env[j])
+		j++;
+	my_tmp = malloc(sizeof(char *) * (j - l + 1));
+	d = 0;
+	j = 0;
+	while(mini->my_env[d])
 	{
-		if (ft_strncmp(str[i], mini->my_env[i], ft_strlen(str)) == 0)
-		// if (ft_strncmp(str, mini->my_env[i], ft_strlen(str)) == 0)
+		i = 1;
+		while (i <= mini->count_str)
 		{
-			tmp1 = i;
-			j	= 0;
-			while (mini->my_env[j])
-				j++;
-			my_tmp = malloc(sizeof(char *) *(j - l + 1));
-			j = 0;
-			while(j < i)
+
+			if (ft_strncmp(str[i], mini->my_env[d], ft_cnt(str[i])) != 0)
 			{
-				if(j == tmp1)
-					j += 1;
-				my_tmp[j] = ft_strdup(mini->my_env[j]);
-				printf("%s\n", my_tmp[j]);
-				j++;		
+				my_tmp[j] = ft_strdup(mini->my_env[d]);
+				// printf("%s\n", my_tmp[j]);
+				j++;
+				break;
 			}
-			my_tmp[j] = 0;	
+			else
+				i++;
 		}
-		i++;
+		d++;
 	}
+	my_tmp[j] = 0;
 	i = 0;
+	printf("%s\n", mini->my_env[i]);
 	while (mini->my_env[i])
 	{
+		printf("----------------------------------\n");
+		printf("------>%s\n", my_tmp[i]);
 		free(mini->my_env[i]);
 		i++;
 	}
-	mini->my_env = my_tmp;
-	return (mini->my_env);
+	free(mini->my_env);
+	ft_env_1(my_tmp, mini);
+	// mini->my_env = malloc(sizeof(char *) * (j - l + 1));
 }

@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/17 12:28:44 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/17 17:37:34 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	ft_echo(t_minishell *mini);
 void	built_in_cmd(t_minishell	*mini, char **env);
 int		ft_cd(t_minishell	*mini);
 void	ft_pwd();
-char	**ft_env(char **env, t_minishell *mini);
-char	**ft_unste(t_minishell *mini);
-char	**ft_rem_var(char *str, t_minishell *mini);
+void	ft_env(char **env, t_minishell *mini);
+void	ft_unste(t_minishell *mini);
+void	ft_rem_var(char **str, t_minishell *mini, int l);
 
 #endif

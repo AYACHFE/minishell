@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/16 20:11:21 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/17 10:14:34 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,16 @@
 typedef struct s_minishell
 {
 	char	*home;
-	char	**str;
 	char	*variable;
+	char	**str;
+	char	**my_env;
 }	t_minishell;
 
 void	ft_echo(t_minishell *mini);
 
-int		ft_cd(char *str);
+void	built_in_cmd(t_minishell	*mini, char **env);
+int		ft_cd(t_minishell	*mini);
 void	ft_pwd();
+void	ft_env(char	**env);
 
 #endif

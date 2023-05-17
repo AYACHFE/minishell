@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/17 10:25:29 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/17 10:28:25 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char **ft_env(char **env, t_minishell *mini)
 		i++;	
 	}
 	mini->my_env[i] = 0;
-	return(mini->my_env);
+	return (mini->my_env);
 }
 
 

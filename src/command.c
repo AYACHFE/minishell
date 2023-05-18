@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/17 21:02:31 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/18 14:21:22 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ void	ft_env(char **env, t_minishell *mini)
 	int i;
 
 	i = 0;
-	while(env[i])
+	(void)env;
+	while(mini->my_env[i])
 	{
-		mini->my_env[i] = ft_strdup(env[i]);
+		// mini->my_env[i] = ft_strdup(env[i]);
 		printf("%s\n", mini->my_env[i]);
 		i++;	
 	}
@@ -72,7 +73,8 @@ char **ft_env_1(char **env, t_minishell *mini)
 	while(env[i])
 	{
 		mini->my_env[i] = ft_strdup(env[i]);
-		i++;	
+		printf("i == %d\n", i);
+		i++;
 	}
 	mini->my_env[i] = 0;
 	return (mini->my_env);

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/17 21:02:00 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/18 12:17:42 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ typedef struct s_minishell
 	char	**my_env;
 }	t_minishell;
 
+// typedef struct s_linked
+// {
+// 	char	*content;
+// 	t_linked	*next;
+// }	t_linked;
+
 void	ft_echo(t_minishell *mini);
 
 void	built_in_cmd(t_minishell	*mini, char **env);
@@ -38,5 +44,6 @@ void	ft_env(char **env, t_minishell *mini);
 void	ft_unste(t_minishell *mini);
 void	ft_rem_var(char **str, t_minishell *mini, int l);
 char	**ft_env_1(char **env, t_minishell *mini);
+void	ft_export(t_minishell	*mini);
 
 #endif

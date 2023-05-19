@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/19 15:21:57 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/19 21:46:25 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ typedef struct s_minishell
 	char	**str;
 	int		count_str;
 	char	**my_env;
+	char	**my_export;
+	char	**tmp_my_env;
 }	t_minishell;
 
 void	ft_echo(t_minishell *mini);
@@ -38,5 +40,6 @@ void	ft_env(char **env, t_minishell *mini);
 void	ft_export(t_minishell *mini);
 void	ft_rem_var(char **str, t_minishell *mini);
 char	**ft_env_1(char **env, t_minishell *mini);
+void	ft_add_declare(t_minishell *mini);
 
 #endif

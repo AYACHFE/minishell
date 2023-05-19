@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/19 12:37:49 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/19 15:13:10 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	built_in_cmd_2(t_minishell	*mini, char **env)
 		ft_env(env, mini);
 	// else if (ft_strncmp(mini->str[0], "ls", ft_strlen(mini->str[0])) == 0)
 	// 	execve("/bin/ls", args, env);
-	else if (ft_strncmp(mini->str[0], "unset", ft_strlen(mini->str[0])) == 0)
-		ft_unste(mini);
+	else if (ft_strncmp(mini->str[0], "export", ft_strlen(mini->str[0])) == 0)
+		ft_export(mini);
 	else
 		perror(mini->str[0]);
 }

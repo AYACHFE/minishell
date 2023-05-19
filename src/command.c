@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/18 20:18:14 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/19 15:27:36 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,70 +88,40 @@ int ft_cnt (char *str)
 	return(i);	
 }
 
-void ft_unste(t_minishell *mini) 
+void ft_export(t_minishell *mini) 
 {
-	int i;
-	int j;
-	int l;
-
-	i = 1;
-	l = 0;
-	while (i < mini->count_str) {
-		j = 0;
-		while (mini->my_env[j]) {
-			if (ft_strncmp(mini->str[i], mini->my_env[j], ft_cnt(mini->my_env[j])) != 0)
-				j++;
-			else {
-				j++;
-				l++;
-				break;
-			}
-		}
-		i++;
-	}
-	ft_rem_var(mini->str ,mini, l);
+	ft_rem_var(mini->str ,mini);
 }
 
-void ft_rem_var(char **str, t_minishell *mini, int l) 
+void ft_rem_var(char **str, t_minishell *mini) 
 {
 	int i;
 	int j;
 	int d;
 	int n;
-	int g;
 	char **my_tmp;
 
 	j = 0;
 	n = 0;
 	while (mini->my_env[j])
 		j++;	
-	my_tmp = malloc(sizeof(char *) * (j - l + 1)); 
+	my_tmp = malloc(sizeof(char *) * (j + mini->count_str)); 
 	d = 0;
 	j = 0;
 	while (mini->my_env[d]) 
 	{
-		i = 1;
-		while (i < mini->count_str) 
-		{
-			g = ft_strncmp(mini->my_env[d] ,str[i],ft_cnt(mini->my_env[d]));
-			if (g != 0)
-			{
-				my_tmp[n] = ft_strdup(mini->my_env[d]);
-				n++;
-				i++;
-			}
-			else
-				i++;
-		}
+		my_tmp[n] = ft_strdup(mini->my_env[d]);
+		n++;
 		d++;
 	}
-	my_tmp[n] = NULL; 
-	i = 0;
-	while (my_tmp[i]) 
+	i = 1;
+	while(str[i])
 	{
-		printf("%s\n", my_tmp[i]);
+		my_tmp[n] = ft_strdup(mini->str[i]);
+		n++;
 		i++;
-	}
+	}	
+	my_tmp[n] = NULL; 
 	i = 0;
 	while (mini->my_env[i]) 
 	{
@@ -160,24 +130,7 @@ void ft_rem_var(char **str, t_minishell *mini, int l)
 	}
 	mini->my_env = my_tmp;
 }
-//	i = 0;
-	//  if(str[1])
-	//  {
-	//  while (mini->my_env[i])
-	// 	{
-	// 		free(mini->my_env[i]);
-	// 		i++;
-	// 	}
-	// 	free(mini->my_env);
-	// 	i = 0;
-	// 	while(my_tmp[i])
-	// 	{
-	// 		// printf("%s\n", my_tmp[i]);
-	// 		i++;
-	// 	}
-	// 	// ft_env_1(my_tmp, mini);
-	// 	mini->my_env = my_tmp;	
-	// }
+
 
 	
 		

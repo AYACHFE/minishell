@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/17 19:49:32 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/19 12:37:49 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	built_in_cmd_2(t_minishell	*mini, char **env)
 
 	args[0] = ft_strdup("ls");
 	args[1] = NULL;
-	ft_env_1(env, mini);
 	if (ft_strncmp(mini->str[0], "echo", ft_strlen(mini->str[0])) == 0)
 		ft_echo(mini);
 	else if (ft_strncmp(mini->str[0], "cd", ft_strlen(mini->str[0])) == 0)
@@ -28,8 +27,8 @@ void	built_in_cmd_2(t_minishell	*mini, char **env)
 		ft_pwd();
 	else if (ft_strncmp(mini->str[0], "env", ft_strlen(mini->str[0])) == 0)
 		ft_env(env, mini);
-	else if (ft_strncmp(mini->str[0], "ls", ft_strlen(mini->str[0])) == 0)
-		execve("/bin/ls", args, env);
+	// else if (ft_strncmp(mini->str[0], "ls", ft_strlen(mini->str[0])) == 0)
+	// 	execve("/bin/ls", args, env);
 	else if (ft_strncmp(mini->str[0], "unset", ft_strlen(mini->str[0])) == 0)
 		ft_unste(mini);
 	else
@@ -40,7 +39,10 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 {
 	int 	status;
 	char	*str;
+	char	*args[10];
 
+	args[0] = ft_strdup("ls");
+	args[1] = NULL;
 	str = readline("MINISHELL-3.2$ ");
 	str = ft_strtrim(str, " ");
 	mini->count_str = 0;
@@ -50,16 +52,18 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	mini->count_str = count(str, ' ');
 	if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
 		exit(42);
-	if ((fork() == 0))
+	built_in_cmd_2(mini, env);
+	if ((fork() == 0 && ft_strncmp(mini->str[0], "ls", ft_strlen(mini->str[0])) == 0))
 	{
-		built_in_cmd_2(mini, env);
+		// else if (ft_strncmp(mini->str[0], "ls", ft_strlen(mini->str[0])) == 0)
+		execve("/bin/ls", args, env);
 	}
 	wait(&status);
-	if (WIFEXITED(status) != 0)
-	{
-		if (WEXITSTATUS(status) == 42)
-			exit (0);
-	}
+	// if (WIFEXITED(status) != 0)
+	// {
+	// 	if (WEXITSTATUS(status) == 42)
+	// 		exit (0);
+	// }
 }	
 
 int	ft_cd(t_minishell	*mini)
@@ -73,7 +77,7 @@ int	ft_cd(t_minishell	*mini)
 	}
 	else if (chdir(mini->str[1]) != 0) 
 	{
-		perror("cd");
+		perror("-minishell: cd");
 		return (1);
 	}
 	return (0);

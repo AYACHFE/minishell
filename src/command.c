@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/17 19:49:36 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/18 20:18:14 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	ft_env(char **env, t_minishell *mini)
 	int i;
 
 	i = 0;
-	while(env[i])
+	(void)env;
+	while(mini->my_env[i])
 	{
-		mini->my_env[i] = ft_strdup(env[i]);
 		printf("%s\n", mini->my_env[i]);
 		i++;	
 	}
@@ -67,7 +67,7 @@ char **ft_env_1(char **env, t_minishell *mini)
 	i = 0;
 	while(env[i])
 		i++;
-	mini->my_env = malloc(sizeof(char *) *(i + 1));
+	mini->my_env = malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while(env[i])
 	{
@@ -88,23 +88,20 @@ int ft_cnt (char *str)
 	return(i);	
 }
 
-void	ft_unste(t_minishell *mini)
+void ft_unste(t_minishell *mini) 
 {
-	int		i;
-	int		j;
-	int		l;
+	int i;
+	int j;
+	int l;
 
-	i = 0;
+	i = 1;
 	l = 0;
-	while(mini->str[i])
-	{	
+	while (i < mini->count_str) {
 		j = 0;
-		while(mini->my_env[j])
-		{
-			if (ft_strncmp(mini->str[i], mini->my_env[j], ft_cnt(mini->str[i])) != 0)
+		while (mini->my_env[j]) {
+			if (ft_strncmp(mini->str[i], mini->my_env[j], ft_cnt(mini->my_env[j])) != 0)
 				j++;
-			else
-			{
+			else {
 				j++;
 				l++;
 				break;
@@ -112,52 +109,94 @@ void	ft_unste(t_minishell *mini)
 		}
 		i++;
 	}
-	ft_rem_var(mini->str, mini, l);
+	ft_rem_var(mini->str ,mini, l);
 }
 
-void	ft_rem_var(char **str, t_minishell *mini, int l)
+void ft_rem_var(char **str, t_minishell *mini, int l) 
 {
-	int 	i;
-	int		j;
-	int		d;
-	char 	**my_tmp;
+	int i;
+	int j;
+	int d;
+	int n;
+	int g;
+	char **my_tmp;
 
 	j = 0;
+	n = 0;
 	while (mini->my_env[j])
-		j++;
-	my_tmp = malloc(sizeof(char *) * (j - l + 1));
+		j++;	
+	my_tmp = malloc(sizeof(char *) * (j - l + 1)); 
 	d = 0;
 	j = 0;
-	while(mini->my_env[d])
+	while (mini->my_env[d]) 
 	{
 		i = 1;
-		while (mini->str[i])
+		while (i < mini->count_str) 
 		{
-			if (ft_strncmp(str[i], mini->my_env[d], ft_cnt(str[i])) != 0)
+			g = ft_strncmp(mini->my_env[d] ,str[i],ft_cnt(mini->my_env[d]));
+			if (g != 0)
 			{
-				my_tmp[j] = ft_strdup(mini->my_env[d]);
-				printf("%s\n", my_tmp[j]);
-				j++;
-				break;
+				my_tmp[n] = ft_strdup(mini->my_env[d]);
+				n++;
+				i++;
 			}
 			else
 				i++;
 		}
 		d++;
 	}
-	my_tmp[j] = 0;
+	my_tmp[n] = NULL; 
 	i = 0;
-	while (mini->my_env[i])
+	while (my_tmp[i]) 
+	{
+		printf("%s\n", my_tmp[i]);
+		i++;
+	}
+	i = 0;
+	while (mini->my_env[i]) 
 	{
 		free(mini->my_env[i]);
 		i++;
 	}
-	free(mini->my_env);
-	ft_env_1(my_tmp, mini);
-	// mini->my_env = malloc(sizeof(char *) * (j - l + 1));
+	mini->my_env = my_tmp;
 }
+//	i = 0;
+	//  if(str[1])
+	//  {
+	//  while (mini->my_env[i])
+	// 	{
+	// 		free(mini->my_env[i]);
+	// 		i++;
+	// 	}
+	// 	free(mini->my_env);
+	// 	i = 0;
+	// 	while(my_tmp[i])
+	// 	{
+	// 		// printf("%s\n", my_tmp[i]);
+	// 		i++;
+	// 	}
+	// 	// ft_env_1(my_tmp, mini);
+	// 	mini->my_env = my_tmp;	
+	// }
+
 	
 		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

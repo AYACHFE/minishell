@@ -6,11 +6,11 @@
 #    By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/05/16 17:14:13 by aachfenn         ###   ########.fr        #
+#    Updated: 2023/05/19 15:32:48 by aachfenn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		= src/minishell_1.c src/built_in.c src/command.c
+SRC		= src/minishell_1.c src/built_in.c src/command.c src/unset.c
 
 CC		= cc
 

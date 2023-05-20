@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/20 13:10:25 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:31:23 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 
 typedef struct s_minishell
 {
+	char	*var;
+
+	//built_in
 	char	*home;
 	char	*variable;
 	char	**str;
@@ -46,8 +49,6 @@ int		ft_cnt(char *str);
 char	**ft_env_1(char **env, t_minishell *mini);
 void	ft_tmp_my_env(t_minishell *mini);
 void	ft_add_declare(t_minishell *mini);
-
-
 void	ft_add_declare_in_pos(t_minishell *mini);
 
 //ft_unset
@@ -62,5 +63,13 @@ void	ft_export(t_minishell *mini);
 void	ft_rem_var(char **str, t_minishell *mini);
 void	ft_rem_var_export(char **str, t_minishell *mini);
 void	print_export(t_minishell *mini);
+
+//parcing
+void	parcing(t_minishell	*mini, char *str);
+char	*space_eleminator(char *str);
+void	space_to_imprint(char	*str, int i);
+
+void	place_np(char	*str);
+
 
 #endif

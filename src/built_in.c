@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/19 21:38:29 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:25:40 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,19 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	int 	status;
 	char	*str;
 
+	(void)mini;
+	(void)env;
 	str = readline("MINISHELL-3.2$ ");
-	str = ft_strtrim(str, " ");
+	// str = ft_strtrim(str, " ");
 	mini->count_str = 0;
 	if (ft_strlen(str) == 0)
 		return ;
 	mini->str = ft_split(str, ' ');
 	mini->count_str = count(str, ' ');
-	built_in_cmd_2(mini, env);
+	// built_in_cmd_2(mini, env);
+	
+	parcing(mini, str);
+	
 	add_history(str);
 	wait(&status);
 }	

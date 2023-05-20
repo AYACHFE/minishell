@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/20 12:28:59 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/20 13:10:25 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ char	**ft_env_1(char **env, t_minishell *mini);
 void	ft_tmp_my_env(t_minishell *mini);
 void	ft_add_declare(t_minishell *mini);
 
+
+void	ft_add_declare_in_pos(t_minishell *mini);
+
 //ft_unset
 void	ft_unset(t_minishell *mini);
 void	search_in_env(t_minishell	*mini, char *str);
@@ -57,6 +60,7 @@ void	rem_var_export(t_minishell	*mini, int pos);
 //ft_export
 void	ft_export(t_minishell *mini);
 void	ft_rem_var(char **str, t_minishell *mini);
+void	ft_rem_var_export(char **str, t_minishell *mini);
 void	print_export(t_minishell *mini);
 
 #endif

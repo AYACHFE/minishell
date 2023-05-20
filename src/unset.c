@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 15:31:45 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/20 12:34:27 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/20 12:38:40 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	rem_var_export(t_minishell	*mini, int pos)
 	int		i;
 
 	i = 0;
-	printf("mini->my_export[pos] == %s\n", mini->my_export[pos]);
+	// printf("mini->my_export[pos] == %s\n", mini->my_export[pos]);
 	free(mini->my_export[pos]);
 	while (mini->my_export[pos])
 	{

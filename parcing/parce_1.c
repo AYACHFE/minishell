@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/21 14:55:24 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/21 15:29:56 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 //you should split the readline return with ("" , '', |, <<, >>, <, >)
 
-void	parcing(t_minishell	*mini, char *str)
+void	parcing(t_minishell	*mini, char *s)
 {
 	int		i;
 	char	**ret;
 	char	*var;
+	char	*str;
 
 	i = 0;
 	(void)mini;
+	str = ft_strdup(s);
 	space_to_imprint_dcotes(str);
 	space_to_imprint_scotes(str);
 	prep(str);
@@ -139,7 +141,8 @@ void	prep(char	*str)
 	i = 0;
 	while (str[i])
 	{
-		if (((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')) && str[i + 1] == 32)
+		// if (((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')) && str[i + 1] == 32)
+		if (ft_isalpha(str[i]) && ((str[i + 1] >= 9 && str[i + 1] <= 13) || str[i + 1] == 32))
 			str[i + 1] = 11;
 		else if (((str[i] >= 9 && str[i] <= 13) || str[i] == 32) && str[i + 1] != 32)
 			str[i] = 11;

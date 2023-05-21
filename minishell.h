@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/20 20:31:23 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/21 14:54:40 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,11 @@ void	print_export(t_minishell *mini);
 
 //parcing
 void	parcing(t_minishell	*mini, char *str);
-char	*space_eleminator(char *str);
-void	space_to_imprint(char	*str, int i);
+void	prep(char *str);
+char	*unwanted_spaces(char	*str);
+void	return_umprint_to_space(char	*var);
+void	space_to_imprint_dcotes(char	*str);
+void	space_to_imprint_scotes(char	*str);
 
 void	place_np(char	*str);
 

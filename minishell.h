@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/21 15:04:07 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/22 20:07:05 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <fcntl.h>
+
+typedef struct s_space_checker
+{
+	int	check;
+}	t_space_checker;
 
 typedef struct s_minishell
 {
@@ -66,11 +71,11 @@ void	print_export(t_minishell *mini);
 
 //parcing
 void	parcing(t_minishell	*mini, char *s);
-void	prep(char *str);
+char	*prep(char *str);
 char	*unwanted_spaces(char	*str);
 void	return_umprint_to_space(char	*var);
 void	space_to_imprint_dcotes(char	*str);
 void	space_to_imprint_scotes(char	*str);
-
+void	space_check(char c, t_space_checker	*sp);
 
 #endif

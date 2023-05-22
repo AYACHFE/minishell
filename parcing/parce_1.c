@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/22 20:57:09 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/22 21:24:43 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,39 +32,6 @@ void	parcing(t_minishell	*mini, char *s)
 		i++;
 	}
 }
-
-// void	cotes_check(char	*str, char	*var, int	i, int	j)
-// {
-// 	if (((str[i] >= 9 && str[i] <= 13) || str[i] == 32))
-// 			str[i] = 11;
-// 		else if (str[i] == '"')
-// 		{
-// 			if (((str[i - 1] >= 9 && str[i - 1] <= 13) || str[i - 1] == 32))
-// 				str[i - 1] = 11;
-// 			var[j - 1] = str[i - 1];
-// 			var[j] = str[i];
-// 			i++;
-// 			j++;
-// 			while (str[i] != '"')
-// 				var[j++] = str[i++];
-// 		}
-// 		else if (str[i] == '\'')
-// 		{
-// 			if (((str[i - 1] >= 9 && str[i - 1] <= 13) || str[i - 1] == 32))
-// 				str[i - 1] = 11;
-// 			var[j - 1] = str[i - 1];
-// 			var[j] = str[i];
-// 			i++;
-// 			j++;
-// 			while (str[i] != '\'')
-// 				var[j++] = str[i++];
-// 		}
-// }
-
-// void	scotes_check(char	*str, char	*var, int	i, int	j)
-// {
-	
-// }
 
 //puts a marker at the end of every string 
 char	*prep(char	*str)

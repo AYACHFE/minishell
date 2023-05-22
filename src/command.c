@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/19 21:52:41 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/22 12:37:33 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ char **ft_env_1(char **env, t_minishell *mini)
 	return (mini->my_env);
 }
 
-
 int ft_cnt (char *str)
 {
 	int i;
@@ -87,16 +86,6 @@ int ft_cnt (char *str)
 		i++;
 	return(i);	
 }
-
-void ft_export(t_minishell *mini) 
-{
-	if (mini->count_str > 1)
-		ft_rem_var(mini->str ,mini);
-	else
-		ft_add_declare(mini);			
-}
-
-
 
 void	ft_tmp_my_env(t_minishell *mini)
 {
@@ -120,7 +109,7 @@ void	ft_tmp_my_env(t_minishell *mini)
 		d = 0;
 		while(mini->my_env[i][j])
 		{
-			mini->tmp_my_env[i][d] = mini->my_env[i][j];	
+			mini->tmp_my_env[i][d] = mini->my_env[i][j];
 			if (mini->my_env[i][j] == '=' || mini->my_env[i][j + 1] == '\0')
 				mini->tmp_my_env[i][++d] = '"';
 			d++;
@@ -132,8 +121,7 @@ void	ft_tmp_my_env(t_minishell *mini)
 	mini->tmp_my_env[i] = NULL;
 }
 
-
-void ft_add_declare(t_minishell *mini)
+void	ft_add_declare(t_minishell *mini)
 {
 	int i;
 	int j = 0;
@@ -149,55 +137,59 @@ void ft_add_declare(t_minishell *mini)
 		j++;
 	}
 	mini->my_export[j] = NULL;
+}
+
+void	ft_tmp_my_env_pos(t_minishell *mini, int	pos)
+{
+	int	i;
+	int	j;
+	int	d;
+
+	i = 0;
 	j = 0;
-	while(j < i)
+	mini->tmp_my_env = malloc(sizeof(char *) * (pos + 1));
+	j = 0;
+	while(mini->my_export[pos][j])
+		j++;
+	mini->tmp_my_env[pos] = malloc(j + 3);
+	j = 0;
+	d = 0;
+	while(mini->my_export[pos][j])
 	{
-		printf("%s\n", mini->my_export[j]);
+		puts("-->");
+		mini->tmp_my_env[pos][d] = mini->my_export[pos][j];
+		if (mini->my_export[pos][j] == '=' || mini->my_export[pos][j + 1] == '\0')
+			mini->tmp_my_env[pos][++d] = '"';
+		d++;
 		j++;
 	}
+	mini->tmp_my_env[pos][d] = '\0';
+	mini->tmp_my_env[pos + 1] = NULL;
+}
+
+// void	ft_add_declare_in_pos(t_minishell *mini)
+// {
+// 	int i;
+// 	int j = 0;
+// 	char s[12] ="declare -x ";
+// 	int	pos;
 	
-}
-
-
-
-void ft_rem_var(char **str, t_minishell *mini) 
-{
-	int i;
-	int j;
-	int d;
-	int n;
-	char **my_tmp;
-
-	j = 0;
-	n = 0;
-	while (mini->my_env[j])
-		j++;	
-	my_tmp = malloc(sizeof(char *) * (j + mini->count_str)); 
-	d = 0;
-	j = 0;
-	while (mini->my_env[d]) 
-	{
-		my_tmp[n] = ft_strdup(mini->my_env[d]);
-		n++;
-		d++;
-	}
-	i = 1;
-	while(str[i])
-	{
-		my_tmp[n] = ft_strdup(mini->str[i]);
-		n++;
-		i++;
-	}	
-	my_tmp[n] = NULL; 
-	i = 0;
-	while (mini->my_env[i]) 
-	{
-		free(mini->my_env[i]);
-		i++;
-	}
-	mini->my_env = my_tmp;
-}
-
+// 	i = 0;
+// 	pos = 0;
+// 	while (mini->my_env[pos])
+// 			pos++;
+// 	ft_tmp_my_env_pos(mini, pos);
+// 	while (mini->my_env[i])
+// 		i++;
+// 	printf("== %d\n", i);
+// 	mini->my_export = malloc(sizeof(char *) * (i + 1));
+// 	// while(j < i)
+// 	// {
+// 		mini->my_export[pos] = ft_strjoin(s, mini->tmp_my_env[pos]);
+// 	// 	j++;
+// 	// }
+// 	mini->my_export[j + 1] = NULL;
+// }
 
 	
 		

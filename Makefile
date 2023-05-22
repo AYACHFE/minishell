@@ -6,11 +6,11 @@
 #    By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/05/16 19:00:22 by rarraji          ###   ########.fr        #
+#    Updated: 2023/05/22 10:47:51 by rarraji          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		= src/minishell_1.c src/built_in.c src/command.c
+SRC		= src/minishell_1.c src/built_in.c src/command.c src/unset.c src/ft_export.c src/error.c
 
 CC		= cc
 

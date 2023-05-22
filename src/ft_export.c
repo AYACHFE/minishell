@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/22 14:35:52 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/22 15:29:41 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,28 @@ int	ft_check_var_exect(char *s,t_minishell *mini, int var)
 {
 	int i;
 	int	j;
+	int	d;
+
 	i = 0;
-	// d = 0;
 	j=0;
+	d = 11;
 	if (var == 0)
 	{	
 		while (mini->my_export[i])
 		{
 			// i = tmp;
-			while (mini->my_export[i][j] == s[j] && s[j] != '=')
+			while (mini->my_export[i][d] == s[j] && s[j] != '=' )
+			{
 				j++;
-			if(mini->my_export[i][j] == '=' && s[j] == '=')
+				d++;
+			}
+			if(mini->my_export[i][d] == '=' && s[j] == '=')
 				return (i);
 			else
+			{
+				d = 11;
 				j = 0;	
+			}
 			i++;
 		}
 	}
@@ -70,7 +78,7 @@ void	ft_rem_var(char **str, t_minishell *mini)
 	int d;
 	int n;
 	char **my_tmp;
-
+	
 	j = 0;
 	n = 0;
 	while (mini->my_env[j])
@@ -117,6 +125,7 @@ void	ft_rem_var_export(char **str, t_minishell *mini) // add_variable
 	int d;
 	int n;
 	char **my_tmp;
+	char s[12] ="declare -x ";
 
 	j = 0;
 	n = 0;
@@ -135,10 +144,11 @@ void	ft_rem_var_export(char **str, t_minishell *mini) // add_variable
 	while(str[i])
 	{
 		my_tmp[n] = ft_strdup(mini->str[i]);
+		my_tmp[n] = ft_strjoin(s, my_tmp[n]);
 		n++;
 		i++;
 	}	
-	my_tmp[n] = NULL; 
+	my_tmp[n] = NULL;
 	i = 0;
 	while (mini->my_export[i]) 
 	{

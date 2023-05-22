@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:42:40 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/22 10:42:43 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/22 15:13:58 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	rem_var_export(t_minishell	*mini, int pos)
 	int		i;
 
 	i = 0;
-	// printf("mini->my_export[pos] == %s\n", mini->my_export[pos]);
+	
 	free(mini->my_export[pos]);
 	while (mini->my_export[pos])
 	{

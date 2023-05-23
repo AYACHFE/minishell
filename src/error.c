@@ -6,14 +6,11 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/22 10:50:32 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/23 17:23:49 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-
+#include "../minishell.h"
 
 int ft_double_single_quote(char *str)
 {
@@ -46,5 +43,96 @@ int ft_double_single_quote(char *str)
         else
             i++;
     }
+    if(tmp == 0)
+         printf("syntax error near unexpected token `\"'\n");
     return (tmp);
+}
+
+int ft_error_pipe(char *s)
+{
+    int i;
+    
+    i = 0;
+    if (s[0] == '|' && s[1] == '\0')
+    {
+        printf("syntax error near unexpected token `|'\n");
+        return (0);
+    }
+    while (s[i])
+    {
+        if (s[i] == '|' && (s[i + 1] == '\0' || (s[i + 1] == '>' || (s[i + 1] == '>' && s[i + 2] == '>'))))
+        {
+            printf("syntax error near unexpected token `|'\n");
+            return (0);
+        }
+        if (s[i] == '|' && s[i + 1] == '\0')
+        {
+            printf("syntax error near unexpected token `|'\n");
+            return (0); 
+        }
+        i++;           
+    }
+    return (1);
+}
+
+int ft_error_output(char *s)
+{
+    int i;
+    
+    i = 0;
+    if (s[0] == '>' && s[1] == '\0')
+    {
+        printf("syntax error near unexpected token `>'\n");
+        return (0);
+    }
+    while (s[i])
+    {
+        if (s[i] == '>' && (s[i + 1] == '\0' || (s[i + 1] == '|' || (s[i + 1] == '>' && s[i + 2] == '>'))))
+        {
+            printf("syntax error near unexpected token `>'\n");
+            return (0);
+        }
+        if (s[i] == '>' && s[i + 1] == '\0')
+        {
+            printf("syntax error near unexpected token `>'\n");
+            return (0); 
+        }
+        i++;           
+    }
+    return (1);
+}
+int ft_error_input(char *s)
+{
+    int i;
+    
+    i = 0;
+    if (s[0] == '<' && s[1] == '\0')
+    {
+        printf("syntax error near unexpected token `<'\n");
+        return (0);
+    }
+    while (s[i])
+    {
+        if (s[i] == '<' && (s[i + 1] == '\0' || (s[i + 1] == '|' || (s[i + 1] == '<' && s[i + 2] == '<'))))
+        {
+            printf("syntax error near unexpected token `<'\n");
+            return (0);
+        }
+        if (s[i] == '<' && s[i + 1] == '\0')
+        {
+            printf("syntax error near unexpected token `<'\n");
+            return (0); 
+        }
+        i++;           
+    }
+    return (1);
+}
+
+
+void ft_error(char *str)
+{
+    ft_double_single_quote(str);
+    ft_error_pipe(str);
+    ft_error_output(str);
+    ft_error_input(str);
 }

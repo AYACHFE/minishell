@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/22 14:29:00 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/23 17:27:15 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 typedef struct s_minishell
 {
 	char	*var;
+	char	**cmd;
 
 	//built_in
 	char	*home;
@@ -63,15 +64,17 @@ void	ft_export(t_minishell *mini);
 void	ft_rem_var(char **str, t_minishell *mini);
 void	ft_rem_var_export(char **str, t_minishell *mini);
 void	print_export(t_minishell *mini);
+int		ft_double_single_quote(char *str);
+int		ft_check_var_exect(char *s,t_minishell *mini, int var);
 
 //parcing
-// void	parcing(t_minishell	*mini, char *s);
-// void	prep(char *str);
-// char	*unwanted_spaces(char	*str);
-// void	return_umprint_to_space(char	*var);
-// void	space_to_imprint_dcotes(char	*str);
-// void	space_to_imprint_scotes(char	*str);
+void	parcing(t_minishell	*mini, char *s);
+char	*prep(char *str);
 
+
+//error
 int ft_double_single_quote(char *str);
-int	ft_check_var_exect(char *s,t_minishell *mini, int var);
+int ft_error_pipe(char *s);
+void ft_error(char *str);
+
 #endif

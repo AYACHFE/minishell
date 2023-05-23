@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/23 15:22:42 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/23 19:43:59 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	ft_tmp_my_env(t_minishell *mini)
 		{
 			mini->tmp_my_env[i][d] = mini->my_env[i][j];
 			if (mini->my_env[i][j] == '=' || mini->my_env[i][j + 1] == '\0')
-				mini->tmp_my_env[i][++d] = '"';
+				mini->tmp_my_env[i][++d] = '\"';
 			d++;
 			j++;
 		}

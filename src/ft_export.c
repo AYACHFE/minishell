@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/22 15:29:41 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/23 15:32:53 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_check_var_exect(char *s,t_minishell *mini, int var)
 				j++;
 				d++;
 			}
-			if(mini->my_export[i][d] == '=' && s[j] == '=')
+			if((mini->my_export[i][d] == '=' || mini->my_export[i][d] == '\0') && s[j] == '=')
 				return (i);
 			else
 			{
@@ -108,7 +108,7 @@ void	ft_rem_var(char **str, t_minishell *mini)
 		n++;
 		i++;
 	}
-	my_tmp[n] = NULL; 
+	my_tmp[n] = NULL;
 	i = 0;
 	while (mini->my_env[i]) 
 	{
@@ -118,6 +118,44 @@ void	ft_rem_var(char **str, t_minishell *mini)
 	mini->my_env = my_tmp;
 }
 
+char *ft_add_double(char *s)
+{
+	int		i;
+	int		j;
+	char *str;
+	char dec[12] ="declare -x ";
+
+	i = 0;
+	j = 0;
+	while(s[i])
+		i++;
+	str = malloc(i + 14);
+	if (!str)
+		return (0);
+	i = 0;
+	while(dec[i])
+	{
+		str[i] = dec[i];
+		i++;
+	}
+	while (s[j])
+	{
+		str[i] = s[j];
+		if((ft_strchr(s, '=') != NULL) && (s[j] == '=' && s[j + 1] == '\0'))
+		{
+			str[++i] = '\"';
+			str[++i] = '\"';	
+		}
+		else if ((ft_strchr(s, '=') != NULL) && (s[j] == '=' || s[j + 1] == '\0'))
+			str[++i] = '\"';
+		i++;
+		j++;
+	}
+	str[i] = '\0';
+	free(s);
+	return (str);
+}
+
 void	ft_rem_var_export(char **str, t_minishell *mini) // add_variable
 {
 	int i;
@@ -125,7 +163,6 @@ void	ft_rem_var_export(char **str, t_minishell *mini) // add_variable
 	int d;
 	int n;
 	char **my_tmp;
-	char s[12] ="declare -x ";
 
 	j = 0;
 	n = 0;
@@ -141,10 +178,12 @@ void	ft_rem_var_export(char **str, t_minishell *mini) // add_variable
 		d++;
 	}
 	i = 1;
-	while(str[i])
+	while (str[i])
 	{
+		if(ft_check_var_exect(str[i], mini, 0) != 0)
+			ft_unset(mini);
 		my_tmp[n] = ft_strdup(mini->str[i]);
-		my_tmp[n] = ft_strjoin(s, my_tmp[n]);
+		my_tmp[n] = ft_add_double(my_tmp[n]);
 		n++;
 		i++;
 	}	

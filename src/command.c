@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/22 12:37:33 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/23 15:22:42 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ void	ft_tmp_my_env_pos(t_minishell *mini, int	pos)
 	d = 0;
 	while(mini->my_export[pos][j])
 	{
-		puts("-->");
 		mini->tmp_my_env[pos][d] = mini->my_export[pos][j];
 		if (mini->my_export[pos][j] == '=' || mini->my_export[pos][j + 1] == '\0')
 			mini->tmp_my_env[pos][++d] = '"';

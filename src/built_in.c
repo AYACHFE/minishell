@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/24 11:58:02 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/24 13:32:42 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	execv_function(t_minishell	*mini, char **env)
 
 void	built_in_cmd_2(t_minishell	*mini, char **env)
 {
-	
+
 	if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
 		exit(42);
 	else if (ft_strncmp(mini->str[0], "echo", ft_strlen(mini->str[0])) == 0)
@@ -84,10 +84,12 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 		return ;
 	mini->str = ft_split(str, ' ');
 	mini->count_str = count(str, ' ');
-	// built_in_cmd_2(mini, env);
-	ft_error(str);
-	// parcing(mini, str);
-	
+	parcing(mini, str);
+	built_in_cmd_2(mini, env);
+	ft_check_dollar(mini);
+	// ft_double_single_quote(str);
+
+
 	add_history(str);
 	wait(&status);
 }	
@@ -108,7 +110,6 @@ int	ft_cd(t_minishell	*mini)
 	}
 	return (0);
 }
-
 void	ft_pwd()
 {
 	char	str[1024];

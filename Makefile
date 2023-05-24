@@ -6,15 +6,15 @@
 #    By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/05/23 20:07:07 by rarraji          ###   ########.fr        #
+#    Updated: 2023/05/24 13:07:40 by rarraji          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		= src/minishell_1.c src/built_in.c src/command.c src/unset.c src/ft_export.c src/error.c parcing/parce_1.c
+SRC		= src/minishell_1.c src/built_in.c src/command.c src/unset.c src/ft_export.c src/error.c parcing/parce_1.c parcing/expanding.c
 
 CC		= cc
 
-CFLAGS	= -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS	= -Wall -Wextra -Werror 
 
 OBJ		= ${SRC:.c=.o}
 

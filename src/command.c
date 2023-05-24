@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/23 20:28:01 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/24 12:16:10 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,18 @@
 void ft_echo(t_minishell *mini)
 {
 	int i;
+	int	l;
 
 	i = 2;
+	l = 0;
 	mini->home = getenv("HOME");
 
 	if (mini->str[1][0] == '~' && ft_strlen(mini->str[1]) == 1)
 		printf("%s\n", mini->home);
+	else if (mini->str[1][0] == '$')
+	{
+		mini->variable = mini->str[1];
+	}
 	else if (ft_strncmp(mini->str[1], "-n", ft_strlen("-n")) == 0)
 	{
 		while(mini->str[i])
@@ -31,8 +37,6 @@ void ft_echo(t_minishell *mini)
 			i++;
 		}
 	}
-	else if (mini->str[1][0] == '$')
-		mini->variable = mini->str[1];
 	else
 	{
 		i = 1;

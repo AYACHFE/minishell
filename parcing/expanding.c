@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expanding.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
+/*   Updated: 2023/05/24 13:39:43 by rarraji          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 char *ft_change_var(char *str, t_minishell *mini)
@@ -24,12 +36,13 @@ char *ft_change_var(char *str, t_minishell *mini)
     i = 0;
     while (mini->my_env[i])
     {
-        if (ft_strncmp(mini->my_env[i], s, ft_cnt(s) == 0))
+        if (ft_strncmp(mini->my_env[i], s, ft_cnt(s)) == 0)
         {
             while (mini->my_env[i][j])
             {
                 if (mini->my_env[i][j] == '=')
-                    break;         
+                    break; 
+                j++;            
             }
         }
         if (mini->my_env[i][j] == '=')
@@ -41,7 +54,7 @@ char *ft_change_var(char *str, t_minishell *mini)
     if (mini->my_env[i] != '\0')
     {
         free(str);
-        str = ft_substr(mini->my_env[i], j, ft_strlen(mini->my_env[i]));
+        str = ft_substr(mini->my_env[i], j+1, ft_strlen(mini->my_env[i]));
     }
     return (str);    
 }

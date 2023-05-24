@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/23 17:27:15 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/24 13:11:14 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,39 @@
 #include <readline/history.h>
 #include <fcntl.h>
 
+typedef struct s_cmd_info
+{
+	char	**str;
+	int		cmd_nb;
+	int		pipe_nb;
+	int		append_nb;
+	int		out_red_nb;
+	int		in_red_nb;
+	int		here_doc_nb;
+}	t_cmd_info;
+
+typedef struct s_cmd
+{
+	char	*cmd;
+	int		cmd_nb;
+	char	**args;
+	int		pipe;
+	int		append;
+	int		out_red;
+	int		in_red;
+	t_cmd_info	*general_info;
+}	t_cmd;
+
+typedef struct s_space_checker
+{
+	int	check;
+}	t_space_checker;
+
 typedef struct s_minishell
 {
-	char	*var;
+	char 	**tmp_cmd;
 	char	**cmd;
-
+	int		cmd_nb;
 	//built_in
 	char	*home;
 	char	*variable;
@@ -35,6 +63,7 @@ typedef struct s_minishell
 	char	**my_export;
 	char	**tmp_my_env;
 }	t_minishell;
+
 
 //built_in
 void	built_in_cmd(t_minishell	*mini, char **env);
@@ -70,6 +99,8 @@ int		ft_check_var_exect(char *s,t_minishell *mini, int var);
 //parcing
 void	parcing(t_minishell	*mini, char *s);
 char	*prep(char *str);
+
+void    ft_check_dollar(t_minishell *mini);
 
 
 //error

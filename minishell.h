@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/24 12:27:54 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:36:32 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef struct s_cmd_info
 typedef struct s_cmd
 {
 	char	*cmd;
-	int		cmd_nb;
 	char	**args;
 	int		pipe;
 	int		append;
@@ -61,7 +60,7 @@ typedef struct s_space_checker
 typedef struct s_minishell
 {
 	char	**cmd;
-
+	int		cmd_nb;
 	//built_in
 	char	*home;
 	char	*variable;

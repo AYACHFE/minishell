@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/23 21:48:52 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:37:45 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,30 @@ int	cmd_counter(t_minishell	*mini)
 	return (counter + 1);
 }
 
-void	to_struct_2(t_cmd	*cmd, int	index)
-{
-	int		i;
-	int		j;
-	char	**builtin;
+// void	to_struct_2(t_cmd	*cmd, int	index)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	**builtin;
 
-	builtin = ft_split("echo ls cat pwd wc", 32);
-	i = 0;
-	j = 0;
-	while (cmd->general_info->str[i])
-	{
-		j = 0;
-		while (builtin[j])
-		{
-			if (ft_strncmp(cmd->general_info->str[i], builtin[j], ft_strlen(builtin[j])))
-			{
+// 	builtin = ft_split("echo ls cat pwd wc", 32);
+// 	i = 0;
+// 	j = 0;
+// 	while (cmd->general_info->str[i])
+// 	{
+// 		j = 0;
+// 		while (builtin[j])
+// 		{
+// 			if (ft_strncmp(cmd->general_info->str[i], builtin[j], ft_strlen(builtin[j])))
+// 			{
 				
-				return (j);
-			}
-			j++;	
-		}
-		i++;
-	}
-}
+// 				return (j);
+// 			}
+// 			j++;	
+// 		}
+// 		i++;
+// 	}
+// }
 
 void	to_struct(t_minishell	*mini)
 {
@@ -95,10 +95,10 @@ void	to_struct(t_minishell	*mini)
 	printf("general_info->here_doc_nb == %d\n", general_info->here_doc_nb);
 	printf("general_info->in_red_nb == %d\n", general_info->in_red_nb);
 	printf("general_info->out_red_nb == %d\n", general_info->out_red_nb);
-	int	index;
+	// int	index = 0;
 	
-	while (index < general_info->cmd_nb)
-	{
-		to_struct_2(cmd, index);
-	}
+	// while (index < general_info->cmd_nb)
+	// {
+	// 	to_struct_2(cmd, index);
+	// }
 }

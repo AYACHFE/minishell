@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/23 21:38:13 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/23 21:48:52 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	cmd_counter(t_minishell	*mini)
 	return (counter + 1);
 }
 
-void	to_struct_2(t_cmd	*cmd)
+void	to_struct_2(t_cmd	*cmd, int	index)
 {
 	int		i;
 	int		j;
@@ -47,8 +47,10 @@ void	to_struct_2(t_cmd	*cmd)
 		while (builtin[j])
 		{
 			if (ft_strncmp(cmd->general_info->str[i], builtin[j], ft_strlen(builtin[j])))
-				break ;
-				// return (j);
+			{
+				
+				return (j);
+			}
 			j++;	
 		}
 		i++;
@@ -93,4 +95,10 @@ void	to_struct(t_minishell	*mini)
 	printf("general_info->here_doc_nb == %d\n", general_info->here_doc_nb);
 	printf("general_info->in_red_nb == %d\n", general_info->in_red_nb);
 	printf("general_info->out_red_nb == %d\n", general_info->out_red_nb);
+	int	index;
+	
+	while (index < general_info->cmd_nb)
+	{
+		to_struct_2(cmd, index);
+	}
 }

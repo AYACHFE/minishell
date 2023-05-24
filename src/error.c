@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/23 17:23:49 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/24 11:50:35 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,60 @@ int ft_error_input(char *s)
     return (1);
 }
 
+int ft_error_appends(char *s)
+{
+    int i;
+    
+    i = 0;
+    if (s[0] == '>' && s[1] == '>' && s[2] == '\0')
+    {
+        printf("syntax error near unexpected token `>>'\n");
+        return (0);
+    }
+    while (s[i])
+    {
+        if ((s[i] == '>' && s[i + 1] == '>' ) && (s[i + 2] == '\0' || (s[i + 2] == '|' || (s[i + 1] == '>' && s[i + 2] == '<'))))
+        {
+            printf("syntax error near unexpected token `>>'\n");
+            return (0);
+        }
+        if (s[i] == '>' && s[i + 1] == '>' && s[i + 2] == '\0')
+        {
+            printf("syntax error near unexpected token `>>'\n");
+            return (0); 
+        }
+        i++;           
+    }
+    return (1);
+}
+
+int ft_error_here_document(char *s)
+{
+    int i;
+    
+    i = 0;
+    if (s[0] == '<' && s[1] == '<' && s[2] == '\0')
+    {
+        printf("syntax error near unexpected token `<<'\n");
+        return (0);
+    }
+    while (s[i])
+    {
+        if ((s[i] == '<' && s[i + 1] == '<') && (s[i + 2] == '\0' || (s[i + 2] == '|' || (s[i + 1] == '>' && s[i + 2] == '<'))))
+        {
+            printf("syntax error near unexpected token `<<'\n");
+            return (0);
+        }
+        if (s[i] == '<' && s[i + 1] == '<' && s[i + 2] == '\0')
+        {
+            printf("syntax error near unexpected token `<<'\n");
+            return (0); 
+        }
+        i++;           
+    }
+    return (1);
+}
+
 
 void ft_error(char *str)
 {
@@ -135,4 +189,6 @@ void ft_error(char *str)
     ft_error_pipe(str);
     ft_error_output(str);
     ft_error_input(str);
+    ft_error_appends(str);
+    ft_error_here_document(str);
 }

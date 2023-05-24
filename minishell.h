@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/23 21:40:44 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:27:54 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_cmd_info
 typedef struct s_cmd
 {
 	char	*cmd;
+	int		cmd_nb;
 	char	**args;
 	int		pipe;
 	int		append;

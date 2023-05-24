@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/24 13:39:43 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/24 21:50:38 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void    ft_check_dollar(t_minishell *mini)
 
     i = 0;
     j = 0;
-    printf("--->%d\n", mini->cmd_nb);
+    // printf("--->%d\n", mini->cmd_nb);
     mini->tmp_cmd = malloc(sizeof(char *) * (mini->cmd_nb + 1));
     while (mini->cmd[i])
     {
@@ -84,9 +84,9 @@ void    ft_check_dollar(t_minishell *mini)
     }
     mini->tmp_cmd[j] = NULL; 
     i = 0;
-    while (mini->tmp_cmd[i])
-	{
-		printf("*%s*\n", mini->tmp_cmd[i]);
-		i++;
-	}     
+    // while (mini->tmp_cmd[i])
+	// {
+	// 	printf("*%s*\n", mini->tmp_cmd[i]);
+	// 	i++;
+	// }     
 }

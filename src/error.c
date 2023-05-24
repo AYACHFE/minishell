@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/24 11:50:35 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/24 21:55:27 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int ft_error_output(char *s)
     i = 0;
     if (s[0] == '>' && s[1] == '\0')
     {
-        printf("syntax error near unexpected token `>'\n");
+        printf("syntax error near unexpected token `newline'\n");
         return (0);
     }
     while (s[i])
@@ -108,7 +108,7 @@ int ft_error_input(char *s)
     i = 0;
     if (s[0] == '<' && s[1] == '\0')
     {
-        printf("syntax error near unexpected token `<'\n");
+        printf("syntax error near unexpected token `newline'\n");
         return (0);
     }
     while (s[i])
@@ -135,7 +135,7 @@ int ft_error_appends(char *s)
     i = 0;
     if (s[0] == '>' && s[1] == '>' && s[2] == '\0')
     {
-        printf("syntax error near unexpected token `>>'\n");
+        printf("syntax error near unexpected token `newline'\n");
         return (0);
     }
     while (s[i])
@@ -147,7 +147,7 @@ int ft_error_appends(char *s)
         }
         if (s[i] == '>' && s[i + 1] == '>' && s[i + 2] == '\0')
         {
-            printf("syntax error near unexpected token `>>'\n");
+            printf("syntax error near unexpected token `newline'\n");
             return (0); 
         }
         i++;           
@@ -162,7 +162,7 @@ int ft_error_here_document(char *s)
     i = 0;
     if (s[0] == '<' && s[1] == '<' && s[2] == '\0')
     {
-        printf("syntax error near unexpected token `<<'\n");
+        printf("syntax error near unexpected token `newline'\n");
         return (0);
     }
     while (s[i])
@@ -174,7 +174,7 @@ int ft_error_here_document(char *s)
         }
         if (s[i] == '<' && s[i + 1] == '<' && s[i + 2] == '\0')
         {
-            printf("syntax error near unexpected token `<<'\n");
+            printf("syntax error near unexpected token `newline'\n");
             return (0); 
         }
         i++;           

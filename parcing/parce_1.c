@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/24 13:20:52 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/24 21:51:05 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void	parcing(t_minishell	*mini, char *s)
 	ret = ft_split(var, 11);
 	mini->cmd = ret;
 	mini->cmd_nb = count(var, 11);
-	while (i < mini->cmd_nb)
-	{
-		printf(":%s:\n", mini->cmd[i]);
-		i++;
-	}
+	// while (i < mini->cmd_nb)
+	// {
+	// 	printf(":%s:\n", mini->cmd[i]);
+	// 	i++;
+	// }
 	// printf("count == %d\n", mini->cmd_nb);
 	// to_struct(mini);
 }

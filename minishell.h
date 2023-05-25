@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/24 12:36:32 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/25 16:54:20 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,24 @@ typedef struct s_cmd
 	char	*cmd;
 	char	**args;
 	int		pipe;
+
+	//file descriptors
+	int	fd_in;
+	int	fd_out;
+	
+	//
 	int		append;
+	char	*append_file;
+	//
+	int		here_doc;
+	char	*here_doc_file;
+	//
 	int		out_red;
+	char	*out_red_file;
+	//
 	int		in_red;
+	char	*in_red_file;
+	
 	t_cmd_info	*general_info;
 }	t_cmd;
 
@@ -106,5 +121,6 @@ char	*prep(char *str);
 
 //parce_2
 void	to_struct(t_minishell	*mini);
+void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info);
 
 #endif

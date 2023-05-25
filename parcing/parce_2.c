@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/25 17:16:49 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/25 21:38:58 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 		l = 0;
 
 			cmd[i].args = malloc(sizeof(char *) * 10);
-			// if (general_info->str[j + 1] == NULL)
-			// 	break ;
 			cmd[i].fd_in = 0;
 			cmd[i].fd_out = 1;
 			while (general_info->str[j] && (general_info->str[j][0] != '|'))
@@ -96,6 +94,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 							perror(general_info->str[j]);
 							return ;
 						}
+						cmd[i].fd_in = open(general_info->str[j], O_RDONLY);
 					}
 				}
 				//this part is for normal cmd with or whithout a pipe
@@ -105,8 +104,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 					{
 						check = 1;
 						cmd[i].cmd = ft_strjoin(general_info->str[j], " ");
-						cmd[i].cmd = ft_strjoin(cmd[i].cmd, general_info->str[j + 1]);
-						j++;
+						cmd[i].cmd = ft_strjoin(cmd[i].cmd, general_info->str[++j]);
 					}
 					else
 					{
@@ -149,6 +147,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 		|| cmd[i].in_red == 1)
 		{
 			printf("---____--> cmd[%d].fd_out ---> %d\n", i, cmd[i].fd_out);
+			printf("---____--> cmd[%d].fd_in ---> %d\n", i, cmd[i].fd_in);
 			printf("---____--> %d, append_file-> %s\n", cmd[i].append, cmd[i].append_file);
 			printf("---____--> %d, here_doc_file-> %s\n", cmd[i].here_doc, cmd[i].here_doc_file);
 			printf("---____--> %d, out_red_file-> %s\n", cmd[i].out_red, cmd[i].out_red_file);
@@ -200,9 +199,4 @@ void	to_struct(t_minishell	*mini)
 	// int	index = 0;
 	
 	to_struct_2(cmd, general_info);
-	// to_struct_3();
-	// while (index < general_info->cmd_nb)
-	// {
-	// 	to_struct_2(cmd, index);
-	// }
 }

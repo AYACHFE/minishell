@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/24 21:57:35 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/25 11:45:09 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,10 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 		return ;
 	mini->str = ft_split(str, ' ');
 	mini->count_str = count(str, ' ');
-	ft_error(str);
+	if (ft_error(str) == 0)
+		return;
 	parcing(mini, str);
-	// built_in_cmd_2(mini, env);
+	built_in_cmd_2(mini, env);
 	ft_check_dollar(mini);
 	// ft_double_single_quote(str);
 

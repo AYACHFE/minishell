@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/24 21:55:27 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/26 12:22:23 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,12 +183,19 @@ int ft_error_here_document(char *s)
 }
 
 
-void ft_error(char *str)
+int ft_error(char *str)
 {
-    ft_double_single_quote(str);
-    ft_error_pipe(str);
-    ft_error_output(str);
-    ft_error_input(str);
-    ft_error_appends(str);
-    ft_error_here_document(str);
+    if (ft_error_pipe(str) == 0)
+        return (0);
+    if (ft_double_single_quote(str) == 0)
+        return (0);
+    if (ft_error_appends(str) == 0)
+        return (0);
+    if (ft_error_here_document(str) == 0)
+        return (0);
+    if (ft_error_output(str) == 0)
+        return (0);
+    if (ft_error_input(str) == 0)
+        return (0);
+    return (1);
 }

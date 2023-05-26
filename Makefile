@@ -6,12 +6,12 @@
 #    By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/05/26 12:15:27 by aachfenn         ###   ########.fr        #
+#    Updated: 2023/05/26 16:12:20 by aachfenn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		= src/minishell_1.c src/built_in.c src/command.c src/unset.c src/ft_export.c \
-			parcing/parce_1.c parcing/parce_2.c
+			parcing/parce_1.c parcing/parce_2.c errors/errors_1.c parcing/expantion.c
 
 CC		= cc
 

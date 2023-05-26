@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/26 12:59:42 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/26 16:18:02 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	parcing(t_minishell	*mini, char *s)
 	// 	printf(":%s:\n", mini->cmd[i]);
 	// 	i++;
 	// }
+	// puts("-----___>");
 	to_struct(mini);
 }
 

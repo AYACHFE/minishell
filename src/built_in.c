@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/24 13:25:42 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/26 16:26:31 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	built_in_cmd_2(t_minishell	*mini, char **env)
 		ft_unset(mini);
 	else if (ft_strncmp(mini->str[0], "export", ft_strlen(mini->str[0])) == 0)
 		ft_export(mini);
-	else
-		execv_function(mini, env);
+	// else
+	// 	execv_function(mini, env);
 }
 
 void	built_in_cmd(t_minishell	*mini, char **env)
@@ -78,16 +78,17 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	(void)mini;
 	(void)env;
 	str = readline("MINISHELL-3.2$ ");
-	// str = ft_strtrim(str, " ");
 	mini->count_str = 0;
 	if (ft_strlen(str) == 0)
 		return ;
 	mini->str = ft_split(str, ' ');
 	mini->count_str = count(str, ' ');
-	// built_in_cmd_2(mini, env);
-	
+	if (ft_error(str) == 0)
+		return ;
 	parcing(mini, str);
-	
+	// built_in_cmd_2(mini, env);
+	// ft_check_dollar(mini);
+
 	add_history(str);
 	wait(&status);
 }	

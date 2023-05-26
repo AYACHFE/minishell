@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/26 13:04:03 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/26 16:29:13 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 		check = 0;
 		k = 0;
 		l = 0;
-
 			cmd[i].args = malloc(sizeof(char *) * 10);
 			cmd[i].fd_in = 0;
 			cmd[i].fd_out = 1;
@@ -126,7 +125,6 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 			printf("--->cmd[%d].args[%d]--> %s\n",i, l, cmd[i].args[l]);
 			l++;
 		}
-		printf("-----\n");
 		if (cmd[i].append == 1 || cmd[i].here_doc == 1 || cmd[i].out_red == 1 \
 		|| cmd[i].in_red == 1)
 		{
@@ -176,11 +174,11 @@ void	to_struct(t_minishell	*mini)
 			general_info->in_red_nb++;
 		i++;
 	}
-	printf("general_info->pipe_nb == %d\n", general_info->pipe_nb);
-	printf("general_info->append_nb == %d\n", general_info->append_nb);
-	printf("general_info->here_doc_nb == %d\n", general_info->here_doc_nb);
-	printf("general_info->in_red_nb == %d\n", general_info->in_red_nb);
-	printf("general_info->out_red_nb == %d\n", general_info->out_red_nb);
+	// printf("general_info->pipe_nb == %d\n", general_info->pipe_nb);
+	// printf("general_info->append_nb == %d\n", general_info->append_nb);
+	// printf("general_info->here_doc_nb == %d\n", general_info->here_doc_nb);
+	// printf("general_info->in_red_nb == %d\n", general_info->in_red_nb);
+	// printf("general_info->out_red_nb == %d\n", general_info->out_red_nb);
 
 	to_struct_2(cmd, general_info);
 }

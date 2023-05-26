@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/25 16:54:20 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/26 16:08:05 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <fcntl.h>
-
-typedef enum s_at
-{
-	TYPE_CMD,
-	TYPE_PIPE,
-	
-}	t_at;
-
-t_at  type;
 
 typedef struct s_cmd_info
 {
@@ -67,13 +58,9 @@ typedef struct s_cmd
 	t_cmd_info	*general_info;
 }	t_cmd;
 
-typedef struct s_space_checker
-{
-	int	check;
-}	t_space_checker;
-
 typedef struct s_minishell
 {
+	char	**tmp_cmd;
 	char	**cmd;
 	int		cmd_nb;
 	//built_in
@@ -100,7 +87,6 @@ int		ft_cnt(char *str);
 char	**ft_env_1(char **env, t_minishell *mini);
 void	ft_tmp_my_env(t_minishell *mini);
 void	ft_add_declare(t_minishell *mini);
-void	ft_add_declare_in_pos(t_minishell *mini);
 
 //ft_unset
 void	ft_unset(t_minishell *mini);
@@ -114,6 +100,9 @@ void	ft_export(t_minishell *mini);
 void	ft_rem_var(char **str, t_minishell *mini);
 void	ft_rem_var_export(char **str, t_minishell *mini);
 void	print_export(t_minishell *mini);
+int		ft_double_single_quote(char *str);
+int		ft_check_var_exect(char *s,t_minishell *mini, int var);
+
 
 //parcing
 void	parcing(t_minishell	*mini, char *s);
@@ -122,5 +111,13 @@ char	*prep(char *str);
 //parce_2
 void	to_struct(t_minishell	*mini);
 void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info);
+
+//error
+int ft_double_single_quote(char *str);
+int ft_error_pipe(char *s);
+int ft_error(char *str);
+
+//expantion
+void	ft_check_dollar(t_minishell *mini);
 
 #endif

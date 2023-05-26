@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/25 21:57:01 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/26 13:04:03 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 					}
 					else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '<' && general_info->str[j][1] == '<'))
 					{
+						//here_doc
 						cmd[i].here_doc = 1;
 						cmd[i].here_doc_file = general_info->str[++j];
 					}
@@ -98,25 +99,8 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 					}
 				}
 				//this part is for normal cmd with or whithout a pipe
-				else if (k == 0)
-				{
-					if (general_info->str[j + 1] != NULL && general_info->str[j + 1][0] == '-')
-					{
-						check = 1;
-						cmd[i].cmd = ft_strjoin(general_info->str[j], " ");
-						cmd[i].cmd = ft_strjoin(cmd[i].cmd, general_info->str[++j]);
-					}
-					else
-					{
-						puts("-----___>");
-						cmd[i].cmd = general_info->str[j];
-					}
-					
-				}
 				else if (general_info->str[j])
 				{
-					if (check == 1 && general_info->str[j + 1] != NULL)
-						j++;
 					cmd[i].args[l] = ft_strdup(general_info->str[j]);
 					l++;
 				}
@@ -137,12 +121,12 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 	while (i < general_info->cmd_nb)
 	{
 		l = 0;
-		printf("CMD[%d].cmd--> %s\n", i, cmd[i].cmd);
 		while (cmd[i].args[l] != NULL)
 		{
 			printf("--->cmd[%d].args[%d]--> %s\n",i, l, cmd[i].args[l]);
 			l++;
 		}
+		printf("-----\n");
 		if (cmd[i].append == 1 || cmd[i].here_doc == 1 || cmd[i].out_red == 1 \
 		|| cmd[i].in_red == 1)
 		{
@@ -153,6 +137,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 			printf("---____--> %d, out_red_file-> %s\n", cmd[i].out_red, cmd[i].out_red_file);
 			printf("---____--> %d, in_red_file-> %s\n", cmd[i].in_red, cmd[i].in_red_file);
 		}
+		printf("-----\n");
 		i++;
 	}
 }
@@ -191,12 +176,11 @@ void	to_struct(t_minishell	*mini)
 			general_info->in_red_nb++;
 		i++;
 	}
-	// printf("general_info->pipe_nb == %d\n", general_info->pipe_nb);
-	// printf("general_info->append_nb == %d\n", general_info->append_nb);
-	// printf("general_info->here_doc_nb == %d\n", general_info->here_doc_nb);
-	// printf("general_info->in_red_nb == %d\n", general_info->in_red_nb);
-	// printf("general_info->out_red_nb == %d\n", general_info->out_red_nb);
-	// int	index = 0;
-	
+	printf("general_info->pipe_nb == %d\n", general_info->pipe_nb);
+	printf("general_info->append_nb == %d\n", general_info->append_nb);
+	printf("general_info->here_doc_nb == %d\n", general_info->here_doc_nb);
+	printf("general_info->in_red_nb == %d\n", general_info->in_red_nb);
+	printf("general_info->out_red_nb == %d\n", general_info->out_red_nb);
+
 	to_struct_2(cmd, general_info);
 }

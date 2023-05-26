@@ -6,9 +6,11 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/24 21:51:05 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/26 15:49:39 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../minishell.h"
 
 #include "../minishell.h"
 
@@ -28,14 +30,14 @@ void	parcing(t_minishell	*mini, char *s)
 	ret = ft_split(var, 11);
 	mini->cmd = ret;
 	mini->cmd_nb = count(var, 11);
-	// while (i < mini->cmd_nb)
+	// while (i < count(var, 11))
 	// {
 	// 	printf(":%s:\n", mini->cmd[i]);
 	// 	i++;
 	// }
-	// printf("count == %d\n", mini->cmd_nb);
-	// to_struct(mini);
+	to_struct(mini);
 }
+
 
 //puts a marker at the end of every string 
 char	*prep(char	*str)

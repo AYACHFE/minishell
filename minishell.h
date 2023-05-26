@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/25 12:13:53 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/26 15:51:31 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <fcntl.h>
+
+typedef enum s_at
+{
+	TYPE_CMD,
+	TYPE_PIPE,
+	
+}	t_at;
+
+t_at  type;
 
 typedef struct s_cmd_info
 {
@@ -35,12 +44,26 @@ typedef struct s_cmd_info
 typedef struct s_cmd
 {
 	char	*cmd;
-	int		cmd_nb;
 	char	**args;
 	int		pipe;
+
+	//file descriptors
+	int	fd_in;
+	int	fd_out;
+	
+	//
 	int		append;
+	char	*append_file;
+	//
+	int		here_doc;
+	char	*here_doc_file;
+	//
 	int		out_red;
+	char	*out_red_file;
+	//
 	int		in_red;
+	char	*in_red_file;
+	
 	t_cmd_info	*general_info;
 }	t_cmd;
 
@@ -100,6 +123,10 @@ int		ft_check_var_exect(char *s,t_minishell *mini, int var);
 void	parcing(t_minishell	*mini, char *s);
 char	*prep(char *str);
 void	ft_check_dollar(t_minishell *mini);
+
+//parce_2
+void	to_struct(t_minishell	*mini);
+void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info);
 
 
 //error

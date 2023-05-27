@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/27 13:42:03 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:46:10 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,22 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 
 void	built_in_cmd(t_minishell	*mini, char **env)
 {
-	int 	status;
 	char	*str;
 	t_cmd	*cmd;
+	
+	char	*s;
+	char	*var;
+	char	**ret;
 
 	(void)mini;
 	(void)env;
 	str = readline("MINISHELL-3.2$ ");
 	//
-	char	*s;
-	char	*var;
-	char	**ret;
 	s = ft_strdup(str);
 	var = prep(s);
 	ret = ft_split(var, 11);
 	mini->cmd = ret;
+	mini->cmd_nb = count(var, 11);
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
 	//
 	
@@ -101,7 +102,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	ft_check_dollar(mini);
 
 	add_history(str);
-	wait(&status);
+	wait(0);
 }	
 
 int	ft_cd(t_minishell	*mini)

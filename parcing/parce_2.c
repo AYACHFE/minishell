@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/27 13:08:52 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:45:34 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,16 +151,13 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 {
 	int	i;
-	// t_cmd	*cmd;
 	t_cmd_info	*general_info;
 
 	i = 0;
 
 	//init the struct 
-	// cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
 	general_info = malloc(sizeof(t_cmd_info));
 	general_info->cmd_nb = cmd_counter(mini);
-	printf("cmd_counter == %d\n", general_info->cmd_nb);
 	general_info->pipe_nb = 0;
 	general_info->append_nb = 0;
 	general_info->here_doc_nb = 0;
@@ -182,6 +179,9 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 			general_info->in_red_nb++;
 		i++;
 	}
+	
+	printf("cmd_counter == %d\n", general_info->cmd_nb);
+
 	// printf("general_info->pipe_nb == %d\n", general_info->pipe_nb);
 	// printf("general_info->append_nb == %d\n", general_info->append_nb);
 	// printf("general_info->here_doc_nb == %d\n", general_info->here_doc_nb);

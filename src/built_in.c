@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/27 13:46:10 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/27 15:01:28 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 	(void)mini;
 	int		i;
 	int		j;
-	char	*path;
+	int		path_nb;
 	char	**var = NULL;
+	char	*val;
 
 
 	i = 0;
 	j = 0;
-	path = ft_strjoin("/bin/", cmd[0].args[0]);
 	while (env[i] != NULL)
 	{
 		if (ft_strncmp(env[i], "PATH", 4) == 0)
@@ -33,13 +33,16 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 		}
 		i++;
 	}
-	while (j < i)
+	path_nb = count(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
+	while (j < path_nb)
 	{
-		if (access(var[j], F_OK) == 0)
+		val = ft_strjoin(var[j], "/");
+		val = ft_strjoin(val, cmd[0].args[0]);
+		if (access(val, F_OK) == 0)
 		{
 			if (fork() == 0)
 			{
-				execve(path, cmd[0].args, env);
+				execve(val, cmd[0].args, env);
 				exit(0);
 			}
 		}
@@ -100,6 +103,8 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	parcing(mini, cmd, str);
 	built_in_cmd_2(mini, cmd, env);
 	ft_check_dollar(mini);
+
+	// exec_1(cmd);
 
 	add_history(str);
 	wait(0);

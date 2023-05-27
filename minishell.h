@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/27 13:00:45 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/27 19:45:50 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,8 @@ int		ft_error(char *str);
 
 //expantion
 void	ft_check_dollar(t_minishell *mini);
+
+//execution
+void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/27 15:01:28 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/27 20:13:56 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,24 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 	while (j < path_nb)
 	{
 		val = ft_strjoin(var[j], "/");
-		val = ft_strjoin(val, cmd[0].args[0]);
+		val = ft_strjoin(val, cmd->args[0]);
 		if (access(val, F_OK) == 0)
 		{
-			if (fork() == 0)
-			{
-				execve(val, cmd[0].args, env);
+			// if (fork() == 0)
+			// {
+				// puts("here\n\n\n");
+				execve(val, cmd->args, env);
+				free(var[j]);
+				free(var);
+				free(val);
 				exit(0);
-			}
+			// }
 		}
+		free(var[j]);
+		free(val);
 		j++;
 	}
-
+	free(var);
 }
 
 void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
@@ -101,13 +107,14 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	if (ft_error(str) == 0)
 		return ;
 	parcing(mini, cmd, str);
-	built_in_cmd_2(mini, cmd, env);
 	ft_check_dollar(mini);
+	// built_in_cmd_2(mini, cmd, env);
 
-	// exec_1(cmd);
+	exec_1(mini, cmd, env);
 
 	add_history(str);
 	wait(0);
+	free(str);
 }	
 
 int	ft_cd(t_minishell	*mini)

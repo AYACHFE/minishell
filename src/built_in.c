@@ -6,52 +6,51 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/26 16:26:31 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:42:03 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execv_function(t_minishell	*mini, char **env)
+void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
-	char	*args[10];
-	// char	*args_1[10];
+	(void)mini;
+	int		i;
+	int		j;
+	char	*path;
+	char	**var = NULL;
 
-	// args_1[0] = ft_strdup("cat");
-	// args_1[1] = NULL;
-	args[0] = ft_strdup("ls");
-	args[1] = NULL;
-	if (ft_strncmp(mini->str[0], "ls", ft_strlen(mini->str[0])) == 0)
+
+	i = 0;
+	j = 0;
+	path = ft_strjoin("/bin/", cmd[0].args[0]);
+	while (env[i] != NULL)
 	{
-		if (fork() == 0)
-			execve("/bin/ls", args, env);
-	}
-	else if (ft_strncmp(mini->str[0], "cat", ft_strlen(mini->str[0])) == 0)
-	{
-		if (fork() == 0)
+		if (ft_strncmp(env[i], "PATH", 4) == 0)
 		{
-			// Set file descriptors
-			int fd_in = open("input.txt", O_RDONLY);
-			int fd_out = open("output.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			int fd_err = open("error.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			dup2(fd_in, 0);   // Set standard input
-			dup2(fd_out, 1);  // Set standard output
-			dup2(fd_err, 2);  // Set standard error
-			close(fd_in);
-			close(fd_out);
-			close(fd_err);
-			// Execute "cat" command
-			char* args_2[] = { "/bin/cat", "file.txt", NULL };
-			execve("/bin/cat", args_2, env);
+			var = ft_split(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
+			break ;
 		}
+		i++;
 	}
-	else
-		perror(mini->str[0]);
+	while (j < i)
+	{
+		if (access(var[j], F_OK) == 0)
+		{
+			if (fork() == 0)
+			{
+				execve(path, cmd[0].args, env);
+				exit(0);
+			}
+		}
+		j++;
+	}
+
 }
 
-void	built_in_cmd_2(t_minishell	*mini, char **env)
+void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
-	
+	(void)cmd;
 	if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
 		exit(42);
 	else if (ft_strncmp(mini->str[0], "echo", ft_strlen(mini->str[0])) == 0)
@@ -66,18 +65,30 @@ void	built_in_cmd_2(t_minishell	*mini, char **env)
 		ft_unset(mini);
 	else if (ft_strncmp(mini->str[0], "export", ft_strlen(mini->str[0])) == 0)
 		ft_export(mini);
-	// else
-	// 	execv_function(mini, env);
+	else
+		execv_function(mini, cmd, env);
 }
 
 void	built_in_cmd(t_minishell	*mini, char **env)
 {
 	int 	status;
 	char	*str;
+	t_cmd	*cmd;
 
 	(void)mini;
 	(void)env;
 	str = readline("MINISHELL-3.2$ ");
+	//
+	char	*s;
+	char	*var;
+	char	**ret;
+	s = ft_strdup(str);
+	var = prep(s);
+	ret = ft_split(var, 11);
+	mini->cmd = ret;
+	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
+	//
+	
 	mini->count_str = 0;
 	if (ft_strlen(str) == 0)
 		return ;
@@ -85,9 +96,9 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	mini->count_str = count(str, ' ');
 	if (ft_error(str) == 0)
 		return ;
-	parcing(mini, str);
-	// built_in_cmd_2(mini, env);
-	// ft_check_dollar(mini);
+	parcing(mini, cmd, str);
+	built_in_cmd_2(mini, cmd, env);
+	ft_check_dollar(mini);
 
 	add_history(str);
 	wait(&status);

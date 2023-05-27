@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/26 16:18:02 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:20:27 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //you should split the readline return with ("" , '', |, <<, >>, <, >)
 
-void	parcing(t_minishell	*mini, char *s)
+void	parcing(t_minishell	*mini, t_cmd	*cmd, char *s)
 {
 	int		i;
 	char	**ret;
@@ -34,7 +34,7 @@ void	parcing(t_minishell	*mini, char *s)
 	// 	i++;
 	// }
 	// puts("-----___>");
-	to_struct(mini);
+	to_struct(mini, cmd);
 }
 
 
@@ -44,7 +44,7 @@ char	*prep(char	*str)
 	int	i;
 	int	j;
 	char	*var;
-	
+
 	var = malloc(sizeof(char) * ft_strlen(str) + 20);
 	i = 0;
 	j = 0;

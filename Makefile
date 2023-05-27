@@ -6,7 +6,7 @@
 #    By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/05/26 16:12:20 by aachfenn         ###   ########.fr        #
+#    Updated: 2023/05/27 12:55:13 by aachfenn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRC		= src/minishell_1.c src/built_in.c src/command.c src/unset.c src/ft_export.
 CC		= cc
 
 CFLAGS	= -Wall -Wextra -Werror \
-	# -g -fsanitize=address
+	#-g -fsanitize=address
 
 OBJ		= ${SRC:.c=.o}
 
@@ -25,7 +25,7 @@ NAME	= minishell
 %.o : %.c
 	${CC} ${CFLAGS} -c $< -o $@
 
-${NAME}	:	${OBJ}
+${NAME}	:	${OBJ} minishell.h Makefile
 		make -C utils/ft_libft
 		${CC} ${CFLAGS} ${OBJ} utils/ft_libft/libft.a -o ${NAME} -lreadline
 

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/27 20:21:56 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/27 20:29:28 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	exec_1(mini, cmd, env);
 
 	add_history(str);
-	wait(0);
+	wait(NULL);
 	free(str);
 }	
 

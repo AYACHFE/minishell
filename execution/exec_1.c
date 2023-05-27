@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/27 20:23:14 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/27 20:30:17 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	int	fd[2];
 	// int	fd_2[2];
 	int	pid;
+	// int	last_read;
 
 	i = 0;
 	(void)cmd;
@@ -43,7 +44,7 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 			// close(0);
 			
 			built_in_cmd_2(mini, &cmd[i], env);
-			exit(0);
+			// exit(0);
 		}
 		i++;
 		pid = fork();
@@ -57,8 +58,9 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 			built_in_cmd_2(mini, &cmd[i], env);
 			// puts("\n\nhere--->\n\n");
 		}
-		// else
-		// 	wait(NULL);
+		close(fd[1]);
+		close(fd[0]);
+			// wait(NULL);
 	// 	i++;
 	// }
 }

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/28 13:13:21 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/28 14:24:28 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 
 	(void)mini;
 	(void)env;
-	str = readline("MINISHELL-3.2$ ");
+	// str = readline("MINISHELL-3.2$ ");
+	str = readline("\033[1;35mMINISHELL-3.2$ \033[0m");
 	//
 	s = ft_strdup(str);
 	var = prep(s);
@@ -47,7 +48,8 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	exec_1(mini, cmd, env);
 
 	add_history(str);
-	// wait(NULL);
+	free(cmd);
+	// free(cmd->args);
 	free(str);
 }	
 
@@ -89,6 +91,7 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 		free(val);
 		j++;
 	}
+	perror(cmd->args[0]);
 	free(var);
 }
 
@@ -100,8 +103,8 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 	else if (ft_strncmp(mini->str[0], "echo", ft_strlen(mini->str[0])) == 0)
 		ft_echo(mini);
 	else if (ft_strncmp(mini->str[0], "cd", ft_strlen(mini->str[0])) == 0)
-		ft_cd(mini);
-	else if (ft_strncmp(mini->str[0], "pwd", ft_strlen(mini->str[0])) == 0)
+		ft_cd(cmd);
+	else if (ft_strncmp(cmd->args[0], "pwd", ft_strlen(mini->str[0])) == 0)
 		ft_pwd();
 	else if (ft_strncmp(mini->str[0], "env", ft_strlen(mini->str[0])) == 0)
 		ft_env(env, mini);
@@ -113,22 +116,39 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 		execv_function(mini, cmd, env);
 }
 
-int	ft_cd(t_minishell	*mini)
+int	ft_cd(t_cmd	*cmd)
 {
 	char *home;
 	
 	home = getenv("HOME");
-	if (!mini->str[1])
+	if (cmd->args[1] == NULL)
 	{
 		chdir(home);
 	}
-	else if (chdir(mini->str[1]) != 0) 
+	else if (chdir(cmd->args[1]) != 0) 
 	{
 		perror("-minishell: cd");
 		return (1);
 	}
 	return (0);
 }
+
+// int	ft_cd(t_minishell	*mini)
+// {
+// 	char *home;
+	
+// 	home = getenv("HOME");
+// 	if (!mini->str[1])
+// 	{
+// 		chdir(home);
+// 	}
+// 	else if (chdir(mini->str[1]) != 0) 
+// 	{
+// 		perror("-minishell: cd");
+// 		return (1);
+// 	}
+// 	return (0);
+// }
 
 void	ft_pwd()
 {

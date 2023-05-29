@@ -6,11 +6,42 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/29 13:12:44 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:36:27 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	*args_counter(t_cmd_info	*general_info)
+{
+	int	*tab;
+	int	i;
+	int	j;
+	int	k;
+
+	i = 0;
+	k = 0;
+	tab = malloc(sizeof(int) * general_info->cmd_nb);
+	while (general_info->str[i])
+	{
+		j = 0;
+		while (general_info->str[i] && general_info->str[i][0] != '|')
+		{
+				printf("c == %c\n",general_info->str[i][0]);
+			if (general_info->str[i][0] == '<' || general_info->str[i][0] == '>')
+			{
+				i += 2;
+			}
+			j++;
+			i++;
+		}
+		tab[k] = j;
+		printf("j == %d, tab{%d} == %d\n", j, k, tab[k]);
+		i++;
+		k++;
+	}
+	return (tab);
+}
 
 int	cmd_counter(t_minishell	*mini)
 {
@@ -35,6 +66,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 	int	k;
 	int	l;
 	int	check;
+	int	eof_counter;
 	
 	l = 0;
 	k = 0;
@@ -42,17 +74,20 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 	i = 0;
 	while (i < general_info->cmd_nb)
 	{
+		eof_counter = 0;
 		check = 0;
 		k = 0;
 		l = 0;
 			cmd[i].args = malloc(sizeof(char *) * 10);
+			// printf("cmd->general_info->here_doc_nb %d\n", cmd->general_info->here_doc_nb);
+			cmd[i].eof = malloc(sizeof(char *) * 10);
 			cmd[i].fd_in = 0;
 			cmd[i].fd_out = 1;
 			//////////
 			cmd[i].append_file = NULL;
 			cmd[i].out_red_file = NULL;
 			cmd[i].out_red_file = NULL;
-			cmd[i].here_doc_file = NULL;
+			// cmd[i].here_doc_file = NULL;
 			//////////
 			cmd[i].append = 0;
 			cmd[i].out_red = 0;
@@ -89,7 +124,9 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 					{
 						//here_doc
 						cmd[i].here_doc = 1;
-						cmd[i].here_doc_file = general_info->str[++j];
+						cmd[i].eof[eof_counter] = ft_strdup(general_info->str[++j]);
+						cmd[i].eof[eof_counter + 1] = NULL;
+						eof_counter++;
 					}
 					else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '<'))
 					{
@@ -98,7 +135,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 						if (access(general_info->str[j], F_OK) != 0)
 						{
 							perror(general_info->str[j]);
-							return ;
+							break ;
 						}
 						cmd[i].fd_in = open(general_info->str[j], O_RDONLY);
 					}
@@ -139,7 +176,12 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 	// 		printf("---____--> cmd[%d].fd_out ---> %d\n", i, cmd[i].fd_out);
 	// 		printf("---____--> cmd[%d].fd_in ---> %d\n", i, cmd[i].fd_in);
 	// 		printf("---____--> %d, append_file-> %s\n", cmd[i].append, cmd[i].append_file);
-	// 		printf("---____--> %d, here_doc_file-> %s\n", cmd[i].here_doc, cmd[i].here_doc_file);
+			// eof_counter = 0;
+			// while (cmd[0].eof[eof_counter] != NULL)
+			// {
+			// 	printf("cmd[0].eof[eof_counter] = %s\n", cmd[0].eof[eof_counter]);
+			// 	eof_counter++;
+			// }
 	// 		printf("---____--> %d, out_red_file-> %s\n", cmd[i].out_red, cmd[i].out_red_file);
 	// 		printf("---____--> %d, in_red_file-> %s\n", cmd[i].in_red, cmd[i].in_red_file);
 	// 	}
@@ -163,7 +205,7 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 	general_info->here_doc_nb = 0;
 	general_info->in_red_nb = 0;
 	general_info->out_red_nb = 0;
-	general_info->str = mini->cmd;
+	general_info->str = mini->tmp_cmd;
 
 	while (mini->cmd[i])
 	{
@@ -180,8 +222,8 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 		i++;
 	}
 	
-	printf("cmd_counter == %d\n", general_info->cmd_nb);
-
+	// args_counter(general_info);
+	// printf("cmd_counter == %d\n", general_info->cmd_nb);
 	// printf("general_info->pipe_nb == %d\n", general_info->pipe_nb);
 	// printf("general_info->append_nb == %d\n", general_info->append_nb);
 	// printf("general_info->here_doc_nb == %d\n", general_info->here_doc_nb);

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/28 14:19:14 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:41:24 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_cmd
 	char	*append_file;
 	//
 	int		here_doc;
-	char	*here_doc_file;
+	char	**eof;
 	//
 	int		out_red;
 	char	*out_red_file;
@@ -77,12 +77,11 @@ typedef struct s_minishell
 void	built_in_cmd(t_minishell	*mini, char **env);
 void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env);
 void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env);
-// int		ft_cd(t_minishell	*mini);
 int		ft_cd(t_cmd	*cmd);
 void	ft_pwd();
 
 //command
-void	ft_echo(t_minishell *mini);
+void	ft_echo(t_cmd	*cmd);
 void	ft_env(char **env, t_minishell *mini);
 int		ft_cnt(char *str);
 char	**ft_env_1(char **env, t_minishell *mini);
@@ -125,5 +124,8 @@ void	ft_check_dollar(t_minishell *mini);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
+
+
+int	*args_counter(t_cmd_info	*general_info);
 
 #endif

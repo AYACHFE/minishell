@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/29 13:22:54 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/29 14:26:45 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,16 @@
 
 void	redirections(t_cmd	*cmd)
 {
+	// char	**str;
+	// int		i;
+	// int		j;
+	
+	// i = 0;
+	// j = 0;
 	// if (cmd->here_doc == 1)
 	// {
-		
+	// 	while (ft_strncmp(str[i], cmd->eof[]))
+	// 	readline("<");
 	// }
 	if (cmd->in_red == 1)
 	{

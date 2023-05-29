@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/28 13:47:17 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:22:52 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 
 void	parcing(t_minishell	*mini, t_cmd	*cmd, char *s)
 {
-	int		i;
-	// char	**ret;
-	// char	*var;
-	// char	*str;
-
-	i = 0;
 	(void)mini;
 	(void)s;
 	// while (i < count(var, 11))

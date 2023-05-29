@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/29 12:54:39 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:43:30 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,31 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	str = readline("\033[1;35mMINISHELL-3.2$ \033[0m");
 	add_history(str);
 	//
+	if (ft_error(str) == 0)
+		return ;
 	s = ft_strdup(str);
 	var = prep(s);
 	ret = ft_split(var, 11);
+	//
 	mini->cmd = ret;
 	mini->cmd_nb = count(var, 11);
+	//
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
 	//
 	
 	mini->count_str = 0;
 	if (ft_strlen(str) == 0)
 		return ;
+	ft_check_dollar(mini);
 	mini->str = ft_split(str, ' ');
 	mini->count_str = count(str, ' ');
-	if (ft_error(str) == 0)
-		return ;
-	ft_check_dollar(mini);
 	parcing(mini, cmd, str);
-
 	exec_1(mini, cmd, env);
 
 	free(cmd);
 	// free(cmd->args);
 	free(str);
 }	
-
 
 void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
@@ -91,7 +91,7 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 		free(val);
 		j++;
 	}
-	perror(cmd->args[0]);
+	printf("minishell: %s: command not found\n", cmd->args[0]);
 	free(var);
 }
 
@@ -100,9 +100,9 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 	(void)cmd;
 	if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
 		exit(42);
-	else if (ft_strncmp(mini->str[0], "echo", ft_strlen(mini->str[0])) == 0)
-		ft_echo(mini);
-	else if (ft_strncmp(mini->str[0], "cd", ft_strlen(mini->str[0])) == 0)
+	else if (ft_strncmp(cmd->args[0], "echo", ft_strlen(cmd->args[0])) == 0)
+		ft_echo(cmd);
+	else if (ft_strncmp(cmd->args[0], "cd", ft_strlen(cmd->args[0])) == 0)
 		ft_cd(cmd);
 	else if (ft_strncmp(cmd->args[0], "pwd", ft_strlen(mini->str[0])) == 0)
 		ft_pwd();
@@ -132,23 +132,6 @@ int	ft_cd(t_cmd	*cmd)
 	}
 	return (0);
 }
-
-// int	ft_cd(t_minishell	*mini)
-// {
-// 	char *home;
-	
-// 	home = getenv("HOME");
-// 	if (!mini->str[1])
-// 	{
-// 		chdir(home);
-// 	}
-// 	else if (chdir(mini->str[1]) != 0) 
-// 	{
-// 		perror("-minishell: cd");
-// 		return (1);
-// 	}
-// 	return (0);
-// }
 
 void	ft_pwd()
 {

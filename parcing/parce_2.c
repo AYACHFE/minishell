@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/27 13:45:34 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/29 13:12:44 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 					{
 						cmd[i].append = 1;
 						cmd[i].append_file = general_info->str[++j];
-						cmd[i].fd_out = (open(general_info->str[j], O_RDWR | O_CREAT, 0660));
+						cmd[i].fd_out = (open(general_info->str[j], O_RDWR | O_CREAT | O_APPEND, 0660));
 						if (cmd[i].fd_out == -1)
 						{
 							perror("open");

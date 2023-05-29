@@ -6,34 +6,35 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/24 21:41:59 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/29 20:23:29 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ft_echo(t_minishell *mini)
+void ft_echo(t_cmd	*cmd)
 {
 	int i;
 	int	l;
+	char *home;
 
 	i = 2;
 	l = 0;
-	mini->home = getenv("HOME");
-	if (mini->str[1] == NULL)
+	home = getenv("HOME");
+	if (cmd->args[1] == NULL)
 		return;
-	if (mini->str[1][0] == '~' && ft_strlen(mini->str[1]) == 1)
-		printf("%s\n", mini->home);
-	else if (mini->str[1][0] == '$')
+	if (cmd->args[1][0] == '~' && ft_strlen(cmd->args[1]) == 1)
+		printf("%s\n", home);
+	// else if (mini->str[1][0] == '$')
+	// {
+	// 	mini->variable = mini->str[1];
+	// }
+	else if (ft_strncmp(cmd->args[1], "-n", ft_strlen("-n")) == 0)
 	{
-		mini->variable = mini->str[1];
-	}
-	else if (ft_strncmp(mini->str[1], "-n", ft_strlen("-n")) == 0)
-	{
-		while(mini->str[i])
+		while(cmd->args[i])
 		{
-			printf("%s", mini->str[i]);
-			if(mini->str[i + 1] != '\0')
+			printf("%s", cmd->args[i]);
+			if(cmd->args[i + 1] != '\0')
 				printf(" ");
 			i++;
 		}
@@ -41,10 +42,10 @@ void ft_echo(t_minishell *mini)
 	else
 	{
 		i = 1;
-	   	while(mini->str[i])
+	   	while(cmd->args[i])
 		{
-			printf("%s", mini->str[i]);
-			if(mini->str[i + 1] != '\0')
+			printf("%s", cmd->args[i]);
+			if(cmd->args[i + 1] != '\0')
 				printf(" ");
 			i++;
 		}

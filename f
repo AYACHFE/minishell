@@ -1,0 +1,16 @@
+Makefile
+error.txt
+execution
+f
+in
+minishell
+minishell.h
+out
+out_2
+out_3
+output.txt
+parcing
+redas
+src
+test.c
+utils

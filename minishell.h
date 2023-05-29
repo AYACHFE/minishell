@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/26 15:51:31 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/29 20:23:08 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,13 @@ typedef struct s_minishell
 
 //built_in
 void	built_in_cmd(t_minishell	*mini, char **env);
-void	built_in_cmd_2(t_minishell	*mini, char **env);
-void	execv_function(t_minishell	*mini, char **env);
-int		ft_cd(t_minishell	*mini);
+void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env);
+void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env);
+int		ft_cd(t_cmd	*cmd);
 void	ft_pwd();
 
 //command
-void	ft_echo(t_minishell *mini);
+void ft_echo(t_cmd	*cmd);
 void	ft_env(char **env, t_minishell *mini);
 int		ft_cnt(char *str);
 char	**ft_env_1(char **env, t_minishell *mini);
@@ -120,18 +120,27 @@ int		ft_double_single_quote(char *str);
 int		ft_check_var_exect(char *s,t_minishell *mini, int var);
 
 //parcing
-void	parcing(t_minishell	*mini, char *s);
+void	parcing(t_minishell	*mini,t_cmd	*cmd, char *s);
 char	*prep(char *str);
 void	ft_check_dollar(t_minishell *mini);
 
+
 //parce_2
-void	to_struct(t_minishell	*mini);
+void	to_struct(t_minishell	*mini, t_cmd	*cmd);
 void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info);
+int		cmd_counter(t_minishell	*mini);
+
 
 
 //error
 int ft_double_single_quote(char *str);
 int ft_error_pipe(char *s);
 int ft_error(char *str);
+
+void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
+
+
+
+void ft_change(t_minishell *mini, char *str);
 
 #endif

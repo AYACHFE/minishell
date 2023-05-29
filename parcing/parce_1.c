@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/26 15:49:39 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/29 20:04:07 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,11 @@
 
 //you should split the readline return with ("" , '', |, <<, >>, <, >)
 
-void	parcing(t_minishell	*mini, char *s)
+void	parcing(t_minishell	*mini, t_cmd	*cmd, char *s)
 {
-	int		i;
-	char	**ret;
-	char	*var;
-	char	*str;
-
-	i = 0;
 	(void)mini;
-	str = ft_strdup(s);
-	var = prep(str);
-	ret = ft_split(var, 11);
-	mini->cmd = ret;
-	mini->cmd_nb = count(var, 11);
-	// while (i < count(var, 11))
-	// {
-	// 	printf(":%s:\n", mini->cmd[i]);
-	// 	i++;
-	// }
-	to_struct(mini);
+	(void)s;
+	to_struct(mini, cmd);
 }
 
 

@@ -6,60 +6,105 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/26 15:43:38 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/29 20:18:31 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execv_function(t_minishell	*mini, char **env)
+// the engine of this program
+void	built_in_cmd(t_minishell	*mini, char **env)
 {
-	char	*args[10];
-	// char	*args_1[10];
+	char	*str;
+	t_cmd	*cmd;
+	
+	char	*s;
+	char	*var;
+	char	**ret;
 
-	// args_1[0] = ft_strdup("cat");
-	// args_1[1] = NULL;
-	args[0] = ft_strdup("ls");
-	args[1] = NULL;
-	if (ft_strncmp(mini->str[0], "ls", ft_strlen(mini->str[0])) == 0)
+	(void)mini;
+	(void)env;
+	// str = readline("MINISHELL-3.2$ ");
+	str = readline("\033[1;35mMINISHELL-3.2$ \033[0m");
+	add_history(str);
+	//
+	if (ft_error(str) == 0)
+		return ;
+	s = ft_strdup(str);
+	var = prep(s);
+	ret = ft_split(var, 11);
+	mini->cmd = ret;
+	mini->cmd_nb = count(var, 11);
+	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
+	//
+	
+	mini->count_str = 0;
+	if (ft_strlen(str) == 0)
+		return ;
+	ft_check_dollar(mini);
+	mini->str = ft_split(str, ' ');
+	mini->count_str = count(str, ' ');
+	parcing(mini, cmd, str);
+	puts("-->");
+	exec_1(mini, cmd, env);
+
+	free(cmd);
+	// free(cmd->args);
+	free(str);
+}	
+
+
+void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
+{
+	(void)mini;
+	int		i;
+	int		j;
+	int		path_nb;
+	char	**var = NULL;
+	char	*val;
+
+
+	i = 0;
+	j = 0;
+	while (env[i] != NULL)
 	{
-		if (fork() == 0)
-			execve("/bin/ls", args, env);
-	}
-	else if (ft_strncmp(mini->str[0], "cat", ft_strlen(mini->str[0])) == 0)
-	{
-		if (fork() == 0)
+		if (ft_strncmp(env[i], "PATH", 4) == 0)
 		{
-			// Set file descriptors
-			int fd_in = open("input.txt", O_RDONLY);
-			int fd_out = open("output.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			int fd_err = open("error.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			dup2(fd_in, 0);   // Set standard input
-			dup2(fd_out, 1);  // Set standard output
-			dup2(fd_err, 2);  // Set standard error
-			close(fd_in);
-			close(fd_out);
-			close(fd_err);
-			// Execute "cat" command
-			char* args_2[] = { "/bin/cat", "file.txt", NULL };
-			execve("/bin/cat", args_2, env);
+			var = ft_split(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
+			break ;
 		}
+		i++;
 	}
-	else
-		printf("minishell : command not found\n");
-	// 	perror(mini->str[0]);
+	path_nb = count(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
+	while (j < path_nb)
+	{
+		val = ft_strjoin(var[j], "/");
+		val = ft_strjoin(val, cmd->args[0]);
+		if (access(val, F_OK) == 0)
+		{
+			free(var[j]);
+			free(var);
+			execve(val, cmd->args, env);
+			exit(0);
+		}
+		free(var[j]);
+		free(val);
+		j++;
+	}
+	perror(cmd->args[0]);
+	free(var);
 }
 
-void	built_in_cmd_2(t_minishell	*mini, char **env)
+void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
-
+	// (void)cmd;
 	if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
 		exit(42);
-	else if (ft_strncmp(mini->str[0], "echo", ft_strlen(mini->str[0])) == 0)
-		ft_echo(mini);
+	else if (ft_strncmp(cmd->args[0], "echo", ft_strlen(cmd->args[0])) == 0)
+		ft_echo(cmd);
 	else if (ft_strncmp(mini->str[0], "cd", ft_strlen(mini->str[0])) == 0)
-		ft_cd(mini);
-	else if (ft_strncmp(mini->str[0], "pwd", ft_strlen(mini->str[0])) == 0)
+		ft_cd(cmd);
+	else if (ft_strncmp(cmd->args[0], "pwd", ft_strlen(mini->str[0])) == 0)
 		ft_pwd();
 	else if (ft_strncmp(mini->str[0], "env", ft_strlen(mini->str[0])) == 0)
 		ft_env(env, mini);
@@ -68,51 +113,43 @@ void	built_in_cmd_2(t_minishell	*mini, char **env)
 	else if (ft_strncmp(mini->str[0], "export", ft_strlen(mini->str[0])) == 0)
 		ft_export(mini);
 	else
-		execv_function(mini, env);
+		execv_function(mini, cmd, env);
 }
 
-void	built_in_cmd(t_minishell	*mini, char **env)
-{
-	int 	status;
-	char	*str;
-
-	(void)mini;
-	(void)env;
-	str = readline("MINISHELL-3.2$ ");
-	str = ft_strtrim(str, " ");
-	mini->count_str = 0;
-	if (ft_strlen(str) == 0)
-		return ;
-	mini->str = ft_split(str, ' ');
-	mini->count_str = count(str, ' ');
-	if (ft_error(str) == 0)
-		return;
-	parcing(mini, str);
-	built_in_cmd_2(mini, env);
-	ft_check_dollar(mini);
-	// ft_double_single_quote(str);
-
-
-	add_history(str);
-	wait(&status);
-}	
-
-int	ft_cd(t_minishell	*mini)
+int	ft_cd(t_cmd	*cmd)
 {
 	char *home;
 	
 	home = getenv("HOME");
-	if (!mini->str[1])
+	if (cmd->args[1] == NULL)
 	{
 		chdir(home);
 	}
-	else if (chdir(mini->str[1]) != 0) 
+	else if (chdir(cmd->args[1]) != 0) 
 	{
 		perror("-minishell: cd");
 		return (1);
 	}
 	return (0);
 }
+
+// int	ft_cd(t_minishell	*mini)
+// {
+// 	char *home;
+	
+// 	home = getenv("HOME");
+// 	if (!mini->str[1])
+// 	{
+// 		chdir(home);
+// 	}
+// 	else if (chdir(mini->str[1]) != 0) 
+// 	{
+// 		perror("-minishell: cd");
+// 		return (1);
+// 	}
+// 	return (0);
+// }
+
 void	ft_pwd()
 {
 	char	str[1024];

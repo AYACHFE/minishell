@@ -6,11 +6,13 @@
 #    By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/05/26 15:52:01 by rarraji          ###   ########.fr        #
+#    Updated: 2023/05/29 19:53:04 by rarraji          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		= src/minishell_1.c src/built_in.c src/command.c src/unset.c src/ft_export.c src/error.c parcing/parce_1.c parcing/parce_2.c parcing/expanding.c
+SRC		= src/minishell_1.c src/built_in.c src/command.c src/unset.c \
+src/ft_export.c src/error.c parcing/parce_1.c parcing/parce_2.c \
+parcing/expanding.c execution/exec_1.c
 
 CC		= cc
 

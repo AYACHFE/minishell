@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/29 14:26:45 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/29 21:55:43 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,29 @@
 void	redirections(t_cmd	*cmd)
 {
 	// char	**str;
-	// int		i;
-	// int		j;
+	char	*read;
+	int		i;
+	int		j;
 	
-	// i = 0;
-	// j = 0;
-	// if (cmd->here_doc == 1)
-	// {
-	// 	while (ft_strncmp(str[i], cmd->eof[]))
-	// 	readline("<");
-	// }
+	i = 0;
+	j = 0;
+	if (cmd->here_doc == 1)
+	{
+		while (1)
+		{
+			read = readline("<");
+			if (ft_strncmp(read, cmd->eof[j], ft_strlen(cmd->eof[j])) == 0)
+			{
+				puts("ps");
+				return ;
+			}
+		}
+		// while (ft_strncmp(read, cmd->eof[j], ft_strlen(cmd->eof[j])))
+		// {
+		// 	j++;
+		// }
+		
+	}
 	if (cmd->in_red == 1)
 	{
 		dup2(cmd->fd_in, 0);
@@ -66,7 +79,6 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 			dup2(fd[1], 1);
 			close(fd[1]);
 			close(fd[0]);
-			//redirections
 			redirections(&cmd[i]);
 			built_in_cmd_2(mini, &cmd[i], env);
 			exit(0);
@@ -83,7 +95,6 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	{
 		close(fd[0]);
 		close(fd[1]);
-		//redirections
 		redirections(&cmd[i]);
 		built_in_cmd_2(mini, &cmd[i], env);
 		exit(0);

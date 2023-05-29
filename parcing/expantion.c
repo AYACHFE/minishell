@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/29 20:39:17 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/29 21:45:06 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,10 +200,10 @@ void    ft_check_dollar(t_minishell *mini)
 		i++;
 	}
 	mini->tmp_cmd[j] = NULL; 
-	i = 0;
+	// i = 0;
 	// while (mini->tmp_cmd[i])
 	// {
 	// 	printf("*%s*\n", mini->tmp_cmd[i]);
 	// 	i++;
-	// }     
+	// }
 }

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/30 22:50:39 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/30 22:52:39 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 						cmd[i].append = 1;
 						cmd[i].append_file = general_info->str[++j];
 						cmd[i].fd_out = (open(general_info->str[j], O_RDWR | O_CREAT | O_APPEND, 0660));
-						general_info->files[fl++] = ft_strjoin("> ", general_info->str[j]);
+						general_info->files[fl++] = ft_strjoin(">>", general_info->str[j]);
 						if (cmd[i].fd_out == -1)
 						{
 							perror("open");
@@ -150,7 +150,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 						//in_redirection
 						cmd[i].in_red = 1;
 						cmd[i].in_red_file = general_info->str[++j];
-						general_info->files[fl++] = ft_strjoin("> ", general_info->str[j]);
+						general_info->files[fl++] = ft_strjoin("< ", general_info->str[j]);
 						if (access(general_info->str[j], F_OK) != 0)
 						{
 							perror(general_info->str[j]);

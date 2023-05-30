@@ -6,12 +6,13 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/29 20:36:27 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/30 16:29:08 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+//counts the nunber of arguments in every cmd so that i can allocate for it
 int	*args_counter(t_cmd_info	*general_info)
 {
 	int	*tab;
@@ -21,25 +22,30 @@ int	*args_counter(t_cmd_info	*general_info)
 
 	i = 0;
 	k = 0;
-	tab = malloc(sizeof(int) * general_info->cmd_nb);
+	tab = malloc(sizeof(int) * general_info->cmd_nb + 1);
 	while (general_info->str[i])
 	{
 		j = 0;
-		while (general_info->str[i] && general_info->str[i][0] != '|')
+		while (general_info->str[i][0] != '|')
 		{
-				printf("c == %c\n",general_info->str[i][0]);
 			if (general_info->str[i][0] == '<' || general_info->str[i][0] == '>')
 			{
-				i += 2;
+				i++;
+				j--;
+			}
+			if (!(general_info->str[i + 1]))
+			{
+				j++;
+				break ;
 			}
 			j++;
 			i++;
 		}
 		tab[k] = j;
-		printf("j == %d, tab{%d} == %d\n", j, k, tab[k]);
 		i++;
 		k++;
 	}
+	tab[k] = '\0';
 	return (tab);
 }
 
@@ -67,20 +73,24 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 	int	l;
 	int	check;
 	int	eof_counter;
+	int	*tab;
 	
 	l = 0;
 	k = 0;
 	j = 0;
 	i = 0;
+	tab = args_counter(general_info);
 	while (i < general_info->cmd_nb)
 	{
 		eof_counter = 0;
 		check = 0;
 		k = 0;
 		l = 0;
-			cmd[i].args = malloc(sizeof(char *) * 10);
-			// printf("cmd->general_info->here_doc_nb %d\n", cmd->general_info->here_doc_nb);
-			cmd[i].eof = malloc(sizeof(char *) * 10);
+			cmd[i].args = malloc(sizeof(char *) * tab[i] + 1);
+			// cmd[i].args = malloc(sizeof(char *) * 10);
+			// printf("tab[%d] --> %d\n", i, tab[i]);
+			// cmd[i].eof = malloc(sizeof(char *) * 10);
+			cmd[i].eof = malloc(sizeof(char *) * general_info->here_doc_nb);
 			cmd[i].fd_in = 0;
 			cmd[i].fd_out = 1;
 			//////////
@@ -125,8 +135,8 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 						//here_doc
 						cmd[i].here_doc = 1;
 						cmd[i].eof[eof_counter] = ft_strdup(general_info->str[++j]);
-						cmd[i].eof[eof_counter + 1] = NULL;
-						eof_counter++;
+						// printf("eof in loop --------------->'%s'\n", cmd[i].eof[eof_counter]);
+						cmd[i].eof[++eof_counter] = NULL;
 					}
 					else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '<'))
 					{
@@ -150,10 +160,10 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 				{
 					break ;
 				}
+				cmd[i].args[l] = NULL;
 				j++;
 				k++;
 			}
-			cmd[i].args[l] = NULL;
 			cmd[i].general_info = general_info;
 			j++;
 			i++;
@@ -164,30 +174,32 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 	// j = 0;
 	// while (i < general_info->cmd_nb)
 	// {
-	// 	l = 0;
-	// 	while (cmd[i].args[l] != NULL)
-	// 	{
-	// 		printf("--->cmd[%d].args[%d]--> %s\n",i, l, cmd[i].args[l]);
-	// 		l++;
-	// 	}
-	// 	if (cmd[i].append == 1 || cmd[i].here_doc == 1 || cmd[i].out_red == 1 \
-	// 	|| cmd[i].in_red == 1)
-	// 	{
-	// 		printf("---____--> cmd[%d].fd_out ---> %d\n", i, cmd[i].fd_out);
-	// 		printf("---____--> cmd[%d].fd_in ---> %d\n", i, cmd[i].fd_in);
-	// 		printf("---____--> %d, append_file-> %s\n", cmd[i].append, cmd[i].append_file);
+		// l = 0;
+		// while (cmd[i].args[l] != NULL)
+		// {
+		// 	printf("--->cmd[%d].args[%d]--> %s\n",i, l, cmd[i].args[l]);
+		// 	l++;
+		// }
+		// if (cmd[i].append == 1 || cmd[i].here_doc == 1 || cmd[i].out_red == 1 \
+		// || cmd[i].in_red == 1)
+		// {
+		// 	printf("---____--> cmd[%d].fd_out ---> %d\n", i, cmd[i].fd_out);
+		// 	printf("---____--> cmd[%d].fd_in ---> %d\n", i, cmd[i].fd_in);
+		// 	printf("---____--> %d, append_file-> %s\n", cmd[i].append, cmd[i].append_file);
+			// //here_doc
 			// eof_counter = 0;
 			// while (cmd[0].eof[eof_counter] != NULL)
 			// {
-			// 	printf("cmd[0].eof[eof_counter] = %s\n", cmd[0].eof[eof_counter]);
+			// 	printf("cmd[%d].eof[%d] = %s\n", i, eof_counter,cmd[i].eof[eof_counter]);
 			// 	eof_counter++;
 			// }
-	// 		printf("---____--> %d, out_red_file-> %s\n", cmd[i].out_red, cmd[i].out_red_file);
-	// 		printf("---____--> %d, in_red_file-> %s\n", cmd[i].in_red, cmd[i].in_red_file);
-	// 	}
-	// 	printf("-----\n");
-	// 	i++;
-	// }
+		// 	printf("---____--> %d, out_red_file-> %s\n", cmd[i].out_red, cmd[i].out_red_file);
+		// 	printf("---____--> %d, here_doc-> %d\n", cmd[i].here_doc, cmd[i].here_doc);
+		// 	printf("---____--> %d, in_red_file-> %s\n", cmd[i].in_red, cmd[i].in_red_file);
+		// }
+		// printf("-----\n");
+// 		i++;
+// 	}
 }
 
 void	to_struct(t_minishell	*mini, t_cmd	*cmd)
@@ -196,7 +208,6 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 	t_cmd_info	*general_info;
 
 	i = 0;
-
 	//init the struct 
 	general_info = malloc(sizeof(t_cmd_info));
 	general_info->cmd_nb = cmd_counter(mini);
@@ -221,8 +232,14 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 			general_info->in_red_nb++;
 		i++;
 	}
-	
-	// args_counter(general_info);
+	// int	*tab;
+	// tab = args_counter(general_info);
+	// i = 0;
+	// while (tab[i])
+	// {
+	// 	printf("tab[%d] == %d\n", i, tab[i]);
+	// 	i++;
+	// }
 	// printf("cmd_counter == %d\n", general_info->cmd_nb);
 	// printf("general_info->pipe_nb == %d\n", general_info->pipe_nb);
 	// printf("general_info->append_nb == %d\n", general_info->append_nb);

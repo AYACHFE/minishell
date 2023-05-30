@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/29 20:41:24 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/30 12:44:46 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ char	*prep(char *str);
 void	to_struct(t_minishell	*mini, t_cmd	*cmd);
 void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info);
 int		cmd_counter(t_minishell	*mini);
+int		*args_counter(t_cmd_info	*general_info);
+
 
 //error
 int		ft_double_single_quote(char *str);
@@ -124,8 +126,5 @@ void	ft_check_dollar(t_minishell *mini);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
-
-
-int	*args_counter(t_cmd_info	*general_info);
 
 #endif

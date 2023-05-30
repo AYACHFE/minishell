@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/30 15:25:48 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/30 22:19:57 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,20 @@ void	here_doc(t_cmd	*cmd)
 	int		fd[2];
 	int		i;
 	int		j;
-	
+	int		rd;
+
 	i = 0;
 	j = 0;
 	while (cmd->eof[j])
 	{
-	if (pipe(fd) == -1)
-		exit(0);
-	// dup2(fd[0], 0);
-
-	// close(fd[1]);
-	// close(fd[0]);
-	// close(cmd->fd_in);
+		if (pipe(fd) == -1)
+			exit(0);
 		// printf("cmd->eof[j] == %s\n", cmd->eof[j]);
 		while (1)
 		{
 			read = readline("> ");
 			if (ft_strncmp(read, cmd->eof[j], ft_strlen(cmd->eof[j])) == 0)
 			{
-				// puts("ps");
 				j++;
 				break ;
 			}
@@ -44,7 +39,7 @@ void	here_doc(t_cmd	*cmd)
 			ft_putchar_fd('\n', fd[1]);
 		}
 		close (fd[1]);
-		int rd = dup(fd[0]);
+		rd = dup(fd[0]);
 		cmd->fd_in = rd;
 		close (fd[0]);
 	}
@@ -59,10 +54,6 @@ void	redirections(t_cmd	*cmd)
 		here_doc(cmd);
 		dup2(cmd->fd_in, 0);
 		close(cmd->fd_in);
-		// exit(1);
-		// close(1);
-		// dup2(new_fd, 0);
-		// close(new_fd);
 	}
 	if (cmd->in_red == 1)
 	{

@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/30 10:07:13 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/30 14:43:04 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,9 @@ void    ft_check_dollar(t_minishell *mini)
     int tmp;
     int single;
     int deuble;
+    int k;
 
+    k = 0;
     i = 0;
     j = 0;
     d = 0;
@@ -205,7 +207,10 @@ void    ft_check_dollar(t_minishell *mini)
             }
             else
             {
-                mini->tmp_cmd[j] = ft_substr(mini->cmd[i], 1,  ft_strlenn(mini->cmd[i]));
+                k = 0;
+                while(mini->cmd[i][k] == '\"')
+                    k++;
+                mini->tmp_cmd[j] = ft_substr(mini->cmd[i], k,  ft_strlenn(mini->cmd[i]));
                 j++;    
             }
                 

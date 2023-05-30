@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/29 20:23:08 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/30 10:04:12 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,5 +142,6 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
 
 
 void ft_change(t_minishell *mini, char *str);
+int ft_strlennn(char *str);
 
 #endif

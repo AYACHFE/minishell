@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/29 18:05:34 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/30 10:07:13 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,11 +163,13 @@ void    ft_check_dollar(t_minishell *mini)
     int d;
     int tmp;
     int single;
+    int deuble;
 
     i = 0;
     j = 0;
     d = 0;
     tmp = 0;
+    deuble = 0;
     mini->tmp_cmd = malloc(sizeof(char *) * (mini->cmd_nb + 1));
     while (mini->cmd[i])
     {
@@ -179,7 +181,10 @@ void    ft_check_dollar(t_minishell *mini)
             single = 1;
         }
         if (mini->cmd[i][d] == '\"' && single != 1)
+        {
+            deuble =1;
             d++;
+        }
         while(mini->cmd[i][d] && single != 1)
         {
             if (mini->cmd[i][d] == '$')
@@ -193,8 +198,17 @@ void    ft_check_dollar(t_minishell *mini)
         }
         else
         {
-            mini->tmp_cmd[j] = ft_substr(mini->cmd[i], 0, ft_strlen(mini->cmd[i]));
-            j++;
+            if (deuble == 0)
+            {
+                mini->tmp_cmd[j] = ft_substr(mini->cmd[i], 0, ft_strlen(mini->cmd[i]));
+                j++;
+            }
+            else
+            {
+                mini->tmp_cmd[j] = ft_substr(mini->cmd[i], 1,  ft_strlenn(mini->cmd[i]));
+                j++;    
+            }
+                
         }
         tmp = 0;
         i++;

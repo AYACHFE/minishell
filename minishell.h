@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/30 12:44:46 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/30 22:38:01 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ typedef struct s_cmd_info
 	int		out_red_nb;
 	int		in_red_nb;
 	int		here_doc_nb;
+	char	**files;
+	int		files_nb;
 }	t_cmd_info;
 
 typedef struct s_cmd

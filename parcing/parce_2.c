@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/30 16:29:08 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/30 22:50:39 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,13 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 	int	check;
 	int	eof_counter;
 	int	*tab;
+	int	fl;
 	
 	l = 0;
 	k = 0;
 	j = 0;
 	i = 0;
+	fl = 0;
 	tab = args_counter(general_info);
 	while (i < general_info->cmd_nb)
 	{
@@ -93,6 +95,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 			cmd[i].eof = malloc(sizeof(char *) * general_info->here_doc_nb);
 			cmd[i].fd_in = 0;
 			cmd[i].fd_out = 1;
+			general_info->files = malloc(sizeof(char *) * general_info->files_nb + 1);
 			//////////
 			cmd[i].append_file = NULL;
 			cmd[i].out_red_file = NULL;
@@ -110,9 +113,11 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 				{
 					if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '>' && general_info->str[j][1] == '>'))
 					{
+						//append >>
 						cmd[i].append = 1;
 						cmd[i].append_file = general_info->str[++j];
 						cmd[i].fd_out = (open(general_info->str[j], O_RDWR | O_CREAT | O_APPEND, 0660));
+						general_info->files[fl++] = ft_strjoin("> ", general_info->str[j]);
 						if (cmd[i].fd_out == -1)
 						{
 							perror("open");
@@ -121,9 +126,11 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 					}
 					else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '>'))
 					{
+						//out_redirection
 						cmd[i].out_red = 1;
 						cmd[i].out_red_file = general_info->str[++j];
 						cmd[i].fd_out = (open(general_info->str[j], O_RDWR | O_CREAT, 0660));
+						general_info->files[fl++] = ft_strjoin("> ", general_info->str[j]);
 						if (cmd[i].fd_out == -1)
 						{
 							perror("open");
@@ -140,8 +147,10 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 					}
 					else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '<'))
 					{
+						//in_redirection
 						cmd[i].in_red = 1;
 						cmd[i].in_red_file = general_info->str[++j];
+						general_info->files[fl++] = ft_strjoin("> ", general_info->str[j]);
 						if (access(general_info->str[j], F_OK) != 0)
 						{
 							perror(general_info->str[j]);
@@ -164,42 +173,49 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 				j++;
 				k++;
 			}
+			general_info->files[fl] = NULL;
 			cmd[i].general_info = general_info;
 			j++;
 			i++;
 	}
 
 	// //prints all the struct data , and the data is about the cmds
-	// i = 0;
-	// j = 0;
+	i = 0;
+	j = 0;
+	fl = 0;
+	while (fl < general_info->files_nb)
+	{
+		printf("general_info->files[%d] == %s\n", fl, general_info->files[fl]);
+		fl++;
+	}
 	// while (i < general_info->cmd_nb)
 	// {
-		// l = 0;
-		// while (cmd[i].args[l] != NULL)
-		// {
-		// 	printf("--->cmd[%d].args[%d]--> %s\n",i, l, cmd[i].args[l]);
-		// 	l++;
-		// }
-		// if (cmd[i].append == 1 || cmd[i].here_doc == 1 || cmd[i].out_red == 1 \
-		// || cmd[i].in_red == 1)
-		// {
-		// 	printf("---____--> cmd[%d].fd_out ---> %d\n", i, cmd[i].fd_out);
-		// 	printf("---____--> cmd[%d].fd_in ---> %d\n", i, cmd[i].fd_in);
-		// 	printf("---____--> %d, append_file-> %s\n", cmd[i].append, cmd[i].append_file);
-			// //here_doc
-			// eof_counter = 0;
-			// while (cmd[0].eof[eof_counter] != NULL)
-			// {
-			// 	printf("cmd[%d].eof[%d] = %s\n", i, eof_counter,cmd[i].eof[eof_counter]);
-			// 	eof_counter++;
-			// }
-		// 	printf("---____--> %d, out_red_file-> %s\n", cmd[i].out_red, cmd[i].out_red_file);
-		// 	printf("---____--> %d, here_doc-> %d\n", cmd[i].here_doc, cmd[i].here_doc);
-		// 	printf("---____--> %d, in_red_file-> %s\n", cmd[i].in_red, cmd[i].in_red_file);
-		// }
-		// printf("-----\n");
-// 		i++;
-// 	}
+	// 	l = 0;
+	// 	while (cmd[i].args[l] != NULL)
+	// 	{
+	// 		printf("--->cmd[%d].args[%d]--> %s\n",i, l, cmd[i].args[l]);
+	// 		l++;
+	// 	}
+	// 	if (cmd[i].append == 1 || cmd[i].here_doc == 1 || cmd[i].out_red == 1 \
+	// 	|| cmd[i].in_red == 1)
+	// 	{
+	// 		printf("---____--> cmd[%d].fd_out ---> %d\n", i, cmd[i].fd_out);
+	// 		printf("---____--> cmd[%d].fd_in ---> %d\n", i, cmd[i].fd_in);
+	// 		printf("---____--> %d, append_file-> %s\n", cmd[i].append, cmd[i].append_file);
+	// 		//here_doc
+	// 		eof_counter = 0;
+	// 		while (cmd[0].eof[eof_counter] != NULL)
+	// 		{
+	// 			printf("cmd[%d].eof[%d] = %s\n", i, eof_counter,cmd[i].eof[eof_counter]);
+	// 			eof_counter++;
+	// 		}
+	// 		printf("---____--> %d, out_red_file-> %s\n", cmd[i].out_red, cmd[i].out_red_file);
+	// 		printf("---____--> %d, here_doc-> %d\n", cmd[i].here_doc, cmd[i].here_doc);
+	// 		printf("---____--> %d, in_red_file-> %s\n", cmd[i].in_red, cmd[i].in_red_file);
+	// 	}
+	// 	printf("-----\n");
+	// 	i++;
+	// }
 }
 
 void	to_struct(t_minishell	*mini, t_cmd	*cmd)
@@ -232,6 +248,8 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 			general_info->in_red_nb++;
 		i++;
 	}
+	general_info->files_nb = general_info->append_nb + general_info->out_red_nb + general_info->in_red_nb;
+	printf("files_nb ----> %d\n", general_info->files_nb);
 	// int	*tab;
 	// tab = args_counter(general_info);
 	// i = 0;

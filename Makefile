@@ -6,28 +6,31 @@
 #    By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/05/29 19:53:04 by rarraji          ###   ########.fr        #
+#    Updated: 2023/05/31 16:31:16 by rarraji          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		= src/minishell_1.c src/built_in.c src/command.c src/unset.c \
-src/ft_export.c src/error.c parcing/parce_1.c parcing/parce_2.c \
-parcing/expanding.c execution/exec_1.c
+		  src/ft_export.c src/error.c parcing/parce_1.c parcing/parce_2.c \
+		  parcing/expanding.c execution/exec_1.c
 
 CC		= cc
 
 CFLAGS	= -Wall -Wextra -Werror 
+ARG2 = -lreadline -L/goinfre/rarraji/brew/opt/readline/lib
+
+ARG = -Iinclude  -I/goinfre/rarraji/brew/opt/readline/include
 
 OBJ		= ${SRC:.c=.o}
 
 NAME	= minishell
 
 %.o : %.c
-	${CC} ${CFLAGS} -c $< -o $@
+	${CC} ${CFLAGS} $(ARG) -c $< -o $@
 
 ${NAME}	:	${OBJ}
 		make -C utils/ft_libft
-		${CC} ${CFLAGS} ${OBJ} utils/ft_libft/libft.a -o ${NAME} -lreadline
+		${CC} ${CFLAGS} ${OBJ} $(ARG2) utils/ft_libft/libft.a -o ${NAME} -lreadline
 
 all		: ${NAME}
 

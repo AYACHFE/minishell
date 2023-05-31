@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/30 14:43:04 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/31 19:47:59 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,36 @@ int ft_strlenn(char *str)
 
 	i = 0;
     j = 0;
-    while (str[i] == '\"' || str[i] == '$')
+    while (str[i] == '\"' || str[i] == '$' || str[i] == '\'')
     {
         j++;
         i++;   
     }
-	while(str[i] != '$' && str[i] != '\0' && str[i] != '\"')
+	while(str[i] != '$' && str[i] != '\0' && str[i] != '\"' && str[i] == '\'')
     {
         if (str[i] == '\"')
             j++;
 		i++;   
     }
+    printf("i===%d\n", i);
 	return(i - j);
+}
+
+int ft_hsb(char *s)
+{
+    char c;
+    int  i = 0;
+    int j = 0;
+
+    c = '\'';
+    if (s[0] == c)
+    {
+        j++;
+        i++;
+    }
+    while ((s[i] != c) && s[i])
+        i++;
+    return (i - j);           
 }
 
 int ft_strlennn(char *str)
@@ -122,7 +140,7 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
             }
             if (mini->my_env[i] != '\0')
             {
-                s = ft_substr(mini->my_env[i], d+1, ft_strlen(mini->my_env[i]));
+                s = ft_substr(mini->my_env[i], d + 1, ft_strlen(mini->my_env[i]));
                 str_jn = ft_strjoin(str_jn, s); 
                 free(s);
                 while (str[n] != '$' && str[n] != '\"')
@@ -200,7 +218,7 @@ void    ft_check_dollar(t_minishell *mini)
         }
         else
         {
-            if (deuble == 0)
+            if (deuble == 0 && single != 1)
             {
                 mini->tmp_cmd[j] = ft_substr(mini->cmd[i], 0, ft_strlen(mini->cmd[i]));
                 j++;
@@ -208,9 +226,19 @@ void    ft_check_dollar(t_minishell *mini)
             else
             {
                 k = 0;
-                while(mini->cmd[i][k] == '\"')
+                if (mini->cmd[i][k] == '\'')
                     k++;
-                mini->tmp_cmd[j] = ft_substr(mini->cmd[i], k,  ft_strlenn(mini->cmd[i]));
+                if (deuble == 1 && mini->cmd[i][k+ 1] == '\"')
+                    break;
+                // if (single == 0)
+                // {
+                //     puts("bngb");
+                //     while(mini->cmd[i][k] == '\"')
+                //         k++;
+                // }        
+                printf("%d\n", k);
+                mini->tmp_cmd[j] = ft_substr(mini->cmd[i], k,  ft_hsb(mini->cmd[i]));
+                printf("++++++%s\n", mini->tmp_cmd[j]);
                 j++;    
             }
                 

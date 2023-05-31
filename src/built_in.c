@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/29 20:18:31 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/30 15:31:05 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 
 	(void)mini;
 	(void)env;
+
 	// str = readline("MINISHELL-3.2$ ");
 	str = readline("\033[1;35mMINISHELL-3.2$ \033[0m");
 	add_history(str);

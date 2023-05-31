@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/30 22:38:01 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/05/31 16:45:50 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_cmd_info
 	int		in_red_nb;
 	int		here_doc_nb;
 	char	**files;
+	char	**eof;
 	int		files_nb;
 }	t_cmd_info;
 
@@ -128,5 +129,7 @@ void	ft_check_dollar(t_minishell *mini);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
+void	file_creation(t_cmd	*cmd);
+void	here_doc(t_cmd	*cmd);
 
 #endif

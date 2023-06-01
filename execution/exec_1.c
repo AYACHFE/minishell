@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/31 17:14:59 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/01 12:05:42 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ void	here_doc(t_cmd	*cmd)
 
 	i = 0;
 	j = 0;
-	
 	while (cmd->eof[j])
 	{
 		if (pipe(fd) == -1)
 			exit(0);
-		printf("cmd->eof[j] == %s\n", cmd->eof[j]);
+		printf("cmd->eof[j] == '%s'\n", cmd->eof[j]);
 		while (1)
 		{
 			read = readline("> ");
+			// printf("");
 			if (ft_strncmp(read, cmd->eof[j], ft_strlen(read) + 1) == 0)
 			{
 				j++;
@@ -162,12 +162,11 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	}
 	if (cmd->here_doc == 1)
 	{
-		puts("---------------------------");
+		puts("------------2222------------");
 		here_doc(cmd);
 		dup2(cmd->fd_in, 0);
 		close(cmd->fd_in);
 	}
-	
 	if (pipe(fd) == -1)
 		exit(0);
 	pid = fork();

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/31 17:14:31 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/01 11:49:15 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 			// cmd[i].args = malloc(sizeof(char *) * 10);
 			// printf("tab[%d] --> %d\n", i, tab[i]);
 			// cmd[i].eof = malloc(sizeof(char *) * 10);
-			cmd[i].eof = malloc(sizeof(char *) * general_info->here_doc_nb);
+			cmd[i].eof = malloc(sizeof(char *) * general_info->here_doc_nb + 1);
 			cmd[i].fd_in = 0;
 			cmd[i].fd_out = 1;
 			//////////
@@ -215,7 +215,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 			// {
 			// 	printf("cmd[%d].eof[%d] = %s\n", i, eof_counter,cmd[i].eof[eof_counter]);
 			// 	eof_counter++;
-			// 	printf("cmd[%d].eof[%d] = %s\n", i, eof_counter,cmd[i].eof[eof_counter]);
+			// 	// printf("cmd[%d].eof[%d] = %s\n", i, eof_counter,cmd[i].eof[eof_counter]);
 			// }
 	// 		printf("---____--> %d, out_red_file-> %s\n", cmd[i].out_red, cmd[i].out_red_file);
 	// 		printf("---____--> %d, here_doc-> %d\n", cmd[i].here_doc, cmd[i].here_doc);

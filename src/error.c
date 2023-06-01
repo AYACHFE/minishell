@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/30 10:12:22 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/01 20:24:37 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,8 +180,9 @@ int ft_error_here_document(char *s)
         if (s[i] == '<' && s[i + 1] == '<' && s[i + 2] == '\0')
         {
             printf("syntax error near unexpected token `newline'\n");
-            return (0); 
+            return (0);
         }
+        if((s[i] == '<' && s[i + 1] == '<') && !((s[i + 1] >= 'a' && s[i + 1] <= 'z') || (s[i + 1] >= 'A' && s[i + 1] <= 'Z')))
         i++;           
     }
     return (1);

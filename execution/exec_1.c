@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   part_1.c                                           :+:      :+:    :+:   */
+/*   exec_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/29 19:52:11 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/01 15:10:19 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		pid = fork();
 		if (pid == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			dup2(fd[1], 1);
 			close(fd[1]);
 			close(fd[0]);
@@ -74,6 +76,8 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		close(fd[0]);
 		close(fd[1]);
 		//redirections

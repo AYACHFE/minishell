@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/01 11:49:15 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:13:52 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,9 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 		check = 0;
 		k = 0;
 		l = 0;
+	fl = 0;
 			cmd[i].args = malloc(sizeof(char *) * tab[i] + 1);
+			cmd[i].files = malloc(sizeof(char * ) * general_info->files_nb);
 			// cmd[i].args = malloc(sizeof(char *) * 10);
 			// printf("tab[%d] --> %d\n", i, tab[i]);
 			// cmd[i].eof = malloc(sizeof(char *) * 10);
@@ -118,7 +120,10 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 						//append >>
 						cmd[i].append = 1;
 						cmd[i].append_file = general_info->str[++j];
-						general_info->files[fl++] = ft_strjoin(">>", general_info->str[j]);
+						general_info->files[fl] = ft_strjoin(">>", general_info->str[j]);
+						cmd[i].files[fl] = ft_strjoin(">>", general_info->str[j]);
+						fl++;
+						//
 						// cmd[i].fd_out = (open(general_info->str[j], O_RDWR | O_CREAT | O_APPEND, 0660));
 						// if (cmd[i].fd_out == -1)
 						// {
@@ -131,7 +136,9 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 						//out_redirection
 						cmd[i].out_red = 1;
 						cmd[i].out_red_file = general_info->str[++j];
-						general_info->files[fl++] = ft_strjoin("> ", general_info->str[j]);
+						general_info->files[fl] = ft_strjoin("> ", general_info->str[j]);
+						cmd[i].files[fl] = ft_strjoin("> ", general_info->str[j]);
+						fl++;
 						//
 						// cmd[i].fd_out = (open(general_info->str[j], O_RDWR | O_CREAT, 0660));
 						// if (cmd[i].fd_out == -1)
@@ -154,7 +161,9 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 						//in_redirection
 						cmd[i].in_red = 1;
 						cmd[i].in_red_file = general_info->str[++j];
-						general_info->files[fl++] = ft_strjoin("< ", general_info->str[j]);
+						general_info->files[fl] = ft_strjoin("< ", general_info->str[j]);
+						cmd[i].files[fl] = ft_strjoin("< ", general_info->str[j]);
+						fl++;
 						//
 						// if (access(general_info->str[j], F_OK) != 0)
 						// {
@@ -179,6 +188,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 				j++;
 				k++;
 			}
+			cmd[i].files[fl] = NULL;
 			general_info->files[fl] = NULL;
 			cmd[i].general_info = general_info;
 			j++;
@@ -188,15 +198,15 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 	i = 0;
 	j = 0;
 	
-	// fl = 0;
-	// while (fl < general_info->files_nb)
-	// {
-	// 	printf("general_info->files[%d] == %s\n", fl, general_info->files[fl]);
-	// 	fl++;
-	// }
 	
 	// while (i < general_info->cmd_nb)
 	// {
+	// 	fl = 0;
+	// 	while (cmd[i].files[fl])
+	// 	{
+	// 		printf("cmd[%d].files[%d] == %s\n", i, fl, cmd[i].files[fl]);
+	// 		fl++;
+	// 	}
 	// 	l = 0;
 	// 	while (cmd[i].args[l] != NULL)
 	// 	{
@@ -257,7 +267,7 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 		i++;
 	}
 	general_info->files_nb = general_info->append_nb + general_info->out_red_nb + general_info->in_red_nb;
-	printf("files_nb ----> %d\n", general_info->files_nb);
+	// printf("files_nb ----> %d\n", general_info->files_nb);
 	// int	*tab;
 	// tab = args_counter(general_info);
 	// i = 0;

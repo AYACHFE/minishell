@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/31 16:45:50 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/01 13:08:01 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef struct s_cmd_info
 	char	**files;
 	char	**eof;
 	int		files_nb;
+	int		std_in;
+	int		std_out;
 }	t_cmd_info;
 
 typedef struct s_cmd
@@ -45,6 +47,7 @@ typedef struct s_cmd
 	int	fd_in;
 	int	fd_out;
 	
+	char	**files;
 	//
 	int		append;
 	char	*append_file;

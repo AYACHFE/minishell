@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/31 19:49:37 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/31 20:19:13 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,10 @@ void	ft_tmp_my_env_pos(t_minishell *mini, int	pos)
 	mini->tmp_my_env[pos][d] = '\0';
 	mini->tmp_my_env[pos + 1] = NULL;
 }
+
+
+
+
 
 // void	ft_add_declare_in_pos(t_minishell *mini)
 // {

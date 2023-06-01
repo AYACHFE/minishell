@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/31 19:47:59 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/01 09:47:57 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,12 @@ int ft_hsb(char *s)
     int j = 0;
 
     c = '\'';
-    if (s[0] == c)
+    while (s[i])
     {
-        j++;
+        if (s[i] == '\'' || s[i] == '\"')
+            j++;
         i++;
     }
-    while ((s[i] != c) && s[i])
-        i++;
     return (i - j);           
 }
 
@@ -228,8 +227,10 @@ void    ft_check_dollar(t_minishell *mini)
                 k = 0;
                 if (mini->cmd[i][k] == '\'')
                     k++;
-                if (deuble == 1 && mini->cmd[i][k+ 1] == '\"')
+                if (deuble == 1 && mini->cmd[i][k + 1] == '\"' && mini->cmd[i][k + 2] == '\0')
                     break;
+                while (mini->cmd[i][k] == '\"')
+                    k++;  
                 // if (single == 0)
                 // {
                 //     puts("bngb");
@@ -237,7 +238,7 @@ void    ft_check_dollar(t_minishell *mini)
                 //         k++;
                 // }        
                 printf("%d\n", k);
-                mini->tmp_cmd[j] = ft_substr(mini->cmd[i], k,  ft_hsb(mini->cmd[i]));
+                mini->tmp_cmd[j] = ft_substr(mini->cmd[i], k, ft_hsb(mini->cmd[i]));
                 printf("++++++%s\n", mini->tmp_cmd[j]);
                 j++;    
             }
@@ -248,6 +249,23 @@ void    ft_check_dollar(t_minishell *mini)
     }
     mini->tmp_cmd[j] = NULL; 
     i = 0;
+    // while (mini->tmp_cmd[i])
+    //     i++;
+    // mini->last = malloc(i + 1);
+    // i = 0;
+    // j = 0;
+    // while(mini->tmp_cmd[i])
+    // {
+    //     j = 0; 
+    //     while(mini->tmp_cmd[i][j])
+    //     {
+            
+    //     }
+    // }
+    
+     
+
+    
     while (mini->tmp_cmd[i])
 	{
 		printf("*%s*\n", mini->tmp_cmd[i]);

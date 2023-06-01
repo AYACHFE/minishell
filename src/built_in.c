@@ -6,13 +6,45 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/30 15:31:05 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/01 09:31:32 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 // the engine of this program
+
+int ft_mycmp(char *s1, char *s2)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	i = 0;
+
+	while (s2[i] && s2[i] == '\"')
+	{
+		i++;
+	}
+	while (s2[i] && s2[i] != '\"')
+	{
+		
+		if(s1[j] == s2[i])
+		{
+			i++;
+			j++;
+		}
+		else
+			return (1);			
+	}
+	return(0);
+}
+
+
+
+
+
+
 void	built_in_cmd(t_minishell	*mini, char **env)
 {
 	char	*str;
@@ -99,19 +131,19 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
 	// (void)cmd;
-	if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
+	if (ft_mycmp(mini->str[0], "exit") == 0)
 		exit(42);
-	else if (ft_strncmp(cmd->args[0], "echo", ft_strlen(cmd->args[0])) == 0)
+	else if (ft_mycmp(cmd->args[0], "echo") == 0)
 		ft_echo(cmd);
-	else if (ft_strncmp(mini->str[0], "cd", ft_strlen(mini->str[0])) == 0)
+	else if (ft_mycmp(mini->str[0], "cd") == 0)
 		ft_cd(cmd);
-	else if (ft_strncmp(cmd->args[0], "pwd", ft_strlen(mini->str[0])) == 0)
+	else if (ft_mycmp(cmd->args[0], "pwd") == 0)
 		ft_pwd();
-	else if (ft_strncmp(mini->str[0], "env", ft_strlen(mini->str[0])) == 0)
+	else if (ft_mycmp(mini->str[0], "env") == 0)
 		ft_env(env, mini);
-	else if (ft_strncmp(mini->str[0], "unset", ft_strlen(mini->str[0])) == 0)
+	else if (ft_mycmp(mini->str[0], "unset") == 0)
 		ft_unset(mini);
-	else if (ft_strncmp(mini->str[0], "export", ft_strlen(mini->str[0])) == 0)
+	else if (ft_mycmp(mini->str[0], "export") == 0)
 		ft_export(mini);
 	else
 		execv_function(mini, cmd, env);

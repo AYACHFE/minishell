@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/30 16:19:42 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/05/31 20:20:17 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_space_checker
 typedef struct s_minishell
 {
 	char 	**tmp_cmd;
+	char	**last;
 	char	**cmd;
 	int		cmd_nb;
 	//built_in

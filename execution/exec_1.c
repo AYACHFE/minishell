@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/01 15:24:25 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:41:35 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,15 +126,13 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	cmd->general_info->std_out = dup(1);
 	while (i < cmd->general_info->cmd_nb - 1)
 	{
-			// ft_putstr_fd("was here\n", 2);
 		if (cmd[i].here_doc == 1)
 		{
 			dup2(stdi, 0);
 			dup2(stdou, 1);
 			here_doc(&cmd[i]);
-			//should_change to dup2(cmd[i].fd_in, 0);
-			dup2(cmd->fd_in, 0);
-			close(cmd->fd_in);
+			dup2(cmd[i].fd_in, 0);
+			close(cmd[i].fd_in);
 		}
 		if (pipe(fd) == -1)
 			exit(0);
@@ -153,13 +151,13 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		close(fd[0]);
 		i++;
 	}
-	if (cmd->here_doc == 1)
+	if (cmd[i].here_doc == 1)
 	{
 		dup2(stdi, 0);
 		dup2(stdou, 1);
 		here_doc(&cmd[i]);
-		dup2(cmd->fd_in, 0);
-		close(cmd->fd_in);
+		dup2(cmd[i].fd_in, 0);
+		close(cmd[i].fd_in);
 	}
 	if (pipe(fd) == -1)
 		exit(0);

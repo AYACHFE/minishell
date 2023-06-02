@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/01 15:10:19 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/02 15:47:40 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,24 +71,25 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		close(fd[0]);
 		i++;
 	}
-	if (pipe(fd) == -1)
-		exit(0);
-	pid = fork();
-	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		close(fd[0]);
-		close(fd[1]);
-		//redirections
-		redirections(&cmd[i]);
-		built_in_cmd_2(mini, &cmd[i], env);
-		exit(0);
-	}
-	dup2(stdi, 0);
-	dup2(stdou, 1);
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid, NULL, 0);
-	while (wait(NULL) > 0) ;
+	built_in_cmd_2(mini, &cmd[i], env);
+	// if (pipe(fd) == -1)
+	// 	exit(0);
+	// pid = fork();
+	// if (pid == 0)
+	// {
+	// 	signal(SIGINT, SIG_DFL);
+	// 	signal(SIGQUIT, SIG_DFL);
+	// 	close(fd[0]);
+	// 	close(fd[1]);
+	// 	//redirections
+	// 	redirections(&cmd[i]);
+	// 	built_in_cmd_2(mini, &cmd[i], env);
+	// 	exit(0);
+	// }
+	// dup2(stdi, 0);
+	// dup2(stdou, 1);
+	// close(fd[0]);
+	// close(fd[1]);
+	// waitpid(pid, NULL, 0);
+	// while (wait(NULL) > 0);
 }

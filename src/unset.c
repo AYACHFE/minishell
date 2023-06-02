@@ -6,11 +6,12 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:42:40 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/01 09:05:56 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/02 22:55:00 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 
 void	rem_var_env(t_minishell	*mini, int pos)
 {
@@ -46,7 +47,7 @@ void	rem_var_export(t_minishell	*mini, int pos)
 	int		i;
 
 	i = 0;
-	
+	// printf("mini->my_export[pos] == %s\n", mini->my_export[pos]);
 	free(mini->my_export[pos]);
 	while (mini->my_export[pos])
 	{
@@ -73,22 +74,22 @@ void	search_in_export(t_minishell	*mini, char *str)
 	}
 }
 
-void ft_unset(t_minishell *mini)
+void ft_unset(t_cmd	*cmd, t_minishell	*mini)
 {
 	int	j;
 
 	j = 1;
-	if (mini->str[j])
+	if (cmd->args[j])
 	{
-		while (mini->str[j])
+		while (cmd->args[j])
 		{
-			search_in_env(mini, mini->str[j]);
+			search_in_env(mini, cmd->args[j]);
 			j++;
 		}
 		j = 0;
-		while (mini->str[j])
+		while (cmd->args[j])
 		{
-			search_in_export(mini, mini->str[j]);
+			search_in_export(mini, cmd->args[j]);
 			j++;
 		}
 	}

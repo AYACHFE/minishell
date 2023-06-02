@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/01 15:03:25 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/02 22:54:25 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,6 @@ int ft_mycmp(char *s1, char *s2)
 	}
 	return(0);
 }
-
-
-
-
-
 
 void	built_in_cmd(t_minishell	*mini, char **env)
 {
@@ -143,10 +138,10 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 		ft_pwd();
 	else if (ft_mycmp(mini->str[0], "env") == 0)
 		ft_env(env, mini);
-	else if (ft_mycmp(mini->str[0], "unset") == 0)
-		ft_unset(mini);
-	else if (ft_mycmp(mini->str[0], "export") == 0)
-		ft_export(mini);
+	else if (ft_mycmp(cmd->args[0], "unset") == 0)
+		ft_unset(cmd, mini);
+	else if (ft_mycmp(cmd->args[0], "export") == 0)
+		ft_export(cmd, mini);
 	else
 		execv_function(mini, cmd, env);
 }

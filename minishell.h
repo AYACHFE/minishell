@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/31 20:20:17 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/02 22:56:12 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,16 +107,17 @@ void	ft_add_declare(t_minishell *mini);
 // void	ft_add_declare_in_pos(t_minishell *mini);
 
 //ft_unset
-void	ft_unset(t_minishell *mini);
+void ft_unset(t_cmd	*cmd, t_minishell	*mini);
 void	search_in_env(t_minishell	*mini, char *str);
 void	rem_var_env(t_minishell	*mini, int pos);
 void	search_in_export(t_minishell	*mini, char *str);
 void	rem_var_export(t_minishell	*mini, int pos);
 
 //ft_export
-void	ft_export(t_minishell *mini);
-void	ft_rem_var(char **str, t_minishell *mini);
-void	ft_rem_var_export(char **str, t_minishell *mini);
+// void ft_export(t_minishell *mini);
+void	ft_export(t_cmd	*cmd, t_minishell *mini);
+void	ft_rem_var(char **str, t_minishell *mini, t_cmd *cmd);
+void	ft_rem_var_export(char **str, t_minishell *mini, t_cmd *cmd);
 void	print_export(t_minishell *mini);
 int		ft_double_single_quote(char *str);
 int		ft_check_var_exect(char *s,t_minishell *mini, int var);

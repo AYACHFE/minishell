@@ -6,7 +6,7 @@
 #    By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/06/01 15:05:05 by rarraji          ###   ########.fr        #
+#    Updated: 2023/06/02 22:46:49 by rarraji          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,20 +18,23 @@ CC		= cc
 
 CFLAGS	= -Wall -Wextra -Werror 
 
-ARG2 = -lreadline -L/goinfre/rarraji/brew/opt/readline/lib
+# ARG2 = -lreadline -L/goinfre/rarraji/brew/opt/readline/lib
 
-ARG = -Iinclude  -I/goinfre/rarraji/brew/opt/readline/include
+# ARG = -Iinclude  -I/goinfre/rarraji/brew/opt/readline/include
 
 OBJ		= ${SRC:.c=.o}
 
 NAME	= minishell
 
 %.o : %.c
-	${CC} ${CFLAGS} $(ARG) -c $< -o $@
+	${CC} ${CFLAGS} -c $< -o $@
+
+#$(ARG) 
 
 ${NAME}	:	${OBJ}
 		make -C utils/ft_libft
-		${CC} ${CFLAGS} ${OBJ} $(ARG2) utils/ft_libft/libft.a -o ${NAME} -lreadline
+		${CC} ${CFLAGS} ${OBJ} utils/ft_libft/libft.a -o ${NAME} -lreadline   
+#ARG2
 
 all		: ${NAME}
 

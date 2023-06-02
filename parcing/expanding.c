@@ -6,11 +6,49 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/01 15:32:16 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/02 22:42:49 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*ft_substr1(char const *s, unsigned int start, size_t len)
+{
+	int			i;
+	int			l;
+	size_t		len_s;
+	const char	*ss;
+	char		*p;
+
+	if (!s)
+		return (0);
+	ss = s;
+	len_s = ft_strlen(s);
+	i = 0;
+	if (start >= len_s)
+		return (ft_strdup(""));
+	if (len > len_s)
+		len = len_s - start;
+	p = malloc((len + 1) * sizeof(char));
+	if (!p)
+		return (NULL);
+	l = (int)len;
+	while (l > i)
+	{
+        if(ss[start] == '\"')
+            start++;
+        else
+        {
+		    p[i] = ss[start];
+            start++;
+            i++;
+        }
+	}
+	p[i] = '\0';
+	return (p);
+}
+
+
 
 int ft_strlenn(char *str)
 {
@@ -234,7 +272,7 @@ void    ft_check_dollar(t_minishell *mini)
                 //     while(mini->cmd[i][k] == '\"')
                 //         k++;
                 // }        
-                mini->tmp_cmd[j] = ft_substr(mini->cmd[i], k, ft_hsb(mini->cmd[i]));
+                mini->tmp_cmd[j] = ft_substr1(mini->cmd[i], k, ft_hsb(mini->cmd[i]));
                 j++;    
             }
                 

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/01 12:56:17 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/02 15:37:33 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 
 	(void)mini;
 	(void)env;
-	// str = readline("MINISHELL-3.2$ ");
 	str = readline("\033[0;34mMINISHELL-3.2$ \033[0m");
 	add_history(str);
 	//
@@ -95,22 +94,46 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 	free(var);
 }
 
+
+int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
+{
+	//built_ins that you should not fork for
+	(void)env;
+	if (ft_strncmp(cmd->args[0], "exit", ft_strlen(mini->str[0])) == 0)
+		exit(42);
+	else if (ft_strncmp(cmd->args[0], "cd", ft_strlen(cmd->args[0])) == 0)
+	{
+		ft_cd(cmd);
+		return(1);
+	}
+	else if (ft_strncmp(cmd->args[0], "unset", ft_strlen(cmd->args[0])) == 0)
+	{
+		printf("-->cmd.args == '%s'\n", cmd->args[0]);
+		ft_unset(cmd, mini);
+		return (1);
+	}
+	else if ((ft_strncmp(cmd->args[0], "export", ft_strlen(cmd->args[0])) == 0)  \
+	&& cmd->general_info->cmd_nb >= 1 && cmd->args[1])
+	{
+		puts(">>>>>>>>>>>");
+		puts(cmd->args[1]);
+		puts(">>>>>>>>>>>");
+		ft_export(mini);
+		return (1);
+	}
+	return (0);
+}
+
 void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
-	(void)cmd;
-	if (ft_strncmp(mini->str[0], "exit", ft_strlen(mini->str[0])) == 0)
-		exit(42);
-	else if (ft_strncmp(cmd->args[0], "echo", ft_strlen(cmd->args[0])) == 0)
+	//built_ins that you should fork for
+	if (ft_strncmp(cmd->args[0], "echo", ft_strlen(cmd->args[0])) == 0)
 		ft_echo(cmd);
-	else if (ft_strncmp(cmd->args[0], "cd", ft_strlen(cmd->args[0])) == 0)
-		ft_cd(cmd);
-	else if (ft_strncmp(cmd->args[0], "pwd", ft_strlen(mini->str[0])) == 0)
+	else if (ft_strncmp(cmd->args[0], "pwd", ft_strlen(cmd->args[0])) == 0)
 		ft_pwd();
-	else if (ft_strncmp(mini->str[0], "env", ft_strlen(mini->str[0])) == 0)
+	else if ((ft_strncmp(cmd->args[0], "env", ft_strlen(cmd->args[0])) == 0) && cmd->general_info->cmd_nb == 1)
 		ft_env(env, mini);
-	else if (ft_strncmp(mini->str[0], "unset", ft_strlen(mini->str[0])) == 0)
-		ft_unset(mini);
-	else if (ft_strncmp(mini->str[0], "export", ft_strlen(mini->str[0])) == 0)
+	else if ((ft_strncmp(cmd->args[0], "export", ft_strlen(cmd->args[0])) == 0))
 		ft_export(mini);
 	else
 	{

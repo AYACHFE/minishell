@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/29 20:47:41 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/01 22:12:57 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,16 @@ void ft_echo(t_cmd	*cmd)
 	l = 0;
 	home = getenv("HOME");
 	if (cmd->args[1] == NULL)
+	{
+		printf("\n");
 		return;
+	}
 	if (cmd->args[1][0] == '~' && ft_strlen(cmd->args[1]) == 1)
 		printf("%s\n", home);
+	// else if (mini->str[1][0] == '$')
+	// {
+	// 	mini->variable = mini->str[1];
+	// }
 	else if (ft_strncmp(cmd->args[1], "-n", ft_strlen("-n")) == 0)
 	{
 		while(cmd->args[i])

@@ -6,7 +6,7 @@
 #    By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/05/29 14:19:00 by aachfenn         ###   ########.fr        #
+#    Updated: 2023/06/02 11:58:47 by aachfenn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRC		= src/minishell_1.c src/built_in.c src/command.c src/unset.c src/ft_export.
 
 CC		= cc
 
-CFLAGS	= -Wall -Wextra -Werror \
+CFLAGS	= -Wall -Wextra -Werror  \
 	#-g -fsanitize=address
 
 OBJ		= ${SRC:.c=.o}

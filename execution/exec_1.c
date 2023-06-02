@@ -6,11 +6,102 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/01 15:41:35 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/02 19:12:14 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
+{
+	int	i;
+	int	fd[2];
+	int	pid[cmd->general_info->cmd_nb];
+	int	stdi;
+	int	stdou;
+	int status;
+
+	i = 0;
+	(void)cmd;
+	(void)mini;
+	(void)env;
+	stdi = dup(0);
+	stdou = dup(1);
+	cmd->general_info->std_in = dup(0);
+	cmd->general_info->std_out = dup(1);
+	while (i < cmd->general_info->cmd_nb - 1)
+	{
+			// puts("++++++");
+		if (built_in_cmd_3(mini, &cmd[i], env))
+		{
+			// write(2, "----------->\n", 14);
+			i++;
+			return ;
+		}
+		if (cmd[i].here_doc == 1)
+		{
+			dup2(stdi, 0);
+			dup2(stdou, 1);
+			here_doc(&cmd[i]);
+			dup2(cmd[i].fd_in, 0);
+			close(cmd[i].fd_in);
+		}
+		if (pipe(fd) == -1)
+			exit(0);
+		pid[i] = fork();
+		if (pid[i] == 0)
+		{
+			dup2(fd[1], 1);
+			close(fd[1]);
+			close(fd[0]);
+			redirections(&cmd[i]);
+			built_in_cmd_2(mini, &cmd[i], env);
+			exit(1);
+		}
+		dup2(fd[0], 0);
+		close(fd[1]);
+		close(fd[0]);
+		i++;
+	}
+	/////////
+	if (cmd[i].here_doc == 1)
+	{
+		dup2(stdi, 0);
+		dup2(stdou, 1);
+		here_doc(&cmd[i]);
+		dup2(cmd[i].fd_in, 0);
+		close(cmd[i].fd_in);
+	}
+	// built_in_cmd_3(mini, &cmd[i], env);
+	if (pipe(fd) == -1)
+		exit(0);
+	if (built_in_cmd_3(mini, &cmd[i], env))
+	{
+		// write(2, "---->\n", 6);
+		return ;
+	}
+	// puts("---------not=------------");
+	pid[i] = fork();
+	if (pid[i] == 0)
+	{
+		close(fd[0]);
+		close(fd[1]);
+		redirections(&cmd[i]);
+		built_in_cmd_2(mini, &cmd[i], env);
+		exit(1);
+	}
+	dup2(stdi, 0);
+	dup2(stdou, 1);
+	close(fd[0]);
+	close(fd[1]);
+	i = 0;
+	while(i < cmd->general_info->cmd_nb)
+	{
+		waitpid(pid[i++], &status, 0);
+		// printf("exit with code (%d)\n", status>>8);
+	}
+	// while (wait(NULL) > 0) ;
+}
 
 void	here_doc(t_cmd	*cmd)
 {
@@ -26,11 +117,10 @@ void	here_doc(t_cmd	*cmd)
 	{
 		if (pipe(fd) == -1)
 			exit(0);
-		printf("cmd->eof[j] == '%s'\n", cmd->eof[j]);
+		// printf("cmd->eof[j] == '%s'\n", cmd->eof[j]);
 		while (1)
 		{
 			read = readline("> ");
-			// printf("readline == '%s'\n", read);
 			if (ft_strncmp(read, cmd->eof[j], ft_strlen(read) + 1) == 0)
 			{
 				j++;
@@ -105,80 +195,4 @@ void	redirections(t_cmd	*cmd)
 		dup2(cmd->fd_out, 1);
 		close(cmd->fd_out);
 	}
-}
-
-void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
-{
-	int	i;
-	int	fd[2];
-	int	pid[cmd->general_info->cmd_nb];
-	int	stdi;
-	int	stdou;
-	int status;
-
-	i = 0;
-	(void)cmd;
-	(void)mini;
-	(void)env;
-	stdi = dup(0);
-	stdou = dup(1);
-	cmd->general_info->std_in = dup(0);
-	cmd->general_info->std_out = dup(1);
-	while (i < cmd->general_info->cmd_nb - 1)
-	{
-		if (cmd[i].here_doc == 1)
-		{
-			dup2(stdi, 0);
-			dup2(stdou, 1);
-			here_doc(&cmd[i]);
-			dup2(cmd[i].fd_in, 0);
-			close(cmd[i].fd_in);
-		}
-		if (pipe(fd) == -1)
-			exit(0);
-		pid[i] = fork();
-		if (pid[i] == 0)
-		{
-			dup2(fd[1], 1);
-			close(fd[1]);
-			close(fd[0]);
-			redirections(&cmd[i]);
-			built_in_cmd_2(mini, &cmd[i], env);
-			exit(1);
-		}
-		dup2(fd[0], 0);
-		close(fd[1]);
-		close(fd[0]);
-		i++;
-	}
-	if (cmd[i].here_doc == 1)
-	{
-		dup2(stdi, 0);
-		dup2(stdou, 1);
-		here_doc(&cmd[i]);
-		dup2(cmd[i].fd_in, 0);
-		close(cmd[i].fd_in);
-	}
-	if (pipe(fd) == -1)
-		exit(0);
-	pid[i] = fork();
-	if (pid[i] == 0)
-	{
-		close(fd[0]);
-		close(fd[1]);
-		redirections(&cmd[i]);
-		built_in_cmd_2(mini, &cmd[i], env);
-		exit(1);
-	}
-	dup2(stdi, 0);
-	dup2(stdou, 1);
-	close(fd[0]);
-	close(fd[1]);
-	i = 0;
-	while(i < cmd->general_info->cmd_nb)
-	{
-		waitpid(pid[i++], &status, 0);
-		// printf("exit with code (%d)\n", status>>8);
-	}
-	// while (wait(NULL) > 0) ;
 }

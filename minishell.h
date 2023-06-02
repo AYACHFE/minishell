@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/01 13:08:01 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/02 15:48:22 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env);
 int		ft_cd(t_cmd	*cmd);
 void	ft_pwd();
 
+int		built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env);
+
 //command
 void	ft_echo(t_cmd	*cmd);
 void	ft_env(char **env, t_minishell *mini);
@@ -95,7 +97,7 @@ void	ft_tmp_my_env(t_minishell *mini);
 void	ft_add_declare(t_minishell *mini);
 
 //ft_unset
-void	ft_unset(t_minishell *mini);
+void	ft_unset(t_cmd	*cmd, t_minishell	*mini);
 void	search_in_env(t_minishell	*mini, char *str);
 void	rem_var_env(t_minishell	*mini, int pos);
 void	search_in_export(t_minishell	*mini, char *str);
@@ -134,5 +136,6 @@ void	ft_check_dollar(t_minishell *mini);
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
 void	file_creation(t_cmd	*cmd);
 void	here_doc(t_cmd	*cmd);
+void	redirections(t_cmd	*cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/26 16:02:56 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/02 11:55:20 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ int ft_error_pipe(char *s)
             printf("syntax error near unexpected token `|'\n");
             return (0); 
         }
+        if (s[i] == '|' && s[i + 1] == ' ' && s[i + 2] == '|')
+        {
+            printf("syntax error near unexpected token `|'\n");
+            return (0); 
+        }
         i++;           
     }
     return (1);
@@ -87,7 +92,7 @@ int ft_error_output(char *s)
     }
     while (s[i])
     {
-        if (s[i] == '>' && (s[i + 1] == '\0' || (s[i + 1] == '|' || (s[i + 1] == '>' && s[i + 2] == '>'))))
+        if (s[i] == '>' && (s[i + 1] == '\0' || (s[i + 1] == '>' && s[i + 2] == '>') || (s[i + 1] == '<')))
         {
             printf("syntax error near unexpected token `>'\n");
             return (0);
@@ -165,6 +170,18 @@ int ft_error_here_document(char *s)
         printf("syntax error near unexpected token `newline'\n");
         return (0);
     }
+    if (s[i] == '<' && s[i + 1] == '<')
+    {
+        i = i + 2;
+        while(s[i] == ' ')
+            i++;
+        if (s[i] == '|')
+        {
+            printf("syntax error near unexpected token `|'\n");
+            return(0);
+        }                        
+    }
+    i = 0;
     while (s[i])
     {
         if ((s[i] == '<' && s[i + 1] == '<') && (s[i + 2] == '\0' || (s[i + 2] == '|' || (s[i + 1] == '>' && s[i + 2] == '<'))))
@@ -181,7 +198,6 @@ int ft_error_here_document(char *s)
     }
     return (1);
 }
-
 
 int ft_error(char *str)
 {

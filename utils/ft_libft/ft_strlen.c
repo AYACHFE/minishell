@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 15:09:35 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/16 19:10:38 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/02 20:32:13 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] != '\0')
+	while (str && str[i] != '\0')
 		i++;
 	return (i);
 }

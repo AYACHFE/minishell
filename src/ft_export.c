@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/05/26 16:02:18 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/02 20:29:48 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ void	ft_rem_var(char **str, t_minishell *mini)
 	i = 1;
 	while(str[i] && (ft_strchr(mini->str[i], '=') != NULL))
 	{
-		if(ft_check_var_exect(str[i], mini, 0) != 0)
-			ft_unset(mini);
+		// if(ft_check_var_exect(str[i], mini, 0) != 0)
+		// 	ft_unset(mini);
 		my_tmp[n] = ft_strdup(mini->str[i]);
 		n++;
 		i++;
@@ -180,8 +180,8 @@ void	ft_rem_var_export(char **str, t_minishell *mini) // add_variable
 	i = 1;
 	while (str[i])
 	{
-		if(ft_check_var_exect(str[i], mini, 0) != 0)
-			ft_unset(mini);
+		// if(ft_check_var_exect(str[i], mini, 0) != 0)
+		// 	ft_unset(mini);
 		my_tmp[n] = ft_strdup(mini->str[i]);
 		my_tmp[n] = ft_add_double(my_tmp[n]);
 		n++;

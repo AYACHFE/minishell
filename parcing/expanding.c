@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/02 22:42:49 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/03 10:39:11 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_substr1(char const *s, unsigned int start, size_t len)
 	size_t		len_s;
 	const char	*ss;
 	char		*p;
+    int deuble = 0;
+    int single = 0;
 
 	if (!s)
 		return (0);
@@ -33,10 +35,19 @@ char	*ft_substr1(char const *s, unsigned int start, size_t len)
 	if (!p)
 		return (NULL);
 	l = (int)len;
+ 
 	while (l > i)
 	{
-        if(ss[start] == '\"')
+        if (ss[start] == '\"' && ((single % 2) == 0))
+        {
+            deuble++;
             start++;
+        }
+        else if (ss[start] == '\'' && ((deuble % 2) == 0))
+        {
+            single++;
+            start++;
+        }
         else
         {
 		    p[i] = ss[start];
@@ -76,12 +87,26 @@ int ft_hsb(char *s)
     char c;
     int  i = 0;
     int j = 0;
+    int deuble = 0;
+    int single = 0;
 
     c = '\'';
     while (s[i])
     {
         if (s[i] == '\'' || s[i] == '\"')
-            j++;
+        {
+            if(s[i] == '\"' && ((single % 2) == 0))
+            {
+                deuble++;
+                j++;
+            }
+            if(s[i] == '\'' && ((deuble % 2) == 0))
+            {
+                single++;
+                j++;
+            }      
+                
+        }
         i++;
     }
     return (i - j);           
@@ -262,10 +287,6 @@ void    ft_check_dollar(t_minishell *mini)
                 k = 0;
                 if (deuble == 1 && mini->cmd[i][k + 1] == '\"' && mini->cmd[i][k + 2] == '\0')
                     break;
-                if (mini->cmd[i][k] == '\'')
-                    k++;
-                while (mini->cmd[i][k] == '\"')
-                    k++;  
                 // if (single == 0)
                 // {
                 //     puts("bngb");

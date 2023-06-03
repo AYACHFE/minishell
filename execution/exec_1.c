@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/03 15:16:24 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/03 21:37:45 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		// write(2, "---->\n", 6);
 		return ;
 	}
-	// built_in_cmd_3(mini, &cmd[i], env);
-	// puts("---------not=------------");
+	// mini->exit_code = 1;
 	pid[i] = fork();
 	if (pid[i] == 0)
 	{

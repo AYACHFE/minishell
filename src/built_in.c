@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/03 19:32:21 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/03 23:08:26 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,24 +101,58 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 	}
 	printf("minishell: %s: command not found\n", cmd->args[0]);
 	free(var);
+	// mini->exit_code = 127;
 	exit(127);
 }
 
+void	ft_exit(t_cmd	*cmd, t_minishell	*mini)
+{
+	int	i;
+
+	i = 0;
+	while (cmd->args[i])
+		i++;
+	// printf("i == %d\n", i);
+	if (cmd->args[1] && cmd->args[1][0] == '0')
+		exit(0);
+	if (cmd->args[1] && ft_atoi(cmd->args[1]) == 0)
+	{
+		printf("minishell: exit: %s: numeric argument required\n", cmd->args[1]);
+		mini->exit_code = 255;
+	}
+	else if (i > 2)
+	{
+		printf("minishell: exit: too many arguments\n");
+		mini->exit_code = 255;
+	}
+	else if (cmd->args[1])
+	{
+		if (ft_atoi(cmd->args[1]) > 0)
+			exit(ft_atoi(cmd->args[1]));
+		else
+			exit(255);
+	}
+	else
+		exit(mini->exit_code);
+}
 
 int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
 	//built_ins that you should not fork for
 	(void)env;
 	if (ft_strncmp(cmd->args[0], "exit", ft_strlen(mini->str[0])) == 0)
-		exit(0);
-	else if (ft_strncmp(cmd->args[0], "cd", ft_strlen(cmd->args[0])) == 0)
 	{
-		ft_cd(cmd);
+		ft_exit(cmd, mini);
+		return (1);
+	}
+	else if ((ft_strncmp(cmd->args[0], "cd", ft_strlen(cmd->args[0])) == 0) \
+	&& cmd->general_info->cmd_nb == 1)
+	{
+		ft_cd(cmd, mini);
 		return(1);
 	}
 	else if (ft_strncmp(cmd->args[0], "unset", ft_strlen(cmd->args[0])) == 0)
 	{
-		// printf("-->cmd.args == '%s'\n", cmd->args[0]);
 		ft_unset(cmd, mini);
 		return (1);
 	}
@@ -136,7 +170,7 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 	//built_ins that you should fork for
 	if (ft_strncmp(cmd->args[0], "echo", ft_strlen(cmd->args[0])) == 0)
 		ft_echo(cmd);
-	else if (ft_strncmp(cmd->args[0], "pwd", ft_strlen(cmd->args[0])) == 0)
+	else if (ft_strncmp(cmd->args[0], "pwd", 4) == 0)
 		ft_pwd();
 	else if ((ft_strncmp(cmd->args[0], "env", ft_strlen(cmd->args[0])) == 0) && cmd->general_info->cmd_nb == 1)
 		ft_env(env, mini);
@@ -148,10 +182,11 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 	}
 }
 
-int	ft_cd(t_cmd	*cmd)
+int	ft_cd(t_cmd	*cmd, t_minishell	*mini)
 {
 	char *home;
 	
+	(void)mini;
 	home = getenv("HOME");
 	if (cmd->args[1] == NULL)
 	{
@@ -159,7 +194,9 @@ int	ft_cd(t_cmd	*cmd)
 	}
 	else if (chdir(cmd->args[1]) != 0) 
 	{
-		perror("minishell: cd");
+		mini->exit_code = 1;
+		// mini->exit_code = 0;
+		perror("minishell: ");
 		return (1);
 	}
 	return (0);

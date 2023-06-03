@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/02 15:48:22 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/03 14:36:50 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <fcntl.h>
+
 
 typedef struct s_cmd_info
 {
@@ -35,6 +36,7 @@ typedef struct s_cmd_info
 	int		files_nb;
 	int		std_in;
 	int		std_out;
+	int		exit_code;
 }	t_cmd_info;
 
 typedef struct s_cmd
@@ -64,6 +66,8 @@ typedef struct s_cmd
 	t_cmd_info	*general_info;
 }	t_cmd;
 
+t_cmd *cmd; 
+
 typedef struct s_minishell
 {
 	char	**tmp_cmd;
@@ -77,6 +81,7 @@ typedef struct s_minishell
 	char	**my_env;
 	char	**my_export;
 	char	**tmp_my_env;
+	int		exit_code;
 }	t_minishell;
 
 //built_in
@@ -104,9 +109,9 @@ void	search_in_export(t_minishell	*mini, char *str);
 void	rem_var_export(t_minishell	*mini, int pos);
 
 //ft_export
-void	ft_export(t_minishell *mini);
-void	ft_rem_var(char **str, t_minishell *mini);
-void	ft_rem_var_export(char **str, t_minishell *mini);
+void	ft_export(t_cmd	*cmd, t_minishell *mini);
+void	ft_rem_var(char **str, t_minishell *mini, t_cmd *cmd);
+void	ft_rem_var_export(char **str, t_minishell *mini, t_cmd *cmd);
 void	print_export(t_minishell *mini);
 int		ft_double_single_quote(char *str);
 int		ft_check_var_exect(char *s,t_minishell *mini, int var);

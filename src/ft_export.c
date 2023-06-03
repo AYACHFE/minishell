@@ -6,18 +6,18 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/02 20:29:48 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/03 12:10:51 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ft_export(t_minishell *mini)
+void	ft_export(t_cmd	*cmd, t_minishell *mini)
 {
 	if (mini->count_str > 1)
 	{
-		ft_rem_var(mini->str ,mini);
-		ft_rem_var_export(mini->str ,mini);
+		ft_rem_var(cmd->args ,mini, cmd);
+		ft_rem_var_export(cmd->args ,mini, cmd);
 	}
 	else
 		print_export(mini);
@@ -71,7 +71,7 @@ int	ft_check_var_exect(char *s,t_minishell *mini, int var)
 }
 
 
-void	ft_rem_var(char **str, t_minishell *mini)
+void	ft_rem_var(char **str, t_minishell *mini, t_cmd	*cmd)
 {
 	int i;
 	int j;
@@ -102,8 +102,8 @@ void	ft_rem_var(char **str, t_minishell *mini)
 	i = 1;
 	while(str[i] && (ft_strchr(mini->str[i], '=') != NULL))
 	{
-		// if(ft_check_var_exect(str[i], mini, 0) != 0)
-		// 	ft_unset(mini);
+		if(ft_check_var_exect(str[i], mini, 0) != 0)
+			ft_unset(cmd ,mini);
 		my_tmp[n] = ft_strdup(mini->str[i]);
 		n++;
 		i++;
@@ -123,8 +123,10 @@ char *ft_add_double(char *s)
 	int		i;
 	int		j;
 	char *str;
+	int		p;
 	char dec[12] ="declare -x ";
 
+	p = 0;
 	i = 0;
 	j = 0;
 	while(s[i])
@@ -146,17 +148,21 @@ char *ft_add_double(char *s)
 			str[++i] = '\"';
 			str[++i] = '\"';	
 		}
-		else if ((ft_strchr(s, '=') != NULL) && (s[j] == '=' || s[j + 1] == '\0'))
+		else if ((ft_strchr(s, '=') != NULL) && (s[j] == '=' || s[j + 1] == '\0') && p == 0)
+		{
+			p++;
 			str[++i] = '\"';
+		}
 		i++;
 		j++;
 	}
-	str[i] = '\0';
+	str[i] = '\"';
+	str[++i] = '\0';
 	free(s);
 	return (str);
 }
 
-void	ft_rem_var_export(char **str, t_minishell *mini) // add_variable
+void	ft_rem_var_export(char **str, t_minishell *mini, t_cmd	*cmd) // add_variable
 {
 	int i;
 	int j;
@@ -180,8 +186,8 @@ void	ft_rem_var_export(char **str, t_minishell *mini) // add_variable
 	i = 1;
 	while (str[i])
 	{
-		// if(ft_check_var_exect(str[i], mini, 0) != 0)
-		// 	ft_unset(mini);
+		if(ft_check_var_exect(str[i], mini, 0) != 0)
+			ft_unset(cmd, mini);
 		my_tmp[n] = ft_strdup(mini->str[i]);
 		my_tmp[n] = ft_add_double(my_tmp[n]);
 		n++;

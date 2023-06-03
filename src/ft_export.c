@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/02 22:53:01 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/03 11:06:47 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,10 @@ char *ft_add_double(char *s)
 	int		i;
 	int		j;
 	char *str;
+	int		p;
 	char dec[12] ="declare -x ";
 
+	p = 0;
 	i = 0;
 	j = 0;
 	while(s[i])
@@ -146,12 +148,16 @@ char *ft_add_double(char *s)
 			str[++i] = '\"';
 			str[++i] = '\"';	
 		}
-		else if ((ft_strchr(s, '=') != NULL) && (s[j] == '=' || s[j + 1] == '\0'))
+		else if ((ft_strchr(s, '=') != NULL) && (s[j] == '=' || s[j + 1] == '\0') && p == 0)
+		{
+			p++;
 			str[++i] = '\"';
+		}
 		i++;
 		j++;
 	}
-	str[i] = '\0';
+	str[i] = '\"';
+	str[++i] = '\0';
 	free(s);
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/05 18:49:56 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/05 19:00:12 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	}
 	mini->exit_code = WEXITSTATUS(status);
 	// printf("-->exit_code %d\n", mini->exit_code);
-	// while (wait(NULL) > 0) ;
 }
 
 void	here_doc(t_cmd	*cmd)

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/03 15:45:43 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/05 12:55:13 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 					{
 						//in_redirection
 						cmd[i].in_red = 1;
-						cmd[i].files[fl] = ft_strjoin("< ", general_info->str[j]);
+						cmd[i].files[fl] = ft_strjoin("< ", general_info->str[++j]);
 						fl++;
 					}
 				}

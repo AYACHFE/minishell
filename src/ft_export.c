@@ -6,22 +6,140 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/03 12:10:51 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/05 15:41:25 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+char	*ft_strdup1(char *s1)
+{
+	int		i;
+	int		j;
+	char	*ss1;
+
+	i = 0;
+	j = 0;
+	while (s1[i])
+	{
+		if(s1[i] == '\"')
+			j++;
+		i++;
+	}
+	ss1 = malloc(((i - j) + 1) * (sizeof(char)));
+	if (!ss1)
+		return (0);
+	i = 0;
+	j = 0;
+	while (s1[i])
+	{
+		if(s1[i] == '\"')
+			i++;
+		else
+		{
+			ss1[j] = s1[i];
+			j++;
+			i++;
+		}
+			
+	}
+	ss1[j] = '\0';
+	return (ss1);
+}
+
+int check_valid_exp(char **arg)
+{
+	int i;
+	int	j;
+	i = 0;
+
+	while(arg[i])
+	{
+		if (arg[i] && (ft_strchr(arg[i], '=') != NULL))
+		{
+			j = 0;
+			while(arg[i][j] != '=')
+			{
+				if(ft_isalpha(arg[i][j]) == 0 && ft_isalpha(arg[i][j]) != '_')
+				{
+					printf("minishell: not a valid identifier\n");
+					return(0);
+				}
+				j++;
+			}
+		}
+		i++;
+	}
+	return(1);
+}
+
 void	ft_export(t_cmd	*cmd, t_minishell *mini)
 {
-	if (mini->count_str > 1)
+	
+	int i = 1;
+	int	j = 0;
+	int	t = 0;
+	char **arg;
+
+	if(cmd->args[2] == '\0')
+		t = 0;
+	else
+	{	
+		while(cmd->args[i])
+		{
+			j = i + 1;
+			while(cmd->args[j])
+			{
+				if(ft_strncmp(cmd->args[i], cmd->args[j], ft_strlen(cmd->args[i])) == 0)
+				{
+					t++;
+					break;
+				}
+				else
+					j++;	
+			}
+			i++;
+		}
+	}	
+	// puts("reda");
+	arg = malloc((i - t + 1) * (sizeof(char *)));
+	i = 1;
+	j = 0;
+	t = 0;
+	if(cmd->args[i + 1] == '\0')
 	{
-		ft_rem_var(cmd->args ,mini, cmd);
-		ft_rem_var_export(cmd->args ,mini, cmd);
+		arg[t] = cmd->args[i];
+		t++;
 	}
 	else
+	{
+		while(cmd->args[i])
+		{
+			j = i + 1;
+			while(cmd->args[j])
+			{
+				if(ft_strncmp(cmd->args[i], cmd->args[j], ft_strlen(cmd->args[i])) == 0)
+					break;
+				else
+					j++;
+			}
+			if(cmd->args[j] == '\0')
+			{
+				arg[t] = cmd->args[i];
+				t++;
+			}	
+			i++;
+		}
+	}	
+	arg[t] = NULL;
+	 i = check_valid_exp(arg);
+	if (mini->count_str > 1 && i == 1)
+	{
+		ft_rem_var(arg ,mini);
+		ft_rem_var_export(arg ,mini);
+	}
+	else if (i == 1)
 		print_export(mini);
-	
 }
 
 int	ft_check_var_exect(char *s,t_minishell *mini, int var)
@@ -31,19 +149,20 @@ int	ft_check_var_exect(char *s,t_minishell *mini, int var)
 	int	d;
 
 	i = 0;
-	j=0;
+	j = 0;
 	d = 11;
+	// printf("****%s\n", s);
 	if (var == 0)
 	{	
 		while (mini->my_export[i])
 		{
 			// i = tmp;
-			while (mini->my_export[i][d] == s[j] && s[j] != '=' )
+			while (mini->my_export[i][d] == s[j] && s[j] != '=' && mini->my_export[i][d] != '\0' && s[j] != '\0')
 			{
 				j++;
 				d++;
 			}
-			if((mini->my_export[i][d] == '=' || mini->my_export[i][d] == '\0') && s[j] == '=')
+			if((mini->my_export[i][d] == '=' || mini->my_export[i][d] == '\0') && (s[j] == '=' || s[j] == '\0'))
 				return (i);
 			else
 			{
@@ -70,20 +189,22 @@ int	ft_check_var_exect(char *s,t_minishell *mini, int var)
 	return (0);
 }
 
-
-void	ft_rem_var(char **str, t_minishell *mini, t_cmd	*cmd)
+void	ft_rem_var(char **str, t_minishell *mini)
 {
-	int i;
+	int i = 0;
 	int j;
 	int d;
 	int n;
 	char **my_tmp;
 	
+	// printf("***%s\n", str[i]);
 	j = 0;
 	n = 0;
 	while (mini->my_env[j])
 		j++;
-	my_tmp = malloc(sizeof(char *) * (j + mini->count_str)); 
+	while(str[i])
+		i++;	
+	my_tmp = malloc(sizeof(char *) * (j + i + 1)); 
 	d = 0;
 	j = 0;
 	i = 0;
@@ -99,12 +220,19 @@ void	ft_rem_var(char **str, t_minishell *mini, t_cmd	*cmd)
 		n++;
 		d++;
 	}
-	i = 1;
-	while(str[i] && (ft_strchr(mini->str[i], '=') != NULL))
+	i = 0;
+	while(str[i] && (ft_strchr(str[i], '=') != NULL))
 	{
-		if(ft_check_var_exect(str[i], mini, 0) != 0)
-			ft_unset(cmd ,mini);
-		my_tmp[n] = ft_strdup(mini->str[i]);
+		// if(ft_check_var_exect(str[i], mini, 0) != 0)
+		// {
+		// 	puts("reda");
+		// 	ft_unset(cmd ,mini);
+		// }
+		// printf("***%s\n", str[i]);
+		my_tmp[n] = ft_strdup1(str[i]);
+		// printf("env=%d------>%s\n", i, str[i]);
+		// printf("env=%d------>%s\n", n, my_tmp[n]);
+		// printf("--------------\n");
 		n++;
 		i++;
 	}
@@ -115,6 +243,12 @@ void	ft_rem_var(char **str, t_minishell *mini, t_cmd	*cmd)
 		free(mini->my_env[i]);
 		i++;
 	}
+	j = 0;
+    // while(my_tmp[j])
+    // {
+    //     printf("%d------>%s\n", j, my_tmp[j]);
+    //     j++;
+    // }
 	mini->my_env = my_tmp;
 }
 
@@ -123,10 +257,8 @@ char *ft_add_double(char *s)
 	int		i;
 	int		j;
 	char *str;
-	int		p;
 	char dec[12] ="declare -x ";
 
-	p = 0;
 	i = 0;
 	j = 0;
 	while(s[i])
@@ -148,23 +280,19 @@ char *ft_add_double(char *s)
 			str[++i] = '\"';
 			str[++i] = '\"';	
 		}
-		else if ((ft_strchr(s, '=') != NULL) && (s[j] == '=' || s[j + 1] == '\0') && p == 0)
-		{
-			p++;
+		else if ((ft_strchr(s, '=') != NULL) && (s[j] == '=' || s[j + 1] == '\0'))
 			str[++i] = '\"';
-		}
 		i++;
 		j++;
 	}
-	str[i] = '\"';
-	str[++i] = '\0';
+	str[i] = '\0';
 	free(s);
 	return (str);
 }
 
-void	ft_rem_var_export(char **str, t_minishell *mini, t_cmd	*cmd) // add_variable
+void	ft_rem_var_export(char **str, t_minishell *mini) // add_variable
 {
-	int i;
+	int i = 0;
 	int j;
 	int d;
 	int n;
@@ -174,22 +302,33 @@ void	ft_rem_var_export(char **str, t_minishell *mini, t_cmd	*cmd) // add_variabl
 	n = 0;
 	while (mini->my_export[j])
 		j++;
-	my_tmp = malloc(sizeof(char *) * (j + mini->count_str)); 
+	while(str[i])
+		i++;	
+	my_tmp = malloc(sizeof(char *) * (j + i + 1)); 	
 	d = 0;
 	j = 0;
+	i = 0;
+	while (str[i])
+	{
+		if(ft_check_var_exect(str[i], mini, 0) != 0)
+			search_in_export(mini, str[i]);
+		i++;
+	}
 	while (mini->my_export[d])
 	{
 		my_tmp[n] = ft_strdup(mini->my_export[d]);
 		n++;
 		d++;
 	}
-	i = 1;
+	i = 0;
 	while (str[i])
 	{
-		if(ft_check_var_exect(str[i], mini, 0) != 0)
-			ft_unset(cmd, mini);
-		my_tmp[n] = ft_strdup(mini->str[i]);
+		// printf("***%s\n", str[i]);
+		my_tmp[n] = ft_strdup1(str[i]);
 		my_tmp[n] = ft_add_double(my_tmp[n]);
+		// printf("expo=%d------>%s\n", i, str[i]);
+		// printf("expo=%d------>%s\n", n, my_tmp[n]);
+		// printf("--------------\n");
 		n++;
 		i++;
 	}	

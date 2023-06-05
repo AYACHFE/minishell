@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/05 11:48:55 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/05 18:49:56 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,8 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	cmd->general_info->std_out = dup(1);
 	while (i < cmd->general_info->cmd_nb - 1)
 	{
-			// puts("++++++");
 		if (cmd[i].args[0] && built_in_cmd_3(mini, &cmd[i], env))
 		{
-			// write(2, "----------->\n", 14);
 			i++;
 			return ;
 		}
@@ -56,7 +54,7 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 			close(fd[0]);
 			redirections(&cmd[i]);
 			built_in_cmd_2(mini, &cmd[i], env);
-			exit(1);
+			exit(0);
 		}
 		dup2(fd[0], 0);
 		close(fd[1]);
@@ -72,13 +70,12 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		dup2(cmd[i].fd_in, 0);
 		close(cmd[i].fd_in);
 	}
-	if (pipe(fd) == -1)
-		exit(0);
 	if (cmd[i].args[0] && built_in_cmd_3(mini, &cmd[i], env))
 	{
 		return ;
 	}
-	// mini->exit_code = 1;
+	if (pipe(fd) == -1)
+		exit(0);
 	pid[i] = fork();
 	if (pid[i] == 0)
 	{
@@ -86,8 +83,9 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		close(fd[1]);
 		redirections(&cmd[i]);
 		built_in_cmd_2(mini, &cmd[i], env);
-		exit(1);
+		exit(0);
 	}
+	// mini->exit_code = 0;
 	dup2(stdi, 0);
 	dup2(stdou, 1);
 	close(fd[0]);
@@ -100,7 +98,7 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		// printf("exit with code (%d)\n", status>>8);
 	}
 	mini->exit_code = WEXITSTATUS(status);
-	// printf("exit_code %d\n", mini->exit_code);
+	// printf("-->exit_code %d\n", mini->exit_code);
 	// while (wait(NULL) > 0) ;
 }
 
@@ -167,7 +165,8 @@ void	file_creation(t_cmd	*cmd)
 		else if (cmd->files[j][0] == '<')
 		{
 			//in_redirection
-			if (access(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), F_OK | X_OK) != 0)
+			// if (access(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), F_OK | X_OK) != 0)
+			if (access(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), F_OK) != 0)
 			{
 				perror(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])));
 				return ;

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/03 23:08:26 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/05 11:49:01 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	mini->count_str = count(str, ' ');
 	parcing(mini, cmd, str);
 	exec_1(mini, cmd, env);
-
+	
+	// printf("exit_code %d\n", mini->exit_code);
+	
 	free(cmd);
 	// free(cmd->args);
 	free(str);
@@ -99,41 +101,17 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 		free(val);
 		j++;
 	}
-	printf("minishell: %s: command not found\n", cmd->args[0]);
-	free(var);
-	// mini->exit_code = 127;
-	exit(127);
-}
-
-void	ft_exit(t_cmd	*cmd, t_minishell	*mini)
-{
-	int	i;
-
-	i = 0;
-	while (cmd->args[i])
-		i++;
-	// printf("i == %d\n", i);
-	if (cmd->args[1] && cmd->args[1][0] == '0')
-		exit(0);
-	if (cmd->args[1] && ft_atoi(cmd->args[1]) == 0)
+	if (cmd->args[0][0] == '/')
 	{
-		printf("minishell: exit: %s: numeric argument required\n", cmd->args[1]);
-		mini->exit_code = 255;
-	}
-	else if (i > 2)
-	{
-		printf("minishell: exit: too many arguments\n");
-		mini->exit_code = 255;
-	}
-	else if (cmd->args[1])
-	{
-		if (ft_atoi(cmd->args[1]) > 0)
-			exit(ft_atoi(cmd->args[1]));
-		else
-			exit(255);
+		printf("minishell: No such file or directory\n");
+		// mini->exit_code = 0;
+		// exit(0);
 	}
 	else
-		exit(mini->exit_code);
+		printf("minishell: %s: command not found\n", cmd->args[0]);
+	free(var);
+	mini->exit_code = 127;
+	exit(127);
 }
 
 int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
@@ -179,6 +157,8 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 	else
 	{
 		execv_function(mini, cmd, env);
+		// printf("exit_code %d\n", mini->exit_code);
+		// mini->exit_code = 1;
 	}
 }
 

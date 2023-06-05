@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/02 22:56:12 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/05 15:18:14 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,6 @@
 #include <fcntl.h>
 #include <signal.h>
 
-typedef enum s_at
-{
-	TYPE_CMD,
-	TYPE_PIPE,
-	
-}	t_at;
-
-t_at  type;
-
 typedef struct s_cmd_info
 {
 	char	**str;
@@ -40,6 +31,12 @@ typedef struct s_cmd_info
 	int		out_red_nb;
 	int		in_red_nb;
 	int		here_doc_nb;
+	char	**files;
+	char	**eof;
+	int		files_nb;
+	int		std_in;
+	int		std_out;
+	int		exit_code;
 }	t_cmd_info;
 
 typedef struct s_cmd
@@ -52,12 +49,13 @@ typedef struct s_cmd
 	int	fd_in;
 	int	fd_out;
 	
+	char	**files;
 	//
 	int		append;
 	char	*append_file;
 	//
 	int		here_doc;
-	char	*here_doc_file;
+	char	**eof;
 	//
 	int		out_red;
 	char	*out_red_file;
@@ -68,10 +66,7 @@ typedef struct s_cmd
 	t_cmd_info	*general_info;
 }	t_cmd;
 
-typedef struct s_space_checker
-{
-	int	check;
-}	t_space_checker;
+t_cmd *cmd; 
 
 typedef struct s_minishell
 {
@@ -87,6 +82,7 @@ typedef struct s_minishell
 	char	**my_env;
 	char	**my_export;
 	char	**tmp_my_env;
+	int		exit_code;
 }	t_minishell;
 
 
@@ -94,8 +90,16 @@ typedef struct s_minishell
 void	built_in_cmd(t_minishell	*mini, char **env);
 void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env);
 void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env);
-int		ft_cd(t_cmd	*cmd);
+int		ft_cd(t_cmd	*cmd, t_minishell	*mini);
 void	ft_pwd();
+int		built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env);
+
+
+//exit
+void	ft_exit(t_cmd	*cmd, t_minishell	*mini);
+int	ft_toint_check(char *str);
+int	ft_toint_check_ext(char *str, int i, int res);
+
 
 //command
 void ft_echo(t_cmd	*cmd);
@@ -116,35 +120,40 @@ void	rem_var_export(t_minishell	*mini, int pos);
 //ft_export
 // void ft_export(t_minishell *mini);
 void	ft_export(t_cmd	*cmd, t_minishell *mini);
-void	ft_rem_var(char **str, t_minishell *mini, t_cmd *cmd);
-void	ft_rem_var_export(char **str, t_minishell *mini, t_cmd *cmd);
+void    ft_rem_var(char **str, t_minishell *mini);
+void	ft_rem_var_export(char **str, t_minishell *mini);
 void	print_export(t_minishell *mini);
 int		ft_double_single_quote(char *str);
-int		ft_check_var_exect(char *s,t_minishell *mini, int var);
+int	ft_check_var_exect(char *s,t_minishell *mini, int var);
 
 //parcing
 void	parcing(t_minishell	*mini,t_cmd	*cmd, char *s);
 char	*prep(char *str);
-void	ft_check_dollar(t_minishell *mini);
 
 
 //parce_2
 void	to_struct(t_minishell	*mini, t_cmd	*cmd);
 void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info);
 int		cmd_counter(t_minishell	*mini);
+int		*args_counter(t_cmd_info	*general_info);
 
+//expanding
+void	ft_check_dollar(t_minishell *mini);
+void ft_change(t_minishell *mini, char *str);
+int ft_strlennn(char *str);
 
 
 //error
 int ft_double_single_quote(char *str);
 int ft_error_pipe(char *s);
-int ft_error(char *str);
+int ft_error(char *str, int i);
 
+
+//execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
+void	file_creation(t_cmd	*cmd);
+void	here_doc(t_cmd	*cmd);
+void	redirections(t_cmd	*cmd);
 
-
-
-void ft_change(t_minishell *mini, char *str);
-int ft_strlennn(char *str);
 
 #endif

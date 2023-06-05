@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/03 10:39:11 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/05 15:24:13 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
             while (str[j] != '$' && str[j] != '\0')
                 j++;
             s = ft_substr(str, n+1 , ft_strlenn(str));
+            // printf("%s\n", s);
             i = 0;
             while (mini->my_env[i])
             {
@@ -175,6 +176,7 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
             free (s);
             if (mini->my_env[i] == '\0' && str[0] == '$' && str[1] == '\"')
             {
+                // printf("1");
                 n = n + 2;
                 s = ft_substr(str, n, ft_strlenn(str));
                 str_jn = ft_strjoin(str_jn, s);
@@ -183,15 +185,17 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
             }
             else if (mini->my_env[i] == '\0' && str[0] == '\"' && str[1] == '$'  && str[2] == '\'')
             {
+                // printf("2");
                 n = n + 1;
                 s = ft_substr(str, n, ft_strlennn(str));
-                printf("!!!!%s\n", s);
+                // printf("!!!!%s\n", s);
                 str_jn = ft_strjoin(str_jn, s);
                 while (str[n] != '\'' && str[n])
                     n++;
             }
             else if(mini->my_env[i] == '\0')
             {
+                // printf("3");
                 s = "@";
                 str_jn = ft_strjoin(str_jn, s);
                 while (str[n] != '$' && str[n] != '\"')
@@ -199,10 +203,14 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
             }
             if (mini->my_env[i] != '\0')
             {
-                s = ft_substr(mini->my_env[i], d + 1, ft_strlen(mini->my_env[i]));
-                str_jn = ft_strjoin(str_jn, s); 
+                // while(mini->my_env[i][d] != '\"')
+                //     d++;
+                // printf("%c\n", mini->my_env[i][d]);
+                s = ft_substr(mini->my_env[i], d+1, ft_strlenn(mini->my_env[i]));
+                str_jn = ft_strjoin(str_jn, s);
+                // printf("*----->%s\n", str_jn);
                 free(s);
-                while (str[n] != '$' && str[n] != '\"')
+                while (str[n] != '$' && str[n] != '\"' && str[n] != '\0')
                     n++;
             }
             n = j;
@@ -301,28 +309,27 @@ void    ft_check_dollar(t_minishell *mini)
         tmp = 0;
         i++;
     }
-    mini->tmp_cmd[j] = NULL; 
+    mini->tmp_cmd[j] = NULL;
     i = 0;
-    // while (mini->tmp_cmd[i])
-    //     i++;
-    // mini->last = malloc(i + 1);
-    // i = 0;
+    while( mini->tmp_cmd[i])
+    {
+        ft_error(mini->tmp_cmd[i], 1);
+        i++;
+    }
     // j = 0;
-    // while(mini->tmp_cmd[i])
+    // while(mini->tmp_cmd[j])
     // {
-    //     j = 0; 
-    //     while(mini->tmp_cmd[i][j])
-    //     {
-            
-    //     }
+    //     printf("%d------>%s\n", j, mini->tmp_cmd[j]);
+    //     j++;
     // }
+
     
      
 
     
-    while (mini->tmp_cmd[i])
-	{
-		printf("%d: ---------> %s\n", i, mini->tmp_cmd[i]);
-		i++;
-	}     
+    // while (mini->tmp_cmd[i])
+	// {
+	// 	printf("%d: ---------> %s\n", i, mini->tmp_cmd[i]);
+	// 	i++;
+	// }     
 }

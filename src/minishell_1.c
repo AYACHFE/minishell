@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/02 22:14:05 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/05 12:04:14 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void sigint_handler(int sig)
 int main(int ac, char **av, char **env)
 {
 	t_minishell	mini;
-
+	
+	mini.exit_code = 0;
 	(void)ac;
 	(void)av;
 	ft_env_1(env, &mini);

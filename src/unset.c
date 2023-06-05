@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:42:40 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/02 22:55:00 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/05 12:09:53 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,12 @@ void	rem_var_export(t_minishell	*mini, int pos)
 	int		i;
 
 	i = 0;
-	// printf("mini->my_export[pos] == %s\n", mini->my_export[pos]);
+	// printf("----->%s\n",mini->my_export[pos]);
 	free(mini->my_export[pos]);
 	while (mini->my_export[pos])
 	{
 		mini->my_export[pos] = mini->my_export[pos + 1];
+		// printf("mini->my_export[pos] == %s\n", mini->my_export[pos]);
 		pos++;
 	}
 	mini->my_export[pos] = NULL;
@@ -68,6 +69,8 @@ void	search_in_export(t_minishell	*mini, char *str)
 		sub = ft_substr(mini->my_export[i], 11, ft_strlen(mini->my_export[i]));
 		if (ft_strncmp(sub, str, ft_cnt(sub)) == 0)
 		{
+			// printf("i == %d , s == %s\n", i, mini->my_export[i]);
+			// puts("---->");
 			rem_var_export(mini, i);
 		}
 		i++;
@@ -86,7 +89,7 @@ void ft_unset(t_cmd	*cmd, t_minishell	*mini)
 			search_in_env(mini, cmd->args[j]);
 			j++;
 		}
-		j = 0;
+		j = 1;
 		while (cmd->args[j])
 		{
 			search_in_export(mini, cmd->args[j]);

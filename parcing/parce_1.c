@@ -6,11 +6,9 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/29 20:04:07 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/05 12:02:15 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../minishell.h"
 
 #include "../minishell.h"
 
@@ -30,7 +28,7 @@ char	*prep(char	*str)
 	int	i;
 	int	j;
 	char	*var;
-	
+
 	var = malloc(sizeof(char) * ft_strlen(str) + 20);
 	i = 0;
 	j = 0;

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/05 12:55:13 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/06 13:13:37 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,6 +270,7 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 	general_info->out_red_nb = 0;
 	general_info->str = mini->tmp_cmd;
 	general_info->exit_code = 0;
+	general_info->in_file_exist = 0;
 
 	while (mini->cmd[i])
 	{

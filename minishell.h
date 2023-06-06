@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/05 15:42:42 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/06 12:38:33 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 
 typedef struct s_cmd_info
 {
+	int		in_file_exist;
 	char	**str;
 	int		cmd_nb;
 	int		pipe_nb;
@@ -66,8 +67,6 @@ typedef struct s_cmd
 	t_cmd_info	*general_info;
 }	t_cmd;
 
-t_cmd *cmd; 
-
 typedef struct s_minishell
 {
 	char	**tmp_cmd;
@@ -83,6 +82,9 @@ typedef struct s_minishell
 	char	**tmp_my_env;
 	int		exit_code;
 }	t_minishell;
+
+t_cmd *cmd; 
+t_minishell	*mini;
 
 //built_in
 void	built_in_cmd(t_minishell	*mini, char **env);

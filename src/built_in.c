@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/06 11:40:53 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/06 12:40:02 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,10 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 	i = 0;
 	j = 0;
 	(void)env;
-	// while (env[i] != NULL)
-	// {
-	// 	if (ft_strncmp(env[i], "PATH", 4) == 0)
-	// 	{
-	// 		var = ft_split(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
-	// 		break ;
-	// 	}
-	// 	i++;
-	// }
-	// path_nb = count(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
+	if (cmd->general_info->in_file_exist == 1)
+		exit(1);
 	while (mini->my_env[i] != NULL)
 	{
-		// puts(mini->my_env[i]);
 		if (ft_strncmp(mini->my_env[i], "PATH", 4) == 0)
 		{
 			var = ft_split(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
@@ -150,16 +141,9 @@ int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
 	else if ((ft_strncmp(cmd->args[0], "export", 7) == 0)  \
 	&& cmd->general_info->cmd_nb == 1 && cmd->args[1])
 	{
-		// write(2, "hello\n", 6);
 		ft_export(cmd, mini);
 		return (1);
 	}
-	// else if (ft_strncmp(cmd->args[0], "echo", 5) == 0 && cmd->general_info->cmd_nb == 1)
-	// {
-	// 	mini->exit_code = 0;
-	// 	ft_echo(cmd);
-	// 	return (1);
-	// }
 	return (0);
 }
 

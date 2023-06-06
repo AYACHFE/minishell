@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/05 19:39:13 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/06 11:40:53 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	mini->str = ft_split(str, ' ');
 	mini->count_str = count(str, ' ');
 	parcing(mini, cmd, str);
-	exec_1(mini, cmd, env);
+	
+	if (mini->count_str > 0)
+		exec_1(mini, cmd, env);
 	
 	// printf("exit_code %d\n", mini->exit_code);
 	
@@ -113,6 +115,7 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 		j++;
 	}
 	mini->exit_code = 1;
+	// if (cmd->args[1][0] == '/')
 	if (cmd->args[0][0] == '/')
 	{
 		printf("minishell: No such file or directory\n");
@@ -189,6 +192,22 @@ int	ft_cd(t_cmd	*cmd, t_minishell	*mini)
 	
 	(void)mini;
 	home = getenv("HOME");
+	int	i = 0;
+	int	check = 0;
+	while (mini->my_env[i] != NULL)
+	{
+		if (ft_strncmp(mini->my_env[i], "HOME", 4) == 0)
+		{
+			check = 1;
+			break ;
+		}
+		i++;
+	}
+	if (check == 0 && !(cmd->args[1]))
+	{
+		printf("minishell: cd: HOME not set\n");
+		return (1);
+	}
 	if (cmd->args[1] == NULL)
 	{
 		chdir(home);
@@ -196,7 +215,6 @@ int	ft_cd(t_cmd	*cmd, t_minishell	*mini)
 	else if (chdir(cmd->args[1]) != 0) 
 	{
 		mini->exit_code = 1;
-		// mini->exit_code = 0;
 		perror("minishell: ");
 		return (1);
 	}

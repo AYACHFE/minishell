@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/05 15:36:42 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/06 16:33:23 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,19 @@ int check_valid_exp(char **arg)
 		if (arg[i] && (ft_strchr(arg[i], '=') != NULL))
 		{
 			j = 0;
-			while(arg[i][j] != '=')
+			while(arg[i][j] != '=' && arg[i][j])
 			{
-				if(ft_isalpha(arg[i][j]) == 0 && ft_isalpha(arg[i][j]) != '_')
+				if(ft_isalpha(arg[i][0]) == 0 && ft_isalpha(arg[i][0]) != '_')
 				{
 					printf("minishell: not a valid identifier\n");
 					return(0);
 				}
 				j++;
 			}
+		}
+		else if(ft_isalpha(arg[i][0]) == 0 && ft_isalpha(arg[i][0]) != '_')
+		{
+			printf("minishell: not a valid identifier\n");
 		}
 		i++;
 	}
@@ -132,8 +136,9 @@ void	ft_export(t_cmd	*cmd, t_minishell *mini)
 		}
 	}	
 	arg[t] = NULL;
-	 i = check_valid_exp(arg);
-	if (mini->count_str > 1 && i == 1)
+	i = check_valid_exp(arg);
+	// if (mini->count_str > 1 && i == 1)
+	if (cmd->args[1] && i == 1)
 	{
 		ft_rem_var(arg ,mini);
 		ft_rem_var_export(arg ,mini);
@@ -257,6 +262,7 @@ char *ft_add_double(char *s)
 	int		i;
 	int		j;
 	char *str;
+	int tmp = 0;
 	char dec[12] ="declare -x ";
 
 	i = 0;
@@ -278,14 +284,20 @@ char *ft_add_double(char *s)
 		if((ft_strchr(s, '=') != NULL) && (s[j] == '=' && s[j + 1] == '\0'))
 		{
 			str[++i] = '\"';
-			str[++i] = '\"';	
-		}
-		else if ((ft_strchr(s, '=') != NULL) && (s[j] == '=' || s[j + 1] == '\0'))
 			str[++i] = '\"';
+			return (str);
+		}
+		else if (ft_strchr(s, '=') != NULL && s[j] == '=' && tmp == 0)
+		{
+			str[++i] = '\"';		
+			tmp = 1;
+		}
 		i++;
 		j++;
 	}
-	str[i] = '\0';
+	if(s[j] == '\0' && ft_strchr(s, '=') != NULL)
+		str[i] = '\"';
+	str[++i] = '\0';
 	free(s);
 	return (str);
 }
@@ -353,346 +365,3 @@ void	print_export(t_minishell *mini)
 		j++;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// char	*ft_strdup1(const char *s1)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*ss1;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (s1[i])
-// 	{
-// 		if(s1[i] == '\"')
-// 			j++;
-// 		i++;	
-// 	}
-// 	ss1 = malloc((i - j + 1) * (sizeof(char)));
-// 	if (!ss1)
-// 		return (0);
-// 	i = 0;
-// 	j = 0;
-// 	while (s1[i])
-// 	{
-// 		if (s1[i] != '\"')
-// 		{
-// 			ss1[j] = s1[i];
-// 			j++;
-// 			i++;
-// 		}
-// 		else
-// 			i++;
-// 	}
-// 	ss1[j] = '\0';
-// 	return (ss1);
-// }
-
-
-
-// void	ft_export(t_cmd	*cmd, t_minishell *mini)
-// {
-// 	int i = 1;
-// 	int	j = 0;
-// 	int	t = 0;
-// 	char **arg;
-// 	if(cmd->args[2] == '\0')
-// 		t = 0;
-// 	else
-// 	{	
-// 		while(cmd->args[i])
-// 		{
-// 			j = i + 1;
-// 			while(cmd->args[j])
-// 			{
-// 				if(ft_strncmp(cmd->args[i], cmd->args[j], ft_strlen(cmd->args[i])) == 0)
-// 				{
-// 					t++;
-// 					break;
-// 				}
-// 				else
-// 					j++;	
-// 			}
-// 			i++;
-// 		}
-// 	}	
-// 	// puts("reda");
-// 	arg = malloc((i - t + 1) * (sizeof(char *)));
-// 	i = 1;
-// 	j = 0;
-// 	t = 0;
-// 	if(cmd->args[i + 1] == '\0')
-// 	{
-// 		arg[t] = cmd->args[i];
-// 		t++;
-// 	}
-// 	else
-// 	{
-// 		while(cmd->args[i])
-// 		{
-// 			j = i + 1;
-// 			while(cmd->args[j])
-// 			{
-// 				if(ft_strncmp(cmd->args[i], cmd->args[j], ft_strlen(cmd->args[i])) == 0)
-// 					break;
-// 				else
-// 					j++;
-// 			}
-// 			if(cmd->args[j] == '\0')
-// 			{
-// 				arg[t] = cmd->args[i];
-// 				t++;
-// 			}	
-// 			i++;
-// 		}
-// 	}	
-// 	arg[t] = NULL;
-// 	if (mini->count_str > 1)
-// 	{
-// 		ft_rem_var(arg ,mini);
-// 		ft_rem_var_export(arg ,mini, cmd);
-// 	}
-// 	else
-// 		print_export(mini);
-	
-// }
-
-// int	ft_check_var_exect(char *s,t_minishell *mini, int var)
-// {
-// 	int i;
-// 	int	j;
-// 	int	d;
-
-// 	i = 0;
-// 	j=0;
-// 	d = 11;
-// 	// printf("99999%s\n", s);
-// 	if (var == 0)
-// 	{	
-// 		while (mini->my_export[i])
-// 		{
-// 			// i = tmp;
-// 			while (mini->my_export[i][d] == s[j] && s[j] != '=' )
-// 			{
-// 				j++;
-// 				d++;
-// 			}
-// 			if((mini->my_export[i][d] == '=' || mini->my_export[i][d] == '\0') && s[j] == '=')
-// 				return (i);
-// 			else
-// 			{
-// 				d = 11;
-// 				j = 0;	
-// 			}
-// 			i++;
-// 		}
-// 	}
-// 	else
-// 	{
-// 		while (mini->my_env[i])
-// 		{
-// 			// i = tmp;
-// 			while (mini->my_env[i][j] == s[j] && s[j] != '=')
-// 				j++;
-// 			if(mini->my_env[i][j] == '=' && s[j] == '=')
-// 				return (i);
-// 			else
-// 				j = 0;	
-// 			i++;
-// 		}
-// 	}
-// 	return (0);
-// }
-
-
-// void	ft_rem_var(char **str, t_minishell *mini)
-// {
-// 	int i;
-// 	int j;
-// 	int d;
-// 	int n;
-// 	char **my_tmp;
-	
-// 	j = 0;
-// 	n = 0;
-// 	while (mini->my_env[j])
-// 		j++;
-// 	while (str[n])
-// 		n++;	
-// 	my_tmp = malloc(sizeof(char *) * (j + n)); 
-// 	n = 0;
-// 	d = 0;
-// 	j = 0;
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (ft_check_var_exect(str[i], mini, 0) != 0)
-// 			rem_var_env(mini, ft_check_var_exect(str[i], mini, 1));
-// 		i++;
-// 	}
-// 	while (mini->my_env[d])
-// 	{
-// 		my_tmp[n] = ft_strdup(mini->my_env[d]);
-// 		n++;
-// 		d++;
-// 	}
-// 	i = 0;
-// 	while(str[i] && (ft_strchr(str[i], '=') != NULL))
-// 	{
-// 		// if(ft_check_var_exect(str[i], mini, 0) != 0)
-// 		// 	ft_unset(cmd ,mini);
-// 		my_tmp[n] = ft_strdup1(str[i]);
-// 		printf("env --- >%s\n", my_tmp[n]);
-// 		n++;
-// 		i++;
-// 	}
-// 	my_tmp[n] = NULL;
-// 	i = 0;
-// 	while (mini->my_env[i]) 
-// 	{
-// 		free(mini->my_env[i]);
-// 		i++;
-// 	}
-// 	mini->my_env = my_tmp;
-// }
-
-// char *ft_add_double(char *s)
-// {
-// 	int		i;
-// 	int		j;
-// 	char *str;
-// 	int		p;
-// 	char dec[12] ="declare -x ";
-
-// 	p = 0;
-// 	i = 0;
-// 	j = 0;
-// 	while(s[i])
-// 		i++;
-// 	str = malloc(i + 14);
-// 	if (!str)
-// 		return (0);
-// 	i = 0;
-// 	while(dec[i])
-// 	{
-// 		str[i] = dec[i];
-// 		i++;
-// 	}
-// 	while (s[j])
-// 	{
-// 		str[i] = s[j];
-// 		if((ft_strchr(s, '=') != NULL) && (s[j] == '=' && s[j + 1] == '\0'))
-// 		{
-// 			str[++i] = '\"';	
-// 		}
-// 		else if ((ft_strchr(s, '=') != NULL) && (s[j] == '=' || s[j + 1] == '\0') && p == 0)
-// 		{
-// 			p++;
-// 			str[++i] = '\"';
-// 		}
-// 		i++;
-// 		j++;
-// 	}
-// 	if(ft_strchr(s, '=') != NULL)
-// 		str[i] = '\"';
-// 	str[++i] = '\0';
-// 	free(s);
-// 	return (str);
-// }
-
-// void	ft_rem_var_export(char **str, t_minishell *mini, t_cmd	*cmd) // add_variable
-// {
-// 	int i;
-// 	int j;
-// 	int d;
-// 	int n;
-// 	char **my_tmp;
-
-// 	j = 0;
-// 	n = 0;
-// 	while (mini->my_export[j])
-// 		j++;
-// 	while (str[n])
-// 		n++;	
-// 	my_tmp = malloc(sizeof(char *) * (j + mini->count_str)); 
-// 	n = 0;
-// 	d = 0;
-// 	j = 0;
-// 	while (mini->my_export[d])
-// 	{
-// 		my_tmp[n] = ft_strdup(mini->my_export[d]);
-// 		n++;
-// 		d++;
-// 	}
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if(ft_check_var_exect(str[i], mini, 0) != 0)
-// 		{
-			
-// 			printf("-----------1!!!!1%s\n", str[i]);
-// 			ft_unset(cmd, mini);
-// 		}
-// 		my_tmp[n] = ft_strdup1(str[i]);
-// 		my_tmp[n] = ft_add_double(my_tmp[n]);
-// 		printf("export --- >%s\n", my_tmp[n]);
-// 		n++;
-// 		i++;
-// 	}	
-// 	my_tmp[n] = NULL;
-// 	i = 0;
-// 	while (mini->my_export[i]) 
-// 	{
-// 		free(mini->my_export[i]);
-// 		i++;
-// 	}
-// 	mini->my_export = my_tmp;
-// }
-
-// void	print_export(t_minishell *mini)
-// {
-// 	int	j;
-
-// 	j = 0;
-// 	while(mini->my_export[j])
-// 	{
-// 		printf("%s\n", mini->my_export[j]);
-// 		j++;
-// 	}
-// }
-
-
-
-
-
-
-
-
-

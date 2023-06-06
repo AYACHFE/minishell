@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/05 15:18:41 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/06 19:06:06 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	(void)env;
 	str = readline("\033[0;34mMINISHELL-3.2$ \033[0m");
 	if (!str)
-	{
-		// printf("exit_code ==%d\n", mini->exit_code);
 		exit(mini->exit_code);
-		// exit(1);
-	}
 	add_history(str);
 	//
 	if (ft_error(str, 0) == 0)
@@ -60,7 +56,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	// printf("exit_code %d\n", mini->exit_code);
 	
 	free(cmd);
-	// free(cmd->args);
 	free(str);
 }
 
@@ -76,16 +71,33 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 
 	i = 0;
 	j = 0;
-	while (env[i] != NULL)
+	(void)env;
+	// while (env[i] != NULL)
+	// {
+	// 	if (ft_strncmp(env[i], "PATH", 4) == 0)
+	// 	{
+	// 		var = ft_split(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
+	// 		break ;
+	// 	}
+	// 	i++;
+	// }
+	// path_nb = count(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
+	while (mini->my_env[i] != NULL)
 	{
-		if (ft_strncmp(env[i], "PATH", 4) == 0)
+		// puts(mini->my_env[i]);
+		if (ft_strncmp(mini->my_env[i], "PATH", 4) == 0)
 		{
-			var = ft_split(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
+			var = ft_split(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
 			break ;
+		}
+		if (mini->my_env[i + 1] == NULL)
+		{
+			printf("minishell: No such file or directory\n");
+			exit(127);
 		}
 		i++;
 	}
-	path_nb = count(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
+	path_nb = count(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
 	while (j < path_nb)
 	{
 		val = ft_strjoin(var[j], "/");
@@ -94,18 +106,16 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 		{
 			free(var[j]);
 			free(var);
-			mini->exit_code = 1;
-			execve(val, cmd->args, env);
+			execve(val, cmd->args, mini->my_env);
 		}
 		free(var[j]);
 		free(val);
 		j++;
 	}
+	mini->exit_code = 1;
 	if (cmd->args[0][0] == '/')
 	{
 		printf("minishell: No such file or directory\n");
-		// mini->exit_code = 0;
-		// exit(0);
 	}
 	else
 		printf("minishell: %s: command not found\n", cmd->args[0]);
@@ -118,47 +128,58 @@ int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
 	//built_ins that you should not fork for
 	(void)env;
-	if (ft_strncmp(cmd->args[0], "exit", ft_strlen(mini->str[0])) == 0)
+	if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
 	{
 		ft_exit(cmd, mini);
 		return (1);
 	}
-	else if ((ft_strncmp(cmd->args[0], "cd", ft_strlen(cmd->args[0])) == 0) \
+	else if ((ft_strncmp(cmd->args[0], "cd", 3) == 0) \
 	&& cmd->general_info->cmd_nb == 1)
 	{
 		ft_cd(cmd, mini);
 		return(1);
 	}
-	else if (ft_strncmp(cmd->args[0], "unset", ft_strlen(cmd->args[0])) == 0)
+	else if (ft_strncmp(cmd->args[0], "unset", 5) == 0)
 	{
 		ft_unset(cmd, mini);
 		return (1);
 	}
-	else if ((ft_strncmp(cmd->args[0], "export", ft_strlen(cmd->args[0])) == 0)  \
-	&& cmd->general_info->cmd_nb >= 1 && cmd->args[1])
+	else if ((ft_strncmp(cmd->args[0], "export", 7) == 0)  \
+	&& cmd->general_info->cmd_nb == 1 && cmd->args[1])
 	{
+		// write(2, "hello\n", 6);
 		ft_export(cmd, mini);
 		return (1);
 	}
+	// else if (ft_strncmp(cmd->args[0], "echo", 5) == 0 && cmd->general_info->cmd_nb == 1)
+	// {
+	// 	mini->exit_code = 0;
+	// 	ft_echo(cmd);
+	// 	return (1);
+	// }
 	return (0);
 }
 
 void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
 	//built_ins that you should fork for
-	if (ft_strncmp(cmd->args[0], "echo", ft_strlen(cmd->args[0])) == 0)
+	if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
+	{
+		mini->exit_code = 0;
 		ft_echo(cmd);
+	}
 	else if (ft_strncmp(cmd->args[0], "pwd", 4) == 0)
+	{
+		mini->exit_code = 0;
 		ft_pwd();
-	else if ((ft_strncmp(cmd->args[0], "env", ft_strlen(cmd->args[0])) == 0) && cmd->general_info->cmd_nb == 1)
+	}
+	else if ((ft_strncmp(cmd->args[0], "env", 4) == 0) && cmd->general_info->cmd_nb == 1)
 		ft_env(env, mini);
-	else if ((ft_strncmp(cmd->args[0], "export", ft_strlen(cmd->args[0])) == 0))
+	else if ((ft_strncmp(cmd->args[0], "export", 7) == 0))
 		ft_export(cmd, mini);
 	else
 	{
 		execv_function(mini, cmd, env);
-		// printf("exit_code %d\n", mini->exit_code);
-		// mini->exit_code = 1;
 	}
 }
 

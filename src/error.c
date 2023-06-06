@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/05 15:23:08 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/06 18:53:50 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,17 @@ int ft_error_pipe(char *s)
     i = 0;
     while (s[i] == '\"' || s[i] == '\'' || s[i] == ' ')
         i++;
-    if (s[i] == '|')
-    {
-        printf("minishell: syntax error\n");
-        return (0);
-    }
-    if (s[0] == '|' && s[1] == '\0')
-    {
-        printf("minishell: syntax error\n");
-        return (0);
-    }
+    // if (s[i] == '|')
+    // {
+    //     printf("6");
+    //     printf("minishell: syntax error\n");
+    //     return (0);
+    // }
+    // if (s[0] == '|' && s[1] == '\0')
+    // {
+    //     printf("minishell: command not found\n");
+    //     return (0);
+    // }
     while (s[i])
     {
         if (s[i] == '|' && (s[i + 1] == '\0' || (s[i + 1] == '>' || (s[i + 1] == '>' && s[i + 2] == '>'))))
@@ -82,11 +83,11 @@ int ft_error_pipe(char *s)
             printf("minishell: syntax error\n");
             return (0);
         }
-        if (s[i + 1] == '\0' && s[i] == '$')
-        {
-            printf("minishell: syntax error\n");
-            return (0);
-        }
+        // if (s[i + 1] == '\0' && s[i] == '$')
+        // {
+        //     printf("minishell: syntax error\n");
+        //     return (0);
+        // }
         i++;
     }
     return (1);

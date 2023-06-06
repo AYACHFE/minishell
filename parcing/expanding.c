@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/05 15:24:13 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/06 19:12:00 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,8 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
             {
                 // printf("3");
                 s = "@";
-                str_jn = ft_strjoin(str_jn, s);
+                if(ft_strncmp(s, "@", 1) != 0)
+                    str_jn = ft_strjoin(str_jn, s);
                 while (str[n] != '$' && str[n] != '\"')
                     n++;
             }
@@ -250,6 +251,7 @@ void    ft_check_dollar(t_minishell *mini)
     int single;
     int deuble;
     int k;
+    char *check = NULL;
 
     k = 0;
     i = 0;
@@ -311,11 +313,16 @@ void    ft_check_dollar(t_minishell *mini)
     }
     mini->tmp_cmd[j] = NULL;
     i = 0;
-    while( mini->tmp_cmd[i])
+    while(mini->tmp_cmd[i])
+        i++;
+    check = malloc(i + 1);
+    i = 0;
+    while(mini->tmp_cmd[i])
     {
-        ft_error(mini->tmp_cmd[i], 1);
+        check = ft_strjoin(mini->tmp_cmd[i], check);
         i++;
     }
+    ft_error(check, 1);
     // j = 0;
     // while(mini->tmp_cmd[j])
     // {

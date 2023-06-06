@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/06 19:02:26 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/06 19:28:48 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,19 @@ int check_valid_exp(char **arg)
 		if (arg[i] && (ft_strchr(arg[i], '=') != NULL))
 		{
 			j = 0;
-			while(arg[i][j] != '=')
+			while(arg[i][j] != '=' && arg[i][j])
 			{
-				if(ft_isalpha(arg[i][j]) == 0 && ft_isalpha(arg[i][j]) != '_')
+				if(ft_isalpha(arg[i][0]) == 0 && ft_isalpha(arg[i][0]) != '_')
 				{
 					printf("minishell: not a valid identifier\n");
 					return(0);
 				}
 				j++;
 			}
+		}
+		else if(ft_isalpha(arg[i][0]) == 0 && ft_isalpha(arg[i][0]) != '_')
+		{
+			printf("minishell: not a valid identifier\n");
 		}
 		i++;
 	}
@@ -101,6 +105,7 @@ void	ft_export(t_cmd	*cmd, t_minishell *mini)
 			i++;
 		}
 	}	
+	// puts("reda");
 	arg = malloc((i - t + 1) * (sizeof(char *)));
 	i = 1;
 	j = 0;
@@ -258,6 +263,7 @@ char *ft_add_double(char *s)
 	int		i;
 	int		j;
 	char *str;
+	int tmp = 0;
 	char dec[12] ="declare -x ";
 
 	i = 0;
@@ -279,14 +285,20 @@ char *ft_add_double(char *s)
 		if((ft_strchr(s, '=') != NULL) && (s[j] == '=' && s[j + 1] == '\0'))
 		{
 			str[++i] = '\"';
-			str[++i] = '\"';	
-		}
-		else if ((ft_strchr(s, '=') != NULL) && (s[j] == '=' || s[j + 1] == '\0'))
 			str[++i] = '\"';
+			return (str);
+		}
+		else if (ft_strchr(s, '=') != NULL && s[j] == '=' && tmp == 0)
+		{
+			str[++i] = '\"';		
+			tmp = 1;
+		}
 		i++;
 		j++;
 	}
-	str[i] = '\0';
+	if(s[j] == '\0' && ft_strchr(s, '=') != NULL)
+		str[i] = '\"';
+	str[++i] = '\0';
 	free(s);
 	return (str);
 }

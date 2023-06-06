@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/05 19:37:45 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/06 19:02:26 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ void	ft_export(t_cmd	*cmd, t_minishell *mini)
 			i++;
 		}
 	}	
-	// puts("reda");
 	arg = malloc((i - t + 1) * (sizeof(char *)));
 	i = 1;
 	j = 0;
@@ -133,7 +132,8 @@ void	ft_export(t_cmd	*cmd, t_minishell *mini)
 	}	
 	arg[t] = NULL;
 	i = check_valid_exp(arg);
-	// if (mini->count_str > 1 && i == 1)
+	if (i == 0)
+		mini->exit_code = 1;
 	if (cmd->args[1] && i == 1)
 	{
 		ft_rem_var(arg ,mini);

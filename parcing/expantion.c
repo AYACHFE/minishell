@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/06 20:14:37 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/07 19:57:45 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,34 +302,10 @@ void    ft_check_dollar(t_minishell *mini)
 		i++;
 	}
 	mini->tmp_cmd[j] = NULL; 
-	i = 0;
-	// while (mini->tmp_cmd[i])
-	//     i++;
-	// mini->last = malloc(i + 1);
-	// i = 0;
-	// j = 0;
-	// while(mini->tmp_cmd[i])
-	// {
-	//     j = 0; 
-	//     while(mini->tmp_cmd[i][j])
-	//     {
-			
-	//     }
-	// }
-	
-	 
-
-
-	// while (mini->tmp_cmd[i])
-	// {
-	// 	printf("%d: ---------> %s\n", i, mini->tmp_cmd[i]);
-	// 	i++;
-	// }     
+	i = 0; 
 }
 
 ////////////////////////////////////////////////////////////
-
-// #include "../minishell.h"
 
 // char	*ft_substr1(char const *s, unsigned int start, size_t len)
 // {
@@ -641,24 +617,5 @@ void    ft_check_dollar(t_minishell *mini)
 //         check = ft_strjoin(mini->tmp_cmd[i], check);
 //         i++;
 //     }
-//     ft_error(check, 1);
-//     // j = 0;
-//     // while(mini->tmp_cmd[j])
-//     // {
-//     //     printf("%d------>%s\n", j, mini->tmp_cmd[j]);
-//     //     j++;
-//     // }
-
-    
-     
-
-    
-//     // while (mini->tmp_cmd[i])
-// 	// {
-// 	// 	printf("%d: ---------> %s\n", i, mini->tmp_cmd[i]);
-// 	// 	i++;
-// 	// }     
+//     ft_error(check, 1);  
 // }
-
-
-

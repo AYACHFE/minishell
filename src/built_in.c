@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/07 13:33:24 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/07 19:43:16 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,13 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	//
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
 	//
-
 	mini->count_str = 0;
 	if (ft_strlen(str) == 0)
 		return ;
 	ft_check_dollar(mini);
+	
+	// split_after_expantion(mini);
+	
 	mini->str = ft_split(str, ' ');
 	mini->count_str = count(str, ' ');
 	parcing(mini, cmd, str);
@@ -58,6 +60,63 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	
 	free(cmd);
 	free(str);
+}
+
+size_t	ft_strlen_1(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
+
+char	*ft_strjoin_1(char const *s1, char const *s2)
+{
+	int		i;
+	int		j;
+	char	*p;
+	int		len;
+	int		k;
+
+	k = 0;
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	// printf("len %zu\n", ft_strlen_1(s2));
+	len = ft_strlen_1(s1) + ft_strlen_1(s2);
+	puts("<----");
+	p = malloc(sizeof(char) * (len + 1));
+	if (!p)
+		return (NULL);
+	while (s1[i])
+		p[k++] = s1[i++];
+	while (s2[j])
+		p[k++] = s2[j++];
+	p[k] = '\0';
+	return (p);
+}
+
+void	split_after_expantion(t_minishell	*mini)
+{
+	int	i;
+	char	*var;
+	// char	**str;
+
+	i = 0;
+	(void)mini;
+	// printf("%s\n", mini->tmp_cmd[1]);
+	while (mini->tmp_cmd[i])
+	{
+		// printf("%s\n", mini->tmp_cmd[i]);
+		var = ft_strjoin_1(var, mini->tmp_cmd[i]);
+		printf("-->\n");
+		i++;
+	}
+	// printf("var '%s'\n", var);
+	// exit(1);
 }
 
 void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)

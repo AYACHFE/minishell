@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/05 18:58:16 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/07 21:50:21 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int ft_double_single_quote(char *str)
 			i++;
 	}
 	if (tmp == 0)
-		printf("minishell: syntax error\n");
+		printf("minishell: unexpected EOF while looking for matching\n");
+		// printf("minishell: syntax error\n");
 	return (tmp);
 }
 

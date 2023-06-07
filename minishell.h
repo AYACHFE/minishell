@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/07 12:45:23 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/07 15:07:04 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ int		ft_cd(t_cmd	*cmd, t_minishell	*mini);
 void	ft_pwd();
 int		built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env);
 
-//error_____2
-int	ft_error2(t_cmd	*cmd);
+//tmp
+void	split_after_expantion(t_minishell	*mini);
 
 //exit
 void	ft_exit(t_cmd	*cmd, t_minishell	*mini);

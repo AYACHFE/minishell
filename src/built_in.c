@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/06 16:11:14 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/07 13:33:24 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	mini->str = ft_split(str, ' ');
 	mini->count_str = count(str, ' ');
 	parcing(mini, cmd, str);
-	
 	if (mini->count_str > 0)
 		exec_1(mini, cmd, env);
 	
@@ -189,7 +188,7 @@ int	ft_cd(t_cmd	*cmd, t_minishell	*mini)
 	}
 	if (check == 0 && !(cmd->args[1]))
 	{
-		printf("minishell: cd: HOME not set\n");
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 		return (1);
 	}
 	if (cmd->args[1] == NULL)

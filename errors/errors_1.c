@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/08 16:34:05 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/08 18:29:34 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,20 @@ int	check_first_cmd(char	*s)
 	while (s[i] == 32)
 		i++;
 	if (s[i] == '"' && s[i + 1] == '"')
+	{
+		i += 2;
+		while (s[i] == 32)
+			i++;
+		if (s[i] == '|')
+		{
+			ft_putendl_fd("minishell: command not found", 2);
+			return (2);
+		}
+	}
+	i = 0;
+	while (s[i] == 32)
+		i++;
+	if (s[i] == '\'' && s[i + 1] == '\'')
 	{
 		i += 2;
 		while (s[i] == 32)
@@ -342,9 +356,9 @@ int ft_error(char *str, int i)
 	int	ret;
 
 	ret = ft_error_pipe(str);
-	if (ret == 0)
-		return (0);
 	if (ret == 2)
+		return (2);
+	if (ret == 0)
 		return (0);
 	if (ft_double_single_quote(str) == 0)
 		return (0);

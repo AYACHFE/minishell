@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/08 16:42:34 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/08 18:28:31 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	char	*s;
 	char	*var;
 	char	**ret;
+	int		error;
 
 	(void)mini;
 	(void)env;
@@ -29,14 +30,15 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 		exit(mini->exit_code);
 	add_history(str);
 	//
-	if (ft_error(str, 0) == 0)
-	{
-		mini->exit_code = 2;
-		return ;
-	}
-	else if (ft_error(str, 0) == 2)
+	error = ft_error(str, 0);
+	if (error == 2)
 	{
 		mini->exit_code = 0;
+		return ;
+	}
+	if (error == 0)
+	{
+		mini->exit_code = 2;
 		return ;
 	}
 	s = ft_strdup(str);

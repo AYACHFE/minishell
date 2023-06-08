@@ -6,106 +6,11 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/08 18:29:34 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/08 18:55:08 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	ft_error_2(t_minishell	*mini)
-{
-	int	i;
-
-	i = 0;
-	while (mini->cmd[i])
-	{
-		if (mini->cmd[i][0] == '|' && mini->cmd[i + 1] == NULL)
-		{
-			ft_putendl_fd("minishell: syntax error", 2);
-			mini->exit_code = 2;
-			return(1);
-		}
-		else if ((mini->cmd[i][0] == '"' && mini->cmd[i][1] == '"') && mini->cmd[i + 1][0] == '|')
-		{
-			ft_putendl_fd("minishell: command not found", 2);
-			mini->exit_code = 0;
-			return(1);
-		}
-		else if ((mini->cmd[i][0] == '\'' && mini->cmd[i][1] == '\'') && mini->cmd[i + 1][0] == '|')
-		{
-			ft_putendl_fd("minishell: command not found", 2);
-			mini->exit_code = 0;
-			return(1);
-		}
-		else if ((mini->cmd[i][0] == '>' && mini->cmd[i][1] == '>') && mini->cmd[i + 1][0] == '|')
-		{
-			ft_putendl_fd("minishell: syntax error", 2);
-			mini->exit_code = 2;
-			return(1);
-		}
-		else if (mini->cmd[i][0] == '>' && mini->cmd[i + 1][0] == '|')
-		{
-			ft_putendl_fd("minishell: syntax error", 2);
-			mini->exit_code = 2;
-			return(1);
-		}
-		else if (mini->cmd[i][0] == '<' && mini->cmd[i + 1][0] == '|')
-		{
-			ft_putendl_fd("minishell: syntax error", 2);
-			mini->exit_code = 2;
-			return(1);
-		}
-		else if (mini->cmd[i][0] == '|' && (mini->cmd[i + 1][0] == '"' && mini->cmd[i + 1][1] == '"'))
-		{
-			ft_putendl_fd("minishell: command not found", 2);
-			mini->exit_code = 127;
-			return(1);
-		}
-		else if (mini->cmd[i][0] == '|' && (mini->cmd[i + 1][0] == '\'' && mini->cmd[i + 1][1] == '\''))
-		{
-			ft_putendl_fd("minishell: command not found", 2);
-			mini->exit_code = 127;
-			return(1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int	check_first_cmd(char	*s)
-{
-	int i;
-
-	i = 0;
-	while (s[i] == 32)
-		i++;
-	if (s[i] == '"' && s[i + 1] == '"')
-	{
-		i += 2;
-		while (s[i] == 32)
-			i++;
-		if (s[i] == '|')
-		{
-			ft_putendl_fd("minishell: command not found", 2);
-			return (2);
-		}
-	}
-	i = 0;
-	while (s[i] == 32)
-		i++;
-	if (s[i] == '\'' && s[i + 1] == '\'')
-	{
-		i += 2;
-		while (s[i] == 32)
-			i++;
-		if (s[i] == '|')
-		{
-			ft_putendl_fd("minishell: command not found", 2);
-			return (2);
-		}
-	}
-	return (1);
-}
 
 int ft_double_single_quote(char *str)
 {

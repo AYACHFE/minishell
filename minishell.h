@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/08 15:44:54 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/08 18:58:14 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,6 @@ int		ft_cd(t_cmd	*cmd, t_minishell	*mini);
 void	ft_pwd();
 int		built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env);
 
-//ft_error_2
-int	ft_error_2(t_minishell	*mini);
-
 //tmp
 void	split_after_expantion(t_minishell	*mini);
 
@@ -145,6 +142,12 @@ int		*args_counter(t_cmd_info	*general_info);
 int		ft_double_single_quote(char *str);
 int		ft_error_pipe(char *s);
 int		ft_error(char *str, int i);
+
+//ft_error_2
+int	ft_error_2(t_minishell	*mini);
+int	check_first_cmd(char	*s);
+int	check_first_cmd_d(char	*s);
+int	check_first_cmd_s(char	*s);
 
 //expantion
 void	ft_check_dollar(t_minishell *mini);

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/06 16:06:43 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/08 15:02:06 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,7 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		close(cmd[i].fd_in);
 	}
 	if (cmd[i].args[0] && built_in_cmd_3(mini, &cmd[i], env))
-	{
 		return ;
-	}
 	if (pipe(fd) == -1)
 		exit(0);
 	pid[i] = fork();

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/07 19:43:16 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/08 16:42:34 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,19 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 		mini->exit_code = 2;
 		return ;
 	}
+	else if (ft_error(str, 0) == 2)
+	{
+		mini->exit_code = 0;
+		return ;
+	}
 	s = ft_strdup(str);
 	var = prep(s);
 	ret = ft_split(var, 11);
 	//
 	mini->cmd = ret;
 	mini->cmd_nb = count(var, 11);
+	if (ft_error_2(mini) == 1)
+		return ;
 	//
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
 	//
@@ -238,7 +245,7 @@ int	ft_cd(t_cmd	*cmd, t_minishell	*mini)
 	int	check = 0;
 	while (mini->my_env[i] != NULL)
 	{
-		if (ft_strncmp(mini->my_env[i], "HOME", 4) == 0)
+		if (ft_strncmp(mini->my_env[i], "HOME", ft_cnt(mini->my_env[i])) == 0)
 		{
 			check = 1;
 			break ;

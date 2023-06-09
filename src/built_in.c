@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/08 18:28:31 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/09 13:37:44 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	char	*var;
 	char	**ret;
 	int		error;
+	mini->center_sp = 0;
+	mini->right_sp = 0;
+	mini->left_sp = 0;
 
 	(void)mini;
 	(void)env;
@@ -56,6 +59,10 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	if (ft_strlen(str) == 0)
 		return ;
 	ft_check_dollar(mini);
+	// printf("center_sp %d\n", mini->center_sp);
+	// printf("right_sp %d\n", mini->right_sp);
+	// printf("left_sp %d\n", mini->left_sp);
+	
 	
 	// split_after_expantion(mini);
 	
@@ -64,7 +71,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	parcing(mini, cmd, str);
 	if (mini->count_str > 0)
 		exec_1(mini, cmd, env);
-	
 	// printf("exit_code %d\n", mini->exit_code);
 	
 	free(cmd);
@@ -176,10 +182,16 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 	// if (cmd->args[1][0] == '/')
 	if (cmd->args[0][0] == '/')
 	{
-		printf("minishell: No such file or directory\n");
+		ft_putstr_fd("minishell: No such file or directory\n", 2);
 	}
 	else
-		printf("minishell: %s: command not found\n", cmd->args[0]);
+	{
+		char *str = ft_strjoin("minishell: ", cmd->args[0]);
+		char *str1 = ft_strjoin(str, ": command not found\n");
+		ft_putstr_fd(str1, 2);
+		free(str);
+		free(str1);
+	}
 	free(var);
 	mini->exit_code = 127;
 	exit(127);

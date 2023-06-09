@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/08 18:58:14 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/09 14:03:23 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,14 @@ typedef struct s_minishell
 	char	**my_export;
 	char	**tmp_my_env;
 	int		exit_code;
+
+	int		left_sp;
+	int		right_sp;
+	int		center_sp;
 }	t_minishell;
 
 t_cmd *cmd; 
-t_minishell	*mini;
+t_minishell	mini;
 
 //built_in
 void	built_in_cmd(t_minishell	*mini, char **env);
@@ -149,13 +153,20 @@ int	check_first_cmd(char	*s);
 int	check_first_cmd_d(char	*s);
 int	check_first_cmd_s(char	*s);
 
-//expantion
+// //expantion
+// void	ft_check_dollar(t_minishell *mini);
+
+//expanding
 void	ft_check_dollar(t_minishell *mini);
+void ft_change(t_minishell *mini, char *str);
+int ft_strlennn(char *str);
+void ft_check_sp(char *s, t_minishell *mini);
+
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
-void	file_creation(t_cmd	*cmd);
+void	file_creation(t_cmd	*cmd, t_minishell	*mini);
 void	here_doc(t_cmd	*cmd);
-void	redirections(t_cmd	*cmd);
+void	redirections(t_cmd	*cmd, t_minishell	*mini);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/08 15:02:06 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/09 21:57:25 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 			dup2(fd[1], 1);
 			close(fd[1]);
 			close(fd[0]);
-			redirections(&cmd[i]);
+			redirections(&cmd[i], mini);
 			built_in_cmd_2(mini, &cmd[i], env);
 			exit(0);
 		}
@@ -79,7 +79,7 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	{
 		close(fd[0]);
 		close(fd[1]);
-		redirections(&cmd[i]);
+		redirections(&cmd[i], mini);
 		built_in_cmd_2(mini, &cmd[i], env);
 		exit(0);
 	}
@@ -127,13 +127,69 @@ void	here_doc(t_cmd	*cmd)
 	}
 }
 
-void	file_creation(t_cmd	*cmd)
+int	check_ambig(char	*file, t_minishell	*mini)
+{
+	int	i;
+	int	j;
+	
+	i = 0;
+	j = 2;
+	(void)cmd;
+	// printf("file '%s'\n", file);
+	// printf("center_sp %d\n", mini->center_sp);
+	// printf("right_sp %d\n", mini->right_sp);
+	// printf("left_sp %d\n", mini->left_sp);
+	if (mini->center_sp == 1)
+	{
+		// puts("center");
+		ft_putendl_fd("minishell: ambiguous redirect", 2);
+		return (1);
+	}
+	if (mini->left_sp == 1)
+	{
+		while (file[j])
+		{
+			if (file[j] == 32 && (file[j - 1] != 32 && file[j - 1] != '>'))
+			{
+				ft_putendl_fd("minishell: ambiguous redirect", 2);
+				return (1);
+			}
+			j++;
+		}
+	}
+	j = 2;
+	if (mini->right_sp == 1)
+	{
+		while (file[j])
+		{
+			if (file[j] == 32 && (file[j + 1] != '\0'))
+			{
+				ft_putendl_fd("minishell: ambiguous redirect", 2);
+				return (1);
+			}
+			j++;
+		}
+	}
+	return (0);
+}
+
+void	file_creation(t_cmd	*cmd, t_minishell	*mini)
 {
 	int	j;
 
 	j = 0;
+	(void)mini;
 	while (cmd->files[j])
 	{
+		// printf("--> '%s'\n", cmd->files[j]);
+		// printf("----> %d\n", mini->center_sp);
+		// if (cmd->files[j][3] == '\0')
+		// {
+		// 	ft_putstr_fd("minishell: No such file or directory\n", 2);
+		// 	exit(1);
+		// }
+		if (check_ambig(cmd->files[j], mini) == 1)
+			exit(1);
 		if (cmd->files[j][0] == '>' && cmd->files[j][1] == '>')
 		{
 			//append >>
@@ -191,9 +247,9 @@ void	file_creation(t_cmd	*cmd)
 	}
 }
 
-void	redirections(t_cmd	*cmd)
+void	redirections(t_cmd	*cmd, t_minishell	*mini)
 {
-	file_creation(cmd);
+	file_creation(cmd, mini);
 	if (cmd->in_red == 1)
 	{
 		dup2(cmd->fd_in, 0);

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/08 18:55:08 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/09 11:45:36 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ int ft_double_single_quote(char *str)
 			i++;
 	}
 	if (tmp == 0)
-		printf("minishell: unexpected EOF while looking for matching\n");
-		// printf("minishell: syntax error\n");
+		ft_putstr_fd("minishell: unexpected EOF while looking for matching\n", 2);
 	return (tmp);
 }
 
@@ -63,34 +62,34 @@ int	ft_error_pipe(char *s)
 	}
 	if (s[i] == '|')
 	{
-		printf("minishell: syntax error\n");
+		ft_putstr_fd("minishell: syntax error\n", 2);
 		return (0);
 	}
 	if (s[0] == '|' && s[1] == '\0')
 	{
-		printf("minishell: syntax error\n");
+		ft_putstr_fd("minishell: syntax error\n", 2);
 		return (0);
 	}
 	while (s[i])
 	{
 		if (s[i] == '|' && (s[i + 1] == '\0' || (s[i + 1] == '>' || (s[i + 1] == '>' && s[i + 2] == '>'))))
 		{
-			printf("minishell: syntax error\n");
+			ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		if (s[i] == '|' && (s[i + 1] == '\0'))
 		{
-			printf("minishell: syntax error\n");
+			ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		if (s[i] == '|' && s[i + 1] == ' ' && s[i + 2] == '|')
 		{
-			printf("minishell: syntax error\n");
+			ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		if (s[i + 1] == '\0' && s[i] == '$')
 		{
-			printf("minishell: syntax error\n");
+			ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		i++;
@@ -106,9 +105,9 @@ int ft_error_output(char *s, int l)
 	if (s[0] == '>' && s[1] == '\0')
 	{
 		if (l == 1)
-			printf("minishell: command not found\n");
+			ft_putstr_fd("minishell: command not found\n", 2);
 		else
-			printf("minishell: syntax error\n");
+			ft_putstr_fd("minishell: syntax error\n", 2);
 		return (0);
 	}
 	while (s[i])
@@ -116,17 +115,17 @@ int ft_error_output(char *s, int l)
 		if (s[i] == '>' && (s[i + 1] == '\0' || (s[i + 1] == '>' && s[i + 2] == '>') || (s[i + 1] == '<')))
 		{
 			if (l == 1)
-				printf("minishell: command not found\n");
+				ft_putstr_fd("minishell: command not found\n", 2);
 			else
-				printf("minishell: syntax error\n");
+				ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		if (s[i] == '>' && s[i + 1] == '\0')
 		{
 			if (l == 1)
-				printf("minishell: command not found\n");
+				ft_putstr_fd("minishell: command not found\n", 2);
 			else
-				printf("minishell: syntax error\n");
+				ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		i++;
@@ -141,9 +140,9 @@ int ft_error_input(char *s, int l)
 	if (s[0] == '<' && s[1] == '\0')
 	{
 		if (l == 1)
-			printf("minishell: command not found\n");
+			ft_putstr_fd("minishell: command not found\n", 2);
 		else
-			printf("minishell: syntax error\n");
+			ft_putstr_fd("minishell: syntax error\n", 2);
 		return (0);
 	}
 	while (s[i])
@@ -151,17 +150,17 @@ int ft_error_input(char *s, int l)
 		if (s[i] == '<' && (s[i + 1] == '\0' || (s[i + 1] == '|' || (s[i + 1] == '<' && s[i + 2] == '<'))))
 		{
 			if (l == 1)
-				printf("minishell: command not found\n");
+				ft_putstr_fd("minishell: command not found\n", 2);
 			else
-				printf("minishell: syntax error\n");
+				ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		if (s[i] == '<' && s[i + 1] == '\0')
 		{
 			if (l == 1)
-				printf("minishell: command not found\n");
+				ft_putstr_fd("minishell: command not found\n", 2);
 			else
-				printf("minishell: syntax error\n");
+				ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		i++;
@@ -177,9 +176,9 @@ int ft_error_appends(char *s, int l)
 	if (s[0] == '>' && s[1] == '>' && s[2] == '\0')
 	{
 		if (l == 1)
-			printf("minishell: command not found\n");
+			ft_putstr_fd("minishell: command not found\n", 2);
 		else
-			printf("minishell: syntax error\n");
+			ft_putstr_fd("minishell: syntax error\n", 2);
 		return (0);
 	}
 	while (s[i])
@@ -187,17 +186,17 @@ int ft_error_appends(char *s, int l)
 		if ((s[i] == '>' && s[i + 1] == '>') && (s[i + 2] == '\0' || (s[i + 2] == '|' || (s[i + 1] == '>' && s[i + 2] == '<'))))
 		{
 			if (l == 1)
-				printf("minishell: command not found\n");
+				ft_putstr_fd("minishell: command not found\n", 2);
 			else
-				printf("minishell: syntax error\n");
+				ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		if (s[i] == '>' && s[i + 1] == '>' && s[i + 2] == '\0')
 		{
 			if (l == 1)
-				printf("minishell: command not found\n");
+				ft_putstr_fd("minishell: command not found\n", 2);
 			else
-				printf("minishell: syntax error\n");
+				ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		i++;
@@ -213,9 +212,9 @@ int ft_error_here_document(char *s, int l)
 	if (s[0] == '<' && s[1] == '<' && s[2] == '\0')
 	{
 		if (l == 1)
-			printf("minishell: command not found\n");
+			ft_putstr_fd("minishell: command not found\n", 2);
 		else
-			printf("minishell: syntax error\n");
+			ft_putstr_fd("minishell: syntax error\n", 2);
 		return (0);
 	}
 	if (s[i] == '<' && s[i + 1] == '<')
@@ -226,9 +225,9 @@ int ft_error_here_document(char *s, int l)
 		if (s[i] == '|')
 		{
 			if (l == 1)
-				printf("minishell: command not found\n");
+				ft_putstr_fd("minishell: command not found\n", 2);
 			else
-				printf("minishell: syntax error\n");
+				ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 	}
@@ -238,17 +237,17 @@ int ft_error_here_document(char *s, int l)
 		if ((s[i] == '<' && s[i + 1] == '<') && (s[i + 2] == '\0' || (s[i + 2] == '|' || (s[i + 1] == '>' && s[i + 2] == '<'))))
 		{
 			if (l == 1)
-				printf("minishell: command not found\n");
+				ft_putstr_fd("minishell: command not found\n", 2);
 			else
-				printf("minishell: syntax error\n");
+				ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		if (s[i] == '<' && s[i + 1] == '<' && s[i + 2] == '\0')
 		{
 			if (l == 1)
-				printf("minishell: command not found\n");
+				ft_putstr_fd("minishell: command not found\n", 2);
 			else
-				printf("minishell: syntax error\n");
+				ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
 		i++;

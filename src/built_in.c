@@ -6,13 +6,12 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/06 19:06:06 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/09 12:49:06 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// the engine of this program
 void	built_in_cmd(t_minishell	*mini, char **env)
 {
 	char	*str;
@@ -21,6 +20,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	char	*s;
 	char	*var;
 	char	**ret;
+	int		error;
 
 	(void)mini;
 	(void)env;
@@ -29,7 +29,13 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 		exit(mini->exit_code);
 	add_history(str);
 	//
-	if (ft_error(str, 0) == 0)
+	error = ft_error(str, 0);
+	if (error == 2)
+	{
+		mini->exit_code = 0;
+		return ;
+	}
+	if (error == 0)
 	{
 		mini->exit_code = 2;
 		return ;
@@ -43,20 +49,81 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	//
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
 	//
-
 	mini->count_str = 0;
+	if (ft_error_2(mini) == 1)
+		return ;
 	if (ft_strlen(str) == 0)
 		return ;
 	ft_check_dollar(mini);
+	// split_after_expantion(mini);
+	
 	mini->str = ft_split(str, ' ');
 	mini->count_str = count(str, ' ');
 	parcing(mini, cmd, str);
-	exec_1(mini, cmd, env);
+	if (mini->count_str > 0)
+		exec_1(mini, cmd, env);
 	
 	// printf("exit_code %d\n", mini->exit_code);
 	
 	free(cmd);
 	free(str);
+}
+
+size_t	ft_strlen_1(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
+
+char	*ft_strjoin_1(char const *s1, char const *s2)
+{
+	int		i;
+	int		j;
+	char	*p;
+	int		len;
+	int		k;
+
+	k = 0;
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	// printf("len %zu\n", ft_strlen_1(s2));
+	len = ft_strlen_1(s1) + ft_strlen_1(s2);
+	puts("<----");
+	p = malloc(sizeof(char) * (len + 1));
+	if (!p)
+		return (NULL);
+	while (s1[i])
+		p[k++] = s1[i++];
+	while (s2[j])
+		p[k++] = s2[j++];
+	p[k] = '\0';
+	return (p);
+}
+
+void	split_after_expantion(t_minishell	*mini)
+{
+	int	i;
+	char	*var;
+	// char	**str;
+
+	i = 0;
+	(void)mini;
+	// printf("%s\n", mini->tmp_cmd[1]);
+	while (mini->tmp_cmd[i])
+	{
+		// printf("%s\n", mini->tmp_cmd[i]);
+		var = ft_strjoin_1(var, mini->tmp_cmd[i]);
+		// printf("-->\n");
+		i++;
+	}
+	// printf("var '%s'\n", var);
+	// exit(1);
 }
 
 void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
@@ -72,19 +139,10 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 	i = 0;
 	j = 0;
 	(void)env;
-	// while (env[i] != NULL)
-	// {
-	// 	if (ft_strncmp(env[i], "PATH", 4) == 0)
-	// 	{
-	// 		var = ft_split(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
-	// 		break ;
-	// 	}
-	// 	i++;
-	// }
-	// path_nb = count(ft_substr(env[i], 5, ft_strlen(env[i])), ':');
+	if (cmd->general_info->in_file_exist == 1)
+		exit(1);
 	while (mini->my_env[i] != NULL)
 	{
-		// puts(mini->my_env[i]);
 		if (ft_strncmp(mini->my_env[i], "PATH", 4) == 0)
 		{
 			var = ft_split(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
@@ -113,6 +171,7 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 		j++;
 	}
 	mini->exit_code = 1;
+	// if (cmd->args[1][0] == '/')
 	if (cmd->args[0][0] == '/')
 	{
 		printf("minishell: No such file or directory\n");
@@ -147,16 +206,9 @@ int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
 	else if ((ft_strncmp(cmd->args[0], "export", 7) == 0)  \
 	&& cmd->general_info->cmd_nb == 1 && cmd->args[1])
 	{
-		// write(2, "hello\n", 6);
 		ft_export(cmd, mini);
 		return (1);
 	}
-	// else if (ft_strncmp(cmd->args[0], "echo", 5) == 0 && cmd->general_info->cmd_nb == 1)
-	// {
-	// 	mini->exit_code = 0;
-	// 	ft_echo(cmd);
-	// 	return (1);
-	// }
 	return (0);
 }
 
@@ -189,6 +241,22 @@ int	ft_cd(t_cmd	*cmd, t_minishell	*mini)
 	
 	(void)mini;
 	home = getenv("HOME");
+	int	i = 0;
+	int	check = 0;
+	while (mini->my_env[i] != NULL)
+	{
+		if (ft_strncmp(mini->my_env[i], "HOME", ft_cnt(mini->my_env[i])) == 0)
+		{
+			check = 1;
+			break ;
+		}
+		i++;
+	}
+	if (check == 0 && !(cmd->args[1]))
+	{
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		return (1);
+	}
 	if (cmd->args[1] == NULL)
 	{
 		chdir(home);
@@ -196,7 +264,6 @@ int	ft_cd(t_cmd	*cmd, t_minishell	*mini)
 	else if (chdir(cmd->args[1]) != 0) 
 	{
 		mini->exit_code = 1;
-		// mini->exit_code = 0;
 		perror("minishell: ");
 		return (1);
 	}

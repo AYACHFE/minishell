@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/26 15:50:16 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/05 12:02:33 by rarraji          ###   ########.fr       */
+/*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
+/*   Updated: 2023/06/06 19:17:30 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 					{
 						//in_redirection
 						cmd[i].in_red = 1;
-						cmd[i].files[fl] = ft_strjoin("< ", general_info->str[j]);
+						cmd[i].files[fl] = ft_strjoin("< ", general_info->str[++j]);
 						fl++;
 					}
 				}
@@ -270,6 +270,7 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 	general_info->out_red_nb = 0;
 	general_info->str = mini->tmp_cmd;
 	general_info->exit_code = 0;
+	general_info->in_file_exist = 0;
 
 	while (mini->cmd[i])
 	{

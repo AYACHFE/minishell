@@ -1,0 +1,1 @@
+minishell: printf("%d------>%s\n",: command not found

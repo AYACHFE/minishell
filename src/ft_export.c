@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/06 16:33:23 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/08 15:33:48 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void	ft_export(t_cmd	*cmd, t_minishell *mini)
 	int	t = 0;
 	char **arg;
 
+
+	// printf("--==%s\n", cmd->args[i]);
 	if(cmd->args[2] == '\0')
 		t = 0;
 	else
@@ -105,7 +107,6 @@ void	ft_export(t_cmd	*cmd, t_minishell *mini)
 			i++;
 		}
 	}	
-	// puts("reda");
 	arg = malloc((i - t + 1) * (sizeof(char *)));
 	i = 1;
 	j = 0;
@@ -137,7 +138,14 @@ void	ft_export(t_cmd	*cmd, t_minishell *mini)
 	}	
 	arg[t] = NULL;
 	i = check_valid_exp(arg);
-	// if (mini->count_str > 1 && i == 1)
+	if (i == 0)
+		mini->exit_code = 1;
+	// t = 0;
+	// while(arg[t])
+	// {
+	// 	 printf("-------->%s\n", arg[t]);
+	// 	 t++;
+	// }
 	if (cmd->args[1] && i == 1)
 	{
 		ft_rem_var(arg ,mini);
@@ -193,6 +201,7 @@ int	ft_check_var_exect(char *s,t_minishell *mini, int var)
 	}
 	return (0);
 }
+
 
 void	ft_rem_var(char **str, t_minishell *mini)
 {

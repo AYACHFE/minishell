@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/05 15:18:14 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/09 12:15:51 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 
 typedef struct s_cmd_info
 {
+	int		in_file_exist;
 	char	**str;
 	int		cmd_nb;
 	int		pipe_nb;
@@ -83,6 +84,9 @@ typedef struct s_minishell
 	char	**my_export;
 	char	**tmp_my_env;
 	int		exit_code;
+	int		left_sp;
+	int		right_sp;
+	int		center_sp;
 }	t_minishell;
 
 
@@ -141,12 +145,19 @@ int		*args_counter(t_cmd_info	*general_info);
 void	ft_check_dollar(t_minishell *mini);
 void ft_change(t_minishell *mini, char *str);
 int ft_strlennn(char *str);
+void ft_check_sp(char *s, t_minishell *mini);
 
 
 //error
 int ft_double_single_quote(char *str);
 int ft_error_pipe(char *s);
 int ft_error(char *str, int i);
+
+//ft_error_2
+int	ft_error_2(t_minishell	*mini);
+int	check_first_cmd(char	*s);
+int	check_first_cmd_d(char	*s);
+int	check_first_cmd_s(char	*s);
 
 
 //execution

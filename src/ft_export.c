@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/06 19:28:48 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 12:15:51 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int check_valid_exp(char **arg)
 {
 	int i;
 	int	j;
+	// int l;
 	i = 0;
 
 	while(arg[i])
@@ -62,16 +63,18 @@ int check_valid_exp(char **arg)
 			{
 				if(ft_isalpha(arg[i][0]) == 0 && ft_isalpha(arg[i][0]) != '_')
 				{
+					
 					printf("minishell: not a valid identifier\n");
 					return(0);
 				}
 				j++;
 			}
 		}
-		else if(ft_isalpha(arg[i][0]) == 0 && ft_isalpha(arg[i][0]) != '_')
-		{
-			printf("minishell: not a valid identifier\n");
-		}
+		// else if(ft_isalpha(arg[i][0]) == 0 && ft_isalpha(arg[i][0]) != '_')
+		// {
+		// 	printf("minishell: not a valid identifier\n");
+		// 	return(0);
+		// }
 		i++;
 	}
 	return(1);
@@ -85,6 +88,8 @@ void	ft_export(t_cmd	*cmd, t_minishell *mini)
 	int	t = 0;
 	char **arg;
 
+
+	// printf("--==%s\n", cmd->args[i]);
 	if(cmd->args[2] == '\0')
 		t = 0;
 	else
@@ -105,7 +110,6 @@ void	ft_export(t_cmd	*cmd, t_minishell *mini)
 			i++;
 		}
 	}	
-	// puts("reda");
 	arg = malloc((i - t + 1) * (sizeof(char *)));
 	i = 1;
 	j = 0;
@@ -139,6 +143,12 @@ void	ft_export(t_cmd	*cmd, t_minishell *mini)
 	i = check_valid_exp(arg);
 	if (i == 0)
 		mini->exit_code = 1;
+	// t = 0;
+	// while(arg[t])
+	// {
+	// 	 printf("-------->%s\n", arg[t]);
+	// 	 t++;
+	// }
 	if (cmd->args[1] && i == 1)
 	{
 		ft_rem_var(arg ,mini);
@@ -194,6 +204,7 @@ int	ft_check_var_exect(char *s,t_minishell *mini, int var)
 	}
 	return (0);
 }
+
 
 void	ft_rem_var(char **str, t_minishell *mini)
 {

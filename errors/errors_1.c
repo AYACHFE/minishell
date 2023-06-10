@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/10 11:48:44 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 12:15:23 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,8 @@ int ft_double_single_quote(char *str)
 int	ft_error_pipe(char *s)
 {
 	int i;
-	int	check;
 
 	i = 0;
-	check = 0;
 	if (check_first_cmd(s) == 2)
 		return (2);
 	i = 0;
@@ -89,11 +87,11 @@ int	ft_error_pipe(char *s)
 			ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
-		if (s[i] == '$' && s[i + 1] == '\0')
-		{
-			ft_putstr_fd("minishell: syntax error\n", 2);
-			return (0);
-		}
+		// if (s[i + 1] == '\0' && s[i] == '$')
+		// {
+		// 	ft_putstr_fd("minishell: syntax error\n", 2);
+		// 	return (0);
+		// }
 		i++;
 	}
 	return (1);

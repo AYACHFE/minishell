@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/09 12:19:22 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/09 15:37:58 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ int	ft_error_pipe(char *s)
 			ft_putstr_fd("minishell: syntax error\n", 2);
 			return (0);
 		}
-		if (s[i + 1] == '\0' && s[i] == '$')
-		{
-			ft_putstr_fd("minishell: syntax error\n", 2);
-			return (0);
-		}
+		// if (s[i + 1] == '\0' && s[i] == '$')
+		// {
+		// 	ft_putstr_fd("minishell: syntax error\n", 2);
+		// 	return (0);
+		// }
 		i++;
 	}
 	return (1);

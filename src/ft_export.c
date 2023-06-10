@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/08 15:33:48 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/09 22:52:08 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int check_valid_exp(char **arg)
 {
 	int i;
 	int	j;
+	// int l;
 	i = 0;
 
 	while(arg[i])
@@ -62,16 +63,18 @@ int check_valid_exp(char **arg)
 			{
 				if(ft_isalpha(arg[i][0]) == 0 && ft_isalpha(arg[i][0]) != '_')
 				{
+					
 					printf("minishell: not a valid identifier\n");
 					return(0);
 				}
 				j++;
 			}
 		}
-		else if(ft_isalpha(arg[i][0]) == 0 && ft_isalpha(arg[i][0]) != '_')
-		{
-			printf("minishell: not a valid identifier\n");
-		}
+		// else if(ft_isalpha(arg[i][0]) == 0 && ft_isalpha(arg[i][0]) != '_')
+		// {
+		// 	printf("minishell: not a valid identifier\n");
+		// 	return(0);
+		// }
 		i++;
 	}
 	return(1);

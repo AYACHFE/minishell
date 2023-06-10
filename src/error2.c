@@ -6,11 +6,29 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:54:00 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/09 12:14:55 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/10 21:48:55 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	first_error_part(t_minishell	*mini, char	*str)
+{
+	int	error;
+
+	error = ft_error(str, 0);
+	if (error == 2)
+	{
+		mini->exit_code = 0;
+		return (1);
+	}
+	if (error == 0)
+	{
+		mini->exit_code = 2;
+		return (1);
+	}
+	return (0);
+}
 
 int	check_first_cmd(char	*s)
 {
@@ -150,7 +168,11 @@ int	ft_error_2(t_minishell	*mini)
 			return (1);
 		if (more_pipes_error(mini, i) == 1)
 			return (1);
+		// if (mini->cmd[i + 1] != NULL)
+		// 	return (0);
 		i++;
 	}
 	return (0);
 }
+// export a="   "
+// echo nike > ""$a

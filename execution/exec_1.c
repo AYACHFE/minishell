@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/10 12:19:43 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/10 21:49:52 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,15 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		dup2(cmd[i].fd_in, 0);
 		close(cmd[i].fd_in);
 	}
+	//this part fixes "cd .. > out" but it drops the tester to 72%
+	// int	no_fork = built_in_cmd_3_check(mini, &cmd[i], env);
+	// if (cmd[i].args[0] && no_fork == 1)
+	// {
+	// 	if (cmd[i].files[0])
+	// 		file_creation(&cmd[i], mini);
+	// 	built_in_cmd_3(mini, &cmd[i], env);
+	// 	return ;
+	// }
 	if (cmd[i].args[0] && built_in_cmd_3(mini, &cmd[i], env))
 		return ;
 	if (pipe(fd) == -1)
@@ -94,6 +103,82 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	// printf("-->exit_code %d\n", mini->exit_code);
 }
 
+void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
+{
+	(void)mini;
+	int		i;
+	int		j;
+	int		path_nb;
+	char	**var = NULL;
+	char	*val;
+
+
+	i = 0;
+	j = 0;
+	//new
+	path_nb = 1;
+	(void)env;
+	if (cmd->general_info->in_file_exist == 1)
+		exit(1);
+	if (cmd->args[0][0] != '/')
+	{
+		while (mini->my_env[i] != NULL)
+		{
+			if (ft_strncmp(mini->my_env[i], "PATH", 4) == 0)
+			{
+				var = ft_split(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
+				break ;
+			}
+			if (mini->my_env[i + 1] == NULL)
+			{
+				printf("minishell: No such file or directory\n");
+				exit(127);
+			}
+			i++;
+		}
+		path_nb = count(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
+		while (j < path_nb)
+		{
+			val = ft_strjoin(var[j], "/");
+			val = ft_strjoin(val, cmd->args[0]);
+			if (access(val, F_OK) == 0)
+			{
+				free(var[j]);
+				free(var);
+				execve(val, cmd->args, mini->my_env);
+			}
+			free(var[j]);
+			free(val);
+			j++;
+		}
+	}
+	else 
+	{
+		// puts("----->");
+		if (access(cmd->args[0], F_OK) == 0)
+		{
+			execve(cmd->args[0], cmd->args, mini->my_env);
+		}
+	}
+	mini->exit_code = 1;
+	// if (cmd->args[1][0] == '/')
+	if (cmd->args[0][0] == '/')
+	{
+		ft_putstr_fd("minishell: No such file or directory\n", 2);
+	}
+	else
+	{
+		char *str = ft_strjoin("minishell: ", cmd->args[0]);
+		char *str1 = ft_strjoin(str, ": command not found\n");
+		ft_putstr_fd(str1, 2);
+		free(str);
+		free(str1);
+	}
+	free(var);
+	mini->exit_code = 127;
+	exit(127);
+}
+
 void	here_doc(t_cmd	*cmd)
 {
 	char	*read;
@@ -112,6 +197,7 @@ void	here_doc(t_cmd	*cmd)
 		while (1)
 		{
 			read = readline("> ");
+			// ft_check_dollar(mini);
 			if (ft_strncmp(read, cmd->eof[j], ft_strlen(read) + 1) == 0)
 			{
 				j++;
@@ -139,7 +225,8 @@ int	check_ambig(char	*file, t_minishell	*mini)
 	// printf("center_sp %d\n", mini->center_sp);
 	// printf("right_sp %d\n", mini->right_sp);
 	// printf("left_sp %d\n", mini->left_sp);
-	if (mini->center_sp == 1)
+	// printf("just_sp %d\n", mini->just_sp);
+	if (mini->center_sp == 1 || mini->just_sp == 1)
 	{
 		// puts("center");
 		ft_putendl_fd("minishell: ambiguous redirect", 2);
@@ -149,8 +236,9 @@ int	check_ambig(char	*file, t_minishell	*mini)
 	{
 		while (file[j])
 		{
-			if (file[j] == 32 && (file[j - 1] != 32 && file[j - 1] != '>'))
+			if (file[j] == 32 && (file[j - 1] != 32 && file[j - 1] != '>' && file[j - 2] != '>'))
 			{
+				// printf("'%d'----'%c'\n", j, file[j]);
 				ft_putendl_fd("minishell: ambiguous redirect", 2);
 				return (1);
 			}

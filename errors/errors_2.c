@@ -6,11 +6,29 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:54:00 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/09 13:08:45 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 20:07:55 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	first_error_part(t_minishell	*mini, char	*str)
+{
+	int	error;
+
+	error = ft_error(str, 0);
+	if (error == 2)
+	{
+		mini->exit_code = 0;
+		return (1);
+	}
+	if (error == 0)
+	{
+		mini->exit_code = 2;
+		return (1);
+	}
+	return (0);
+}
 
 int	check_first_cmd(char	*s)
 {

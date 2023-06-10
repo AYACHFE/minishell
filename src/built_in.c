@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/10 15:14:09 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 20:18:59 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	char	*s;
 	char	*var;
 	char	**ret;
-	int		error;
 	mini->center_sp = 0;
 	mini->right_sp = 0;
 	mini->left_sp = 0;
@@ -32,189 +31,71 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	if (!str)
 		exit(mini->exit_code);
 	add_history(str);
-	//
-	error = ft_error(str, 0);
-	if (error == 2)
-	{
-		mini->exit_code = 0;
+	if (first_error_part(mini, str) == 1)
 		return ;
-	}
-	if (error == 0)
-	{
-		mini->exit_code = 2;
-		return ;
-	}
+	// error = ft_error(str, 0);
+	// if (error == 2)
+	// {
+	// 	mini->exit_code = 0;
+	// 	return ;
+	// }
+	// if (error == 0)
+	// {
+	// 	mini->exit_code = 2;
+	// 	return ;
+	// }
 	s = ft_strdup(str);
 	var = prep(s);
 	ret = ft_split(var, 11);
-	//
 	mini->cmd = ret;
 	mini->cmd_nb = count(var, 11);
 	if (ft_error_2(mini) == 1)
 		return ;
-	//
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
-	//
-	mini->count_str = 0;
-	if (ft_strlen(str) == 0)
-		return ;
 	ft_check_dollar(mini);
-	// printf("center_sp %d\n", mini->center_sp);
-	// printf("right_sp %d\n", mini->right_sp);
-	// printf("left_sp %d\n", mini->left_sp);
-	
-	
-	// split_after_expantion(mini);
-	
-	mini->str = ft_split(str, ' ');
-	mini->count_str = count(str, ' ');
 	parcing(mini, cmd, str);
-	if (mini->count_str > 0)
+	if (count(str, ' ') > 0)
 		exec_1(mini, cmd, env);
 	// printf("exit_code %d\n", mini->exit_code);
-	
-	free(cmd);
-	free(str);
+	// free(str);
+	// free(cmd);
 }
 
-size_t	ft_strlen_1(const char *str)
+int	built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
-char	*ft_strjoin_1(char const *s1, char const *s2)
-{
-	int		i;
-	int		j;
-	char	*p;
-	int		len;
-	int		k;
-
-	k = 0;
-	i = 0;
-	j = 0;
-	if (!s1 || !s2)
-		return (NULL);
-	// printf("len %zu\n", ft_strlen_1(s2));
-	len = ft_strlen_1(s1) + ft_strlen_1(s2);
-	puts("<----");
-	p = malloc(sizeof(char) * (len + 1));
-	if (!p)
-		return (NULL);
-	while (s1[i])
-		p[k++] = s1[i++];
-	while (s2[j])
-		p[k++] = s2[j++];
-	p[k] = '\0';
-	return (p);
-}
-
-void	split_after_expantion(t_minishell	*mini)
-{
-	int	i;
-	char	*var;
-	// char	**str;
-
-	i = 0;
-	(void)mini;
-	// printf("%s\n", mini->tmp_cmd[1]);
-	while (mini->tmp_cmd[i])
-	{
-		// printf("%s\n", mini->tmp_cmd[i]);
-		var = ft_strjoin_1(var, mini->tmp_cmd[i]);
-		printf("-->\n");
-		i++;
-	}
-	// printf("var '%s'\n", var);
-	// exit(1);
-}
-
-void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
-{
-	(void)mini;
-	int		i;
-	int		j;
-	int		path_nb;
-	char	**var = NULL;
-	char	*val;
-
-
-	i = 0;
-	j = 0;
-	//new
-	path_nb = 1;
+	//built_ins that you should not fork for
 	(void)env;
-	if (cmd->general_info->in_file_exist == 1)
-		exit(1);
-	if (cmd->args[0][0] != '/')
+	(void)mini;
+	if ((ft_strncmp(cmd->args[0], "exit", 5) == 0) && cmd->general_info->cmd_nb == 1)
 	{
-		while (mini->my_env[i] != NULL)
-		{
-			if (ft_strncmp(mini->my_env[i], "PATH", 4) == 0)
-			{
-				var = ft_split(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
-				break ;
-			}
-			if (mini->my_env[i + 1] == NULL)
-			{
-				printf("minishell: No such file or directory\n");
-				exit(127);
-			}
-			i++;
-		}
-		path_nb = count(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
-		while (j < path_nb)
-		{
-			val = ft_strjoin(var[j], "/");
-			val = ft_strjoin(val, cmd->args[0]);
-			if (access(val, F_OK) == 0)
-			{
-				free(var[j]);
-				free(var);
-				execve(val, cmd->args, mini->my_env);
-			}
-			free(var[j]);
-			free(val);
-			j++;
-		}
+		// ft_exit(cmd, mini);
+		return (1);
 	}
-	else 
+	else if ((ft_strncmp(cmd->args[0], "cd", 3) == 0) \
+	&& cmd->general_info->cmd_nb == 1)
 	{
-		// puts("----->");
-		if (access(cmd->args[0], F_OK) == 0)
-		{
-			execve(cmd->args[0], cmd->args, mini->my_env);
-		}
+		// ft_cd(cmd, mini);
+		return(1);
 	}
-	mini->exit_code = 1;
-	// if (cmd->args[1][0] == '/')
-	if (cmd->args[0][0] == '/')
+	else if (ft_strncmp(cmd->args[0], "unset", 5) == 0)
 	{
-		ft_putstr_fd("minishell: No such file or directory\n", 2);
+		// ft_unset(cmd, mini);
+		return (1);
 	}
-	else
+	else if ((ft_strncmp(cmd->args[0], "export", 7) == 0)  \
+	&& cmd->general_info->cmd_nb == 1 && cmd->args[1])
 	{
-		char *str = ft_strjoin("minishell: ", cmd->args[0]);
-		char *str1 = ft_strjoin(str, ": command not found\n");
-		ft_putstr_fd(str1, 2);
-		free(str);
-		free(str1);
+		// ft_export(cmd, mini);
+		return (1);
 	}
-	free(var);
-	mini->exit_code = 127;
-	exit(127);
+	return (0);
 }
 
 int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
 	//built_ins that you should not fork for
 	(void)env;
-	if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
+	if ((ft_strncmp(cmd->args[0], "exit", 5) == 0) && cmd->general_info->cmd_nb == 1)
 	{
 		ft_exit(cmd, mini);
 		return (1);
@@ -242,7 +123,10 @@ int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
 void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
 	//built_ins that you should fork for
-	if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
+	if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
+		ft_exit(cmd, mini);
+	/////
+	else if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
 	{
 		mini->exit_code = 0;
 		ft_echo(cmd);

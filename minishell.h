@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/10 12:40:21 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 20:19:22 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct s_minishell
 }	t_minishell;
 
 t_cmd *cmd; 
-t_minishell	mini;
+// t_minishell	mini;
 
 //built_in
 void	built_in_cmd(t_minishell	*mini, char **env);
@@ -98,14 +98,15 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env);
 int		ft_cd(t_cmd	*cmd, t_minishell	*mini);
 void	ft_pwd();
 int		built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env);
+int		built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env);
 
 //tmp
 void	split_after_expantion(t_minishell	*mini);
 
 //exit
 void	ft_exit(t_cmd	*cmd, t_minishell	*mini);
-int	ft_toint_check(char *str);
-int	ft_toint_check_ext(char *str, int i, int res);
+int		ft_toint_check(char *str);
+int		ft_toint_check_ext(char *str, int i, int res);
 
 //command
 void	ft_echo(t_cmd	*cmd);
@@ -130,11 +131,9 @@ void	print_export(t_minishell *mini);
 int		ft_double_single_quote(char *str);
 int		ft_check_var_exect(char *s,t_minishell *mini, int var);
 
-
 //parcing
 void	parcing(t_minishell	*mini,t_cmd	*cmd, char *s);
 char	*prep(char *str);
-
 
 //parce_2
 void	to_struct(t_minishell	*mini, t_cmd	*cmd);
@@ -142,27 +141,23 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info);
 int		cmd_counter(t_minishell	*mini);
 int		*args_counter(t_cmd_info	*general_info);
 
-
 //error
 int		ft_double_single_quote(char *str);
 int		ft_error_pipe(char *s);
 int		ft_error(char *str, int i);
 
 //ft_error_2
-int	ft_error_2(t_minishell	*mini);
-int	check_first_cmd(char	*s);
-int	check_first_cmd_d(char	*s);
-int	check_first_cmd_s(char	*s);
-
-// //expantion
-// void	ft_check_dollar(t_minishell *mini);
+int		ft_error_2(t_minishell	*mini);
+int		check_first_cmd(char	*s);
+int		check_first_cmd_d(char	*s);
+int		check_first_cmd_s(char	*s);
+int		first_error_part(t_minishell	*mini, char	*str);
 
 //expanding
 void	ft_check_dollar(t_minishell *mini);
-void ft_change(t_minishell *mini, char *str);
-int ft_strlennn(char *str);
-void ft_check_sp(char *s, t_minishell *mini);
-
+void	ft_change(t_minishell *mini, char *str);
+int		ft_strlennn(char *str);
+void	ft_check_sp(char *s, t_minishell *mini);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 11:08:09 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/05 11:48:11 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 19:08:14 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@ void	ft_exit(t_cmd	*cmd, t_minishell	*mini)
 	i = 0;
 	while (cmd->args[i])
 		i++;
-	// printf("i == %d\n", i);
 	if (cmd->args[1] && cmd->args[1][0] == '0')
 		exit(0);
-	// printf("atoi %d\n", ft_toint_check(cmd->args[1]));
 	if (cmd->args[1] && ft_toint_check(cmd->args[1]) == 0)
 	{
 		printf("minishell: exit: %s: numeric argument required\n", cmd->args[1]);
@@ -67,11 +65,8 @@ int	ft_toint_check(char *str)
 	i = 0;
 	res = 0;
 	sign = 1;
-	// while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-	// 	i++;
 	if (str[i] == '-')
 	{
-		// return (0);
 		sign = -1;
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/09 12:15:51 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/10 12:22:10 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,9 +162,9 @@ int	check_first_cmd_s(char	*s);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
-void	file_creation(t_cmd	*cmd);
+void	file_creation(t_cmd	*cmd, t_minishell	*mini);
 void	here_doc(t_cmd	*cmd);
-void	redirections(t_cmd	*cmd);
+void	redirections(t_cmd	*cmd, t_minishell	*mini);
 
 
 #endif

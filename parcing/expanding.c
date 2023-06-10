@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/09 22:32:33 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/10 14:36:35 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,19 @@ int ft_strlennn(char *str)
 	}
 	return(i);
 }
+int ft_hsb3(char *str, int n)
+{
+	int	j;
+
+	j = n;
+	while(str[j] != '\0'&& str[j] != '$')
+	{
+		j++;   
+	}
+	return(j - n);
+}
+
+
 
 
 
@@ -213,10 +226,21 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 			if (mini->my_env[i] != '\0')
 			{
 				s = ft_substr(mini->my_env[i], d + 1, ft_strlen(mini->my_env[i]));
+				ft_check_sp(mini->my_env[i], mini);
 				str_jn = ft_strjoin(str_jn, s); 
 				free(s);
+				n++;
 				while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
 					n++;
+				if(str[n] != '$')
+				{
+					s = ft_substr(str, n, ft_hsb3(str, n));
+					str_jn = ft_strjoin(str_jn, s);
+					free(s);
+					n++;
+					while (str[n] != '$' && str[n])
+						n++;
+				}	
 			}
 			n = j;
 
@@ -356,4 +380,45 @@ void    ft_check_dollar(t_minishell *mini)
     //     i++;
     // }
     // ft_error(check, 1);
+}
+
+
+void ft_check_sp(char *s, t_minishell *mini)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	// printf("-->'%s'\n", s);
+	mini->left_sp = 0;
+	mini->right_sp = 0;
+	mini->center_sp = 0;
+	while(s[i])
+	{
+		if (s[i] == '=' && s[i + 1] == 32)
+		{
+			mini->left_sp = 1;
+			return ;
+		}
+		else if (s[i] == 32)
+		{
+			j = i;
+			while (s[j] && s[j] == 32)
+				j++;
+			if (s[j] == '\0')
+			{
+				// printf("'%d'right'%c'\n",j, s[j]);
+				mini->right_sp = 1;
+				return ;
+			}
+			else if (s[i] != '\0')
+			{
+				// printf("'%d'center'%c'\n",j, s[j]);
+				mini->center_sp = 1;
+				return ;
+			}
+		}
+		i++;	
+	}
 }

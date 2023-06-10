@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/10 20:23:19 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 20:38:27 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ int	check_ambig(char	*file, t_minishell	*mini)
 	// printf("right_sp %d\n", mini->right_sp);
 	// printf("left_sp %d\n", mini->left_sp);
 	// printf("just_sp %d\n", mini->just_sp);
-	if (mini->center_sp == 1)
+	if (mini->center_sp == 1 || mini->just_sp == 1)
 	{
 		// puts("center");
 		ft_putendl_fd("minishell: ambiguous redirect", 2);

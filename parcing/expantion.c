@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/10 14:40:39 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 20:43:22 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,6 +396,11 @@ void ft_check_sp(char *s, t_minishell *mini)
 	mini->just_sp = 0;
 	while(s[i])
 	{
+		if (s[i] == '=' && s[i + 1] == '\0')
+		{
+			mini->just_sp = 1;
+			return ;
+		}
 		if (s[i] == '=' && s[i + 1] == 32)
 		{
 			j = i;
@@ -403,7 +408,7 @@ void ft_check_sp(char *s, t_minishell *mini)
 			while (s[j] && s[j] == 32)
 				j++;
 			// printf("-->%d, s-->'%c'\n", j, s[j]);
-			if (s[j] == '\0')
+			if (s[j + 1] == '\0')
 			{
 				mini->just_sp = 1;
 				return ;

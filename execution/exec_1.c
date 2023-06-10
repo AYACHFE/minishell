@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/10 12:04:50 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 14:51:57 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		pid[i] = fork();
 		if (pid[i] == 0)
 		{
+			// printf("{%s}\n", cmd[i].args[0]);
 			dup2(fd[1], 1);
 			close(fd[1]);
 			close(fd[0]);
@@ -112,6 +113,7 @@ void	here_doc(t_cmd	*cmd)
 		while (1)
 		{
 			read = readline("> ");
+			// ft_check_dollar(mini);
 			if (ft_strncmp(read, cmd->eof[j], ft_strlen(read) + 1) == 0)
 			{
 				j++;
@@ -139,6 +141,7 @@ int	check_ambig(char	*file, t_minishell	*mini)
 	// printf("center_sp %d\n", mini->center_sp);
 	// printf("right_sp %d\n", mini->right_sp);
 	// printf("left_sp %d\n", mini->left_sp);
+	// printf("just_sp %d\n", mini->just_sp);
 	if (mini->center_sp == 1)
 	{
 		// puts("center");
@@ -149,8 +152,9 @@ int	check_ambig(char	*file, t_minishell	*mini)
 	{
 		while (file[j])
 		{
-			if (file[j] == 32 && (file[j - 1] != 32 && file[j - 1] != '>'))
+			if (file[j] == 32 && (file[j - 1] != 32 && file[j - 1] != '>' && file[j - 2] != '>'))
 			{
+				// printf("'%d'----'%c'\n", j, file[j]);
 				ft_putendl_fd("minishell: ambiguous redirect", 2);
 				return (1);
 			}

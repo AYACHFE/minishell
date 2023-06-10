@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/09 14:03:23 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 12:40:21 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_minishell
 	int		left_sp;
 	int		right_sp;
 	int		center_sp;
+	int		just_sp;
 }	t_minishell;
 
 t_cmd *cmd; 

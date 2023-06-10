@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/10 12:12:43 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 14:40:39 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,19 @@ int ft_strlennn(char *str)
 	}
 	return(i);
 }
+int ft_hsb3(char *str, int n)
+{
+	int	j;
+
+	j = n;
+	while(str[j] != '\0'&& str[j] != '$')
+	{
+		j++;   
+	}
+	return(j - n);
+}
+
+
 
 
 
@@ -216,8 +229,18 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 				ft_check_sp(mini->my_env[i], mini);
 				str_jn = ft_strjoin(str_jn, s); 
 				free(s);
+				n++;
 				while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
 					n++;
+				if(str[n] != '$')
+				{
+					s = ft_substr(str, n, ft_hsb3(str, n));
+					str_jn = ft_strjoin(str_jn, s);
+					free(s);
+					n++;
+					while (str[n] != '$' && str[n])
+						n++;
+				}	
 			}
 			n = j;
 
@@ -359,7 +382,6 @@ void    ft_check_dollar(t_minishell *mini)
     // ft_error(check, 1);
 }
 
-
 void ft_check_sp(char *s, t_minishell *mini)
 {
 	int	i;
@@ -371,8 +393,22 @@ void ft_check_sp(char *s, t_minishell *mini)
 	mini->left_sp = 0;
 	mini->right_sp = 0;
 	mini->center_sp = 0;
+	mini->just_sp = 0;
 	while(s[i])
 	{
+		if (s[i] == '=' && s[i + 1] == 32)
+		{
+			j = i;
+			j++;
+			while (s[j] && s[j] == 32)
+				j++;
+			// printf("-->%d, s-->'%c'\n", j, s[j]);
+			if (s[j] == '\0')
+			{
+				mini->just_sp = 1;
+				return ;
+			}
+		}
 		if (s[i] == '=' && s[i + 1] == 32)
 		{
 			mini->left_sp = 1;

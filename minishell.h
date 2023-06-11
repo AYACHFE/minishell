@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/10 20:19:22 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 21:57:08 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,8 @@ void	rem_var_export(t_minishell	*mini, int pos);
 
 //ft_export
 void	ft_export(t_cmd	*cmd, t_minishell *mini);
-void    ft_rem_var(char **str, t_minishell *mini);
-void	ft_rem_var_export(char **str, t_minishell *mini);
+void    ft_rem_var(char **str, t_minishell *mini, int t);
+void	ft_rem_var_export(char **str, t_minishell *mini, int t);
 void	print_export(t_minishell *mini);
 int		ft_double_single_quote(char *str);
 int		ft_check_var_exect(char *s,t_minishell *mini, int var);

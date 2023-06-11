@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/10 21:10:42 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/10 21:56:39 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,8 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
                     str_jn = ft_strjoin(str_jn, s);
                     while (str[n] != '$' && str[n] != '\"' && str[n] != '\0' && ft_isalpha(str[n]) == 0)
                         n++;
+					if(str[n] == '\0')
+							break;	
                 }
                 else if(ft_strchr(str, '\'') != NULL)
 				{
@@ -200,12 +202,32 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
                     str_jn = ft_strjoin(str_jn, s);
                     while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
                         n++;
+					if(str[n] == '\0')
+							break;	
 				}
                 else
                 {
 					n++;
                     while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
                         n++;
+					if(str[n] == '\0')
+							break;
+					else
+					{
+						n++;	
+						if(str[n] != '$' && str[n] != '\"' && str[n] != '\'')
+						{
+							s = ft_substr(str, n, ft_hsb3(str, n));
+							str_jn = ft_strjoin(str_jn, s);
+							free(s);
+							n++;
+							while (str[n] != '$' && str[n])
+								n++;
+							if(str[n] == '\0')
+								break;	
+						}		
+					}			
+						
                 }
             }
 			else if (mini->my_env[i] == '\0' && str[0] == '\"' && str[1] == '$'  && str[2] == '\'')
@@ -215,6 +237,8 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 				str_jn = ft_strjoin(str_jn, s);
 				while (str[n] != '\'' && str[n])
 					n++;
+				if(str[n] == '\0')
+					break;	
 			}
 			// else if(mini->my_env[i] == '\0')
 			// {
@@ -232,15 +256,23 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 				n++;
 				while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
 					n++;
-				if(str[n] != '$')
+				if(str[n] == '\0')
+					break;
+				else
 				{
-					s = ft_substr(str, n, ft_hsb3(str, n));
-					str_jn = ft_strjoin(str_jn, s);
-					free(s);
-					n++;
-					while (str[n] != '$' && str[n])
+					n++;	
+					if(str[n] != '$' && str[n] != '\"' && str[n] != '\'')
+					{
+						s = ft_substr(str, n, ft_hsb3(str, n));
+						str_jn = ft_strjoin(str_jn, s);
+						free(s);
 						n++;
-				}	
+						while (str[n] != '$' && str[n])
+							n++;
+						if(str[n] == '\0')
+							break;	
+					}		
+				}			
 			}
 			n = j;
 
@@ -250,9 +282,14 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 		    s = ft_substr(str, n, ft_strlennn(str));
 		    str_jn = ft_strjoin(str_jn, s);
 		    while (str[n] != '\'' && str[n] != '\0')
-		        n++;   
-		    n++;
-		    n = j;    
+		        n++;
+			if(str[n] == '\0')
+				break;
+			else
+			{	
+				n++;
+				n = j;    
+			}		  
 		}
 		// else if(mini->my_env[i] != '\0' && str[0] == '\'')
 		// {
@@ -273,7 +310,10 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 				j++;       
 			s = ft_substr(str, n, ft_strlenn(str));
 			str_jn = ft_strjoin(str_jn, s);
-			n = j;
+			if(str[n] == '\0')
+				break;
+			else	
+				n = j;
 		} 
 	}
 	return (str_jn);   
@@ -376,11 +416,12 @@ void    ft_check_dollar(t_minishell *mini)
     // i = 0;
     // while(mini->tmp_cmd[i])
     // {
-    //     check = ft_strjoin(mini->tmp_cmd[i], check);
+    //     printf("%s\n", mini->tmp_cmd[i]);
     //     i++;
     // }
     // ft_error(check, 1);
 }
+
 
 void ft_check_sp(char *s, t_minishell *mini)
 {

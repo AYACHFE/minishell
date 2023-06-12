@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/12 19:33:52 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 21:37:22 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void	tokens_redirection(t_cmd	*cmd, t_cmd_info	*general_info, int j, int eof_cou
 	}
 }
 
-void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
+void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini)
 {
 	int	i;
 	int	j;
@@ -204,7 +204,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 			while (general_info->str[j] && (general_info->str[j][0] != '|'))
 			{
 				//this part is for redirection
-				if (general_info->str[j][0] == '>' || general_info->str[j][0] == '<')
+				if ((general_info->str[j][0] == '>' || general_info->str[j][0] == '<') && mini->no_exp == 0)
 				{
 					// tokens_redirection(&cmd[i], general_info, j, eof_counter, fl);
 					if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '>' && general_info->str[j][1] == '>'))
@@ -289,5 +289,5 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 	}
 	general_info->files_nb = general_info->append_nb + general_info->out_red_nb \
 	+ general_info->in_red_nb;
-	to_struct_2(cmd, general_info);
+	to_struct_2(cmd, general_info, mini);
 }

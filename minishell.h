@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/12 21:20:01 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 21:37:50 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ char	*prep(char *str);
 
 //parce_2
 void	to_struct(t_minishell	*mini, t_cmd	*cmd);
-void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info);
+void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini);
 int		cmd_counter(t_minishell	*mini);
 int		*args_counter(t_cmd_info	*general_info);
 

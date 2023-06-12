@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/12 19:05:07 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 21:21:54 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 // the engine of this program
 void	built_in_cmd(t_minishell	*mini, char **env)
 {
+	// int		i;
 	char	*str;
-	t_cmd	*cmd = NULL;
+	t_cmd	*cmd;
+	// t_cmd	*cmd = NULL;
 	
 	char	*s;
 	char	*var;
@@ -45,9 +47,34 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	parcing(mini, cmd, str);
 	if (count(str, ' ') > 0)
 		exec_1(mini, cmd, env);
-	// printf("exit_code %d\n", mini->exit_code);
+	
+	// ft_free_1();
+	// i = 0;
+	// while (ret[i])
+	// 	free(ret[i++]);
+	// i = 0;
+	// int j = 0;
+	// while (i < cmd->general_info->cmd_nb)
+	// {
+	// 	j = 0;
+	// 	while (cmd[i].args[j])
+	// 		free(cmd[i].args[j++]);
+	// 	// j = 0;
+	// 	// while (cmd[i].files[j])
+	// 	// 	free(cmd[i].files[j++]);
+	// 	// j = 0;
+	// 	// while (cmd[i].eof[j])
+	// 	// 	free(cmd[i].eof[j++]);
+	// 	free(cmd[i].args);
+	// 	// free(cmd[i].files);
+	// 	// free(cmd[i].eof);
+	// 	i++;
+	// }
+	// free(ret);
+	// free(var);
 	// free(str);
 	// free(cmd);
+	// free(cmd->general_info);
 }
 
 int	built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env)

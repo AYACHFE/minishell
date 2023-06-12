@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/12 11:52:50 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 21:22:55 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	while(i < cmd->general_info->cmd_nb)
 		waitpid(pid[i++], &status, 0);
 	mini->exit_code = WEXITSTATUS(status);
-	// printf("-->exit_code %d\n", mini->exit_code);
 }
 
 void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)

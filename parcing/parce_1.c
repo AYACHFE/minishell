@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/03 15:48:38 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:25:59 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	parcing(t_minishell	*mini, t_cmd	*cmd, char *s)
 	to_struct(mini, cmd);
 }
 
-
 //puts a marker at the end of every string 
 char	*prep(char	*str)
 {
@@ -29,9 +28,9 @@ char	*prep(char	*str)
 	int	j;
 	char	*var;
 
-	var = malloc(sizeof(char) * ft_strlen(str) + 20);
 	i = 0;
 	j = 0;
+	var = malloc(sizeof(char) * ft_strlen(str) + 20);
 	while (str[i])
 	{
 		if (((str[i] >= 9 && str[i] <= 13) || str[i] == 32))

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/12 11:10:05 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 21:20:01 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_minishell
 	int		right_sp;
 	int		center_sp;
 	int		just_sp;
+	int		no_exp;
 }	t_minishell;
 
 t_cmd *cmd; 
@@ -99,9 +100,6 @@ int		ft_cd(t_cmd	*cmd, t_minishell	*mini);
 void	ft_pwd();
 int		built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env);
 int		built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env);
-
-//tmp
-void	split_after_expantion(t_minishell	*mini);
 
 //exit
 void	ft_exit(t_cmd	*cmd, t_minishell	*mini);

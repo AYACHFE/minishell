@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/06 13:13:37 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:33:52 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,6 +251,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info)
 			i++;
 	}
 	//////////
+	free(tab);
 	// print_all_data(cmd, general_info);
 }
 
@@ -286,21 +287,7 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 			general_info->in_red_nb++;
 		i++;
 	}
-	general_info->files_nb = general_info->append_nb + general_info->out_red_nb + general_info->in_red_nb;
-	// printf("files_nb ----> %d\n", general_info->files_nb);
-	// int	*tab;
-	// tab = args_counter(general_info);
-	// i = 0;
-	// while (tab[i])
-	// {
-	// 	printf("tab[%d] == %d\n", i, tab[i]);
-	// 	i++;
-	// }
-	// printf("cmd_counter == %d\n", general_info->cmd_nb);
-	// printf("general_info->pipe_nb == %d\n", general_info->pipe_nb);
-	// printf("general_info->append_nb == %d\n", general_info->append_nb);
-	// printf("general_info->here_doc_nb == %d\n", general_info->here_doc_nb);
-	// printf("general_info->in_red_nb == %d\n", general_info->in_red_nb);
-	// printf("general_info->out_red_nb == %d\n", general_info->out_red_nb);
+	general_info->files_nb = general_info->append_nb + general_info->out_red_nb \
+	+ general_info->in_red_nb;
 	to_struct_2(cmd, general_info);
 }

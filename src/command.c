@@ -6,12 +6,11 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/12 11:51:47 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 21:21:00 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 void ft_echo(t_cmd	*cmd)
 {
 	
@@ -22,6 +21,11 @@ void ft_echo(t_cmd	*cmd)
 	i = 2;
 	l = 0;
 	home = getenv("HOME");
+	if (cmd->args[1]&& ft_strlen(cmd->args[1]) == 0)
+	{
+		printf("\n");
+		return;
+	}
 	if (cmd->args[1] == NULL)
 	{
 		printf("\n");
@@ -59,6 +63,7 @@ void ft_echo(t_cmd	*cmd)
 		printf("\n");
 	}
 }
+
 
 void	ft_env(char **env, t_minishell *mini)
 {

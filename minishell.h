@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/10 21:50:22 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/12 12:24:38 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_minishell
 	int		right_sp;
 	int		center_sp;
 	int		just_sp;
+	int		no_exp;
 }	t_minishell;
 
 t_cmd *cmd; 

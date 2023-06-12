@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/12 12:19:02 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/12 12:35:34 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 	int	max;
 	char *s;
 	char *str_jn = NULL;
+	mini->no_exp = 0;
 	 
 	j = 0;
 	i = 0;
@@ -285,6 +286,8 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 			{
 				s = ft_substr(mini->my_env[i], d + 1, ft_strlen(mini->my_env[i]));
 				ft_check_sp(mini->my_env[i], mini);
+				if(ft_strncmp(s, ">", 2) == 0 || ft_strncmp(s, ">>", 3) == 0 || ft_strncmp(s, "<", 2) == 0 || ft_strncmp(s, "<<", 3) == 0)
+					mini->no_exp = 1;
 				// if(s[0] != ' ' && s[1] != '\0')
 				str_jn = ft_strjoin(str_jn, s); 
 				free(s);

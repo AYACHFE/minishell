@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/10 21:57:08 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 11:10:05 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,14 +155,20 @@ int		first_error_part(t_minishell	*mini, char	*str);
 
 //expanding
 void	ft_check_dollar(t_minishell *mini);
-void	ft_change(t_minishell *mini, char *str);
+char	*ft_change_var(char *str, t_minishell *mini, int tmp);
+int		ft_strlenn(char *str);
 int		ft_strlennn(char *str);
 void	ft_check_sp(char *s, t_minishell *mini);
+char	*ft_substr1(char const *s, unsigned int start, size_t len);
+int		ft_hsb(char *s);
+int		ft_hsb3(char *str, int n);
+
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
 void	file_creation(t_cmd	*cmd, t_minishell	*mini);
-void	here_doc(t_cmd	*cmd);
+void	here_doc(t_cmd	*cmd, t_minishell	*mini);
 void	redirections(t_cmd	*cmd, t_minishell	*mini);
+void    ft_check_dollar_heredoc(t_minishell *mini, char	*s, char	**res);
 
 #endif

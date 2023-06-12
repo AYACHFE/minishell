@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/06 19:40:17 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 11:51:47 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void ft_echo(t_cmd	*cmd)
 {
+	
 	int i;
 	int	l;
 	char *home;
@@ -94,7 +95,7 @@ int ft_cnt (char *str)
 {
 	int i;
 	i = 0;
-	while(str[i] != '=' && str[i] != '\0')
+	while(str[i] != '=' && str[i] != '\0' && str[i] != '\"' && str[i] && str[i] != '-' && str[i] != '@' && str[i] != '$')
 		i++;
 	return(i);	
 }
@@ -211,6 +212,3 @@ void	ft_tmp_my_env_pos(t_minishell *mini, int	pos)
 	mini->tmp_my_env[pos][d] = '\0';
 	mini->tmp_my_env[pos + 1] = NULL;
 }
-
-
-

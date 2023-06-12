@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/10 20:38:27 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 11:52:50 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		{
 			dup2(stdi, 0);
 			dup2(stdou, 1);
-			here_doc(&cmd[i]);
+			here_doc(&cmd[i], mini);
 			dup2(cmd[i].fd_in, 0);
 			close(cmd[i].fd_in);
 		}
@@ -66,7 +66,7 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	{
 		dup2(stdi, 0);
 		dup2(stdou, 1);
-		here_doc(&cmd[i]);
+		here_doc(&cmd[i], mini);
 		dup2(cmd[i].fd_in, 0);
 		close(cmd[i].fd_in);
 	}
@@ -179,16 +179,20 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 	exit(127);
 }
 
-void	here_doc(t_cmd	*cmd)
+void	here_doc(t_cmd	*cmd, t_minishell	*mini)
 {
 	char	*read;
 	int		fd[2];
 	int		i;
 	int		j;
 	int		rd;
+	// char	**res = NULL;
+	int		check;
 
+	check = 0;
 	i = 0;
 	j = 0;
+	(void)mini;
 	while (cmd->eof[j])
 	{
 		if (pipe(fd) == -1)
@@ -197,14 +201,33 @@ void	here_doc(t_cmd	*cmd)
 		while (1)
 		{
 			read = readline("> ");
-			// ft_check_dollar(mini);
 			if (ft_strncmp(read, cmd->eof[j], ft_strlen(read) + 1) == 0)
 			{
 				j++;
 				break ;
 			}
-			ft_putstr_fd(read, fd[1]);
-			ft_putchar_fd('\n', fd[1]);
+			// if (ft_strchr(read, '$') != 0)
+			// {
+			// 	// puts("--------->");
+			// 	res = malloc(sizeof(char *) * (count(read, 32) + 1));
+			// 	check = 1;
+			// 	ft_check_dollar_heredoc(mini, read, res);
+			// }
+			if (check == 0)
+			{
+				ft_putstr_fd(read, fd[1]);
+				ft_putchar_fd('\n', fd[1]);
+			}
+			// else
+			// {
+			// 	i = 0;
+			// 	while (i < count(read, 32))
+			// 	{
+			// 		ft_putstr_fd(res[i++], fd[1]);
+			// 		ft_putchar_fd(32, fd[1]);
+			// 	}
+			// 	ft_putchar_fd('\n', fd[1]);
+			// }
 		}
 		close (fd[1]);
 		rd = dup(fd[0]);

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/10 21:56:39 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/12 11:49:41 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,21 @@ int ft_hsb3(char *str, int n)
 	return(j - n);
 }
 
+// int ft_strcmp(char *s1, char *s2)
+// {
+// 	int	i;
 
+// 	i = 0;
+// 	while ((s1[i] && s2[i]))
+// 	{
+// 		if (s1[i] != s2[i])
+// 		{
+// 			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
 
 
@@ -147,6 +161,7 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 	int j;
 	int d;
 	int n;
+	int	max;
 	char *s;
 	char *str_jn = NULL;
 	 
@@ -168,7 +183,10 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 			while (mini->my_env[i])
 			{
 				d = 0;
-				if (ft_strncmp(mini->my_env[i], s, ft_cnt(mini->my_env[i])) == 0)
+				max = ft_cnt(mini->my_env[i]);
+				if(ft_cnt(mini->my_env[i]) < ft_cnt(s))
+					max = ft_cnt(s);
+				if (ft_strncmp(mini->my_env[i], s, max) == 0)
 				{
 					d = 0;   
 					while (mini->my_env[i][d])
@@ -191,10 +209,26 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
                 {
                     s = ft_itoa(mini->exit_code);
                     str_jn = ft_strjoin(str_jn, s);
+					n++;
                     while (str[n] != '$' && str[n] != '\"' && str[n] != '\0' && ft_isalpha(str[n]) == 0)
                         n++;
 					if(str[n] == '\0')
-							break;	
+							break;
+					else
+					{
+						if(str[n] != '$' && str[n] != '\"' && str[n] != '\'')
+						{
+							s = ft_substr(str, n, ft_hsb3(str, n));
+							str_jn = ft_strjoin(str_jn, s);
+							free(s);
+							n++;
+							while (str[n] != '$' && str[n])
+								n++;
+							if(str[n] == '\0')
+								break;	
+						}		
+					}					
+								
                 }
                 else if(ft_strchr(str, '\'') != NULL)
 				{
@@ -251,6 +285,7 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 			{
 				s = ft_substr(mini->my_env[i], d + 1, ft_strlen(mini->my_env[i]));
 				ft_check_sp(mini->my_env[i], mini);
+				// if(s[0] != ' ' && s[1] != '\0')
 				str_jn = ft_strjoin(str_jn, s); 
 				free(s);
 				n++;
@@ -260,7 +295,8 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 					break;
 				else
 				{
-					n++;	
+					if(str[n] != '-' && str[n] != '$')
+						n++;	
 					if(str[n] != '$' && str[n] != '\"' && str[n] != '\'')
 					{
 						s = ft_substr(str, n, ft_hsb3(str, n));
@@ -416,12 +452,11 @@ void    ft_check_dollar(t_minishell *mini)
     // i = 0;
     // while(mini->tmp_cmd[i])
     // {
-    //     printf("%s\n", mini->tmp_cmd[i]);
+    //     printf("---->%s\n", mini->tmp_cmd[i]);
     //     i++;
     // }
     // ft_error(check, 1);
 }
-
 
 void ft_check_sp(char *s, t_minishell *mini)
 {

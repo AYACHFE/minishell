@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/06 18:49:32 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/11 13:14:48 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void ft_echo(t_cmd	*cmd)
 {
+	
 	int i;
 	int	l;
 	char *home;
@@ -94,7 +95,7 @@ int ft_cnt (char *str)
 {
 	int i;
 	i = 0;
-	while(str[i] != '=' && str[i] != '\0')
+	while(str[i] != '=' && str[i] != '\0' && str[i] != '\"' && str[i] && str[i] != '-' && str[i] != '@' && str[i] != '$')
 		i++;
 	return(i);	
 }

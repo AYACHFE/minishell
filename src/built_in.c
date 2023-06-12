@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/10 21:48:28 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/11 13:17:32 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 		return ;
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
 	ft_check_dollar(mini);
+	int j = 0;
+	while (mini->cmd[j])
+	{
+		printf("-->'%s'\n", mini->cmd[j++]);
+	}
 	parcing(mini, cmd, str);
 	if (count(str, ' ') > 0)
 		exec_1(mini, cmd, env);
@@ -123,6 +128,7 @@ int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
 void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
 	//built_ins that you should fork for
+	// ft_puts("%s\n", cmd->args[0]);
 	if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
 		ft_exit(cmd, mini);
 	/////

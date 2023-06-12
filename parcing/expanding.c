@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/11 13:14:41 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/12 12:19:02 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,21 +229,21 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 						}		
 					}					
 								
-                }
-                else if(ft_strchr(str, '\'') != NULL)
+				}
+            	else if(ft_strchr(str, '\'') != NULL)
 				{
 					s = ft_substr1(str, n, ft_hsb(str));
-                    str_jn = ft_strjoin(str_jn, s);
-                    while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
-                        n++;
+            	    str_jn = ft_strjoin(str_jn, s);
+            	    while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
+            	        n++;
 					if(str[n] == '\0')
 							break;	
 				}
-                else
-                {
+            	else
+            	{
 					n++;
-                    while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
-                        n++;
+            	    while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
+            	        n++;
 					if(str[n] == '\0')
 							break;
 					else
@@ -262,7 +262,7 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 						}		
 					}			
 						
-                }
+            	}
             }
 			else if (mini->my_env[i] == '\0' && str[0] == '\"' && str[1] == '$'  && str[2] == '\'')
 			{
@@ -281,7 +281,7 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 			// 	while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
 			// 		n++;
 			// }
-			if (mini->my_env[i] != '\0')
+			else if (mini->my_env[i] != '\0')
 			{
 				s = ft_substr(mini->my_env[i], d + 1, ft_strlen(mini->my_env[i]));
 				ft_check_sp(mini->my_env[i], mini);
@@ -379,6 +379,7 @@ void    ft_check_dollar(t_minishell *mini)
 	mini->tmp_cmd = malloc(sizeof(char *) * (mini->cmd_nb + 1));
 	while (mini->cmd[i])
     {
+			// printf("-->%s\n", mini->cmd[i]);
         d = 0;
         while(mini->cmd[i][s])
         {
@@ -452,7 +453,7 @@ void    ft_check_dollar(t_minishell *mini)
     // i = 0;
     // while(mini->tmp_cmd[i])
     // {
-    //     printf("---->%s\n", mini->tmp_cmd[i]);
+    //     printf("---->%zu\n", ft_strlen(mini->tmp_cmd[i]));
     //     i++;
     // }
     // ft_error(check, 1);

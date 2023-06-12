@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/11 13:14:48 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/12 12:18:47 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ void ft_echo(t_cmd	*cmd)
 	i = 2;
 	l = 0;
 	home = getenv("HOME");
+	if (cmd->args[1]&& ft_strlen(cmd->args[1]) == 0)
+	{
+		printf("\n");
+		return;
+	}
 	if (cmd->args[1] == NULL)
 	{
 		printf("\n");

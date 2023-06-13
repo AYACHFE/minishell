@@ -6,11 +6,45 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/12 12:35:34 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:18:41 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*ft_strjoin2(char const *s1, char const *s2)
+{
+	int		i;
+	int		j;
+	char	*p;
+	int		len;
+	int		k;
+
+	k = 0;
+	i = 0;
+	j = 0;
+	if (!s1 && !s2)
+		return (NULL);
+	len = ft_strlen(s1) + ft_strlen(s2);
+	p = malloc(sizeof(char) * (len + 1));
+	if (!p)
+		return (NULL);
+	while (s1 && s1[i])
+		p[k++] = s1[i++];
+	while (s2 && s2[j])
+	{
+		if(s2[j] == ' ')
+			j++;
+		else	
+			p[k++] = s2[j++];
+	}
+	p[k] = '\0';
+	return (p);
+}
+
+
+
+
 
 char	*ft_substr1(char const *s, unsigned int start, size_t len)
 {
@@ -125,16 +159,22 @@ int ft_strlennn(char *str)
 	}
 	return(i);
 }
-int ft_hsb3(char *str, int n)
+int ft_hsb3(char *s, int n)
 {
-	int	j;
+	// printf("%s\n", s);
+	int j = 0;
+	int p = n;
 
-	j = n;
-	while(str[j] != '\0'&& str[j] != '$')
+	while (s[p] && s[p] != '$')
 	{
-		j++;   
+		if (s[p] == '\'' || s[p] == '\"')
+		{
+			j++;
+		}
+		p++;
 	}
-	return(j - n);
+	// printf("..%d\n", j);
+	return (p - n - j);           
 }
 
 // int ft_strcmp(char *s1, char *s2)
@@ -202,7 +242,7 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 				else
 					i++;
 			}
-			tmp--;    
+			tmp--;
 			// free (s);
 			if(mini->my_env[i] == '\0')
             {
@@ -298,7 +338,7 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 					break;
 				else
 				{
-					if(str[n] != '-' && str[n] != '$')
+					if(str[n] != '-' && str[n] != '$' )
 						n++;	
 					if(str[n] != '$' && str[n] != '\"' && str[n] != '\'')
 					{
@@ -353,7 +393,7 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 				break;
 			else	
 				n = j;
-		} 
+		}
 	}
 	return (str_jn);   
 }
@@ -382,7 +422,6 @@ void    ft_check_dollar(t_minishell *mini)
 	mini->tmp_cmd = malloc(sizeof(char *) * (mini->cmd_nb + 1));
 	while (mini->cmd[i])
     {
-			// printf("-->%s\n", mini->cmd[i]);
         d = 0;
         while(mini->cmd[i][s])
         {
@@ -430,17 +469,24 @@ void    ft_check_dollar(t_minishell *mini)
             }
             else
             {
-                k = 0;
+               	k = 0;
                 if (deuble == 1 && mini->cmd[i][k + 1] == '\"' && mini->cmd[i][k + 2] == '\0')
+				{
+					mini->tmp_cmd[j] = ft_strdup("\0");
+					j++;
                     break;
+				}
                 // if (single == 0)
                 // {
                 //     puts("bngb");
                 //     while(mini->cmd[i][k] == '\"')
                 //         k++;
-                // }        
-                mini->tmp_cmd[j] = ft_substr1(mini->cmd[i], k, ft_hsb(mini->cmd[i]));
-                j++;    
+                // } 
+				else
+				{
+                	mini->tmp_cmd[j] = ft_substr1(mini->cmd[i], k, ft_hsb(mini->cmd[i]));
+                	j++;    
+				}      
             }
                 
         }
@@ -453,10 +499,10 @@ void    ft_check_dollar(t_minishell *mini)
     // while(mini->tmp_cmd[i])
     //     i++;
     // check = malloc(i + 1);
-    // i = 0;
-    // while(mini->tmp_cmd[i])
+    i = 0;
+    // while(i < 3)
     // {
-    //     printf("---->%zu\n", ft_strlen(mini->tmp_cmd[i]));
+    //     printf("---->%s\n", mini->tmp_cmd[i]);
     //     i++;
     // }
     // ft_error(check, 1);

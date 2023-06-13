@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/12 12:36:29 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:27:47 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	add_history(str);
 	if (first_error_part(mini, str) == 1)
 		return ;
-
 	s = ft_strdup(str);
 	var = prep(s);
 	ret = ft_split(var, 11);
@@ -41,12 +40,15 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	mini->cmd_nb = count(var, 11);
 	if (ft_error_2(mini) == 1)
 		return ;
+		
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
 	ft_check_dollar(mini);
-	// int j = 0;
-	// while (mini->cmd[j])
+	// 
+	
+	
+	// while (mini->tmp_cmd[j])
 	// {
-	// 	printf("-->'%s'\n", mini->cmd[j++]);
+	// 	printf("-->%s\n", mini->tmp_cmd[j++]);
 	// }
 	parcing(mini, cmd, str);
 	if (count(str, ' ') > 0)
@@ -55,6 +57,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	// free(str);
 	// free(cmd);
 }
+
 
 int	built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env)
 {

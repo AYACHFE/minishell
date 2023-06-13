@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/12 21:22:55 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/13 22:35:35 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,8 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 			val = ft_strjoin(val, cmd->args[0]);
 			if (access(val, F_OK) == 0)
 			{
-				free(var[j]);
-				free(var);
+				// free(var[j]);
+				// free(var);
 				execve(val, cmd->args, mini->my_env);
 			}
 			free(var[j]);

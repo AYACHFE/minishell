@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/12 21:21:54 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/13 22:32:12 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 // the engine of this program
 void	built_in_cmd(t_minishell	*mini, char **env)
 {
-	// int		i;
 	char	*str;
 	t_cmd	*cmd;
 	// t_cmd	*cmd = NULL;
@@ -49,6 +48,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 		exec_1(mini, cmd, env);
 	
 	// ft_free_1();
+	// int		i;
 	// i = 0;
 	// while (ret[i])
 	// 	free(ret[i++]);
@@ -83,27 +83,15 @@ int	built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env)
 	(void)env;
 	(void)mini;
 	if ((ft_strncmp(cmd->args[0], "exit", 5) == 0) && cmd->general_info->cmd_nb == 1)
-	{
-		// ft_exit(cmd, mini);
 		return (1);
-	}
 	else if ((ft_strncmp(cmd->args[0], "cd", 3) == 0) \
 	&& cmd->general_info->cmd_nb == 1)
-	{
-		// ft_cd(cmd, mini);
 		return(1);
-	}
 	else if (ft_strncmp(cmd->args[0], "unset", 5) == 0)
-	{
-		// ft_unset(cmd, mini);
 		return (1);
-	}
 	else if ((ft_strncmp(cmd->args[0], "export", 7) == 0)  \
 	&& cmd->general_info->cmd_nb == 1 && cmd->args[1])
-	{
-		// ft_export(cmd, mini);
 		return (1);
-	}
 	return (0);
 }
 
@@ -185,9 +173,7 @@ int	ft_cd(t_cmd	*cmd, t_minishell	*mini)
 		return (1);
 	}
 	if (cmd->args[1] == NULL)
-	{
 		chdir(home);
-	}
 	else if (chdir(cmd->args[1]) != 0) 
 	{
 		mini->exit_code = 1;

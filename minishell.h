@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 15:15:45 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 17:23:48 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_minishell
 	int		center_sp;
 	int		just_sp;
 	int		no_exp;
+	int		do_not_exp;
 }	t_minishell;
 
 t_cmd *cmd; 
@@ -131,7 +132,7 @@ int		ft_check_var_exect(char *s,t_minishell *mini, int var);
 
 //parcing
 void	parcing(t_minishell	*mini,t_cmd	*cmd, char *s);
-char	*prep(char *str);
+char	*prep(char	*str, t_minishell	*mini);
 
 //parce_2
 void	to_struct(t_minishell	*mini, t_cmd	*cmd);

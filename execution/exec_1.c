@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 13:43:25 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 18:06:28 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void	here_doc(t_cmd	*cmd, t_minishell	*mini)
 	int		i;
 	int		j;
 	int		rd;
-	// char	**res = NULL;
+	char	**res;
 	int		check;
 
 	check = 0;
@@ -206,28 +206,27 @@ void	here_doc(t_cmd	*cmd, t_minishell	*mini)
 				free(read);
 				break ;
 			}
-			// if (ft_strchr(read, '$') != 0)
-			// {
-			// 	// puts("--------->");
-			// 	res = malloc(sizeof(char *) * (count(read, 32) + 1));
-			// 	check = 1;
-			// 	ft_check_dollar_heredoc(mini, read, res);
-			// }
+			if ((ft_strchr(read, '$') != 0) && mini->do_not_exp == 0)
+			{
+				res = malloc(sizeof(char *) * (count(read, 32) + 1));
+				check = 1;
+				ft_check_dollar_heredoc(mini, read, res);
+			}
 			if (check == 0)
 			{
 				ft_putstr_fd(read, fd[1]);
 				ft_putchar_fd('\n', fd[1]);
 			}
-			// else
-			// {
-			// 	i = 0;
-			// 	while (i < count(read, 32))
-			// 	{
-			// 		ft_putstr_fd(res[i++], fd[1]);
-			// 		ft_putchar_fd(32, fd[1]);
-			// 	}
-			// 	ft_putchar_fd('\n', fd[1]);
-			// }
+			else
+			{
+				i = 0;
+				while (i < count(read, 32))
+				{
+					ft_putstr_fd(res[i++], fd[1]);
+					ft_putchar_fd(32, fd[1]);
+				}
+				ft_putchar_fd('\n', fd[1]);
+			}
 			free(read);
 		}
 		close (fd[1]);

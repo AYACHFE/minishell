@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 13:30:54 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 17:20:28 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	*args_counter(t_cmd_info	*general_info)
 		i++;
 		k++;
 	}
-	// tab[k] = '\0';
 	return (tab);
 }
 
@@ -72,7 +71,7 @@ void	print_all_data(t_cmd	*cmd, t_cmd_info	*general_info)
 	int	i;
 	int	j;
 	int	eof_counter;
-	int	fl;
+	// int	fl;
 	int	l;
 
 	i = 0;
@@ -85,27 +84,26 @@ void	print_all_data(t_cmd	*cmd, t_cmd_info	*general_info)
 			printf("--->cmd[%d].args[%d]--> %s\n",i, l, cmd[i].args[l]);
 			l++;
 		}
-		fl = 0;
-		while (cmd[i].files[fl])
-		{
-			printf("cmd[%d].files[%d] == %s\n", i, fl, cmd[i].files[fl]);
-			fl++;
-		}
-			if (cmd[i].append == 1 || cmd[i].here_doc == 1 || cmd[i].out_red == 1 \
-			|| cmd[i].in_red == 1)
-			{
-				printf("---____--> cmd[%d].fd_out ---> %d\n", i, cmd[i].fd_out);
-				printf("---____--> cmd[%d].fd_in ---> %d\n", i, cmd[i].fd_in);
-				//here_doc
-				printf("---____--> %d\n", cmd[i].here_doc);
+		// fl = 0;
+		// while (cmd[i].files[fl])
+		// {
+		// 	printf("cmd[%d].files[%d] == %s\n", i, fl, cmd[i].files[fl]);
+		// 	fl++;
+		// }
+		// 	if (cmd[i].append == 1 || cmd[i].here_doc == 1 || cmd[i].out_red == 1 \
+		// 	|| cmd[i].in_red == 1)
+		// 	{
+		// 		printf("---____--> cmd[%d].fd_out ---> %d\n", i, cmd[i].fd_out);
+		// 		printf("---____--> cmd[%d].fd_in ---> %d\n", i, cmd[i].fd_in);
+		// 		//here_doc
+		// 		printf("---____--> %d\n", cmd[i].here_doc);
 				eof_counter = 0;
 				while (cmd[i].eof[eof_counter] != NULL)
 				{
 					printf("cmd[%d].eof[%d] = %s\n", i, eof_counter,cmd[i].eof[eof_counter]);
 					eof_counter++;
 				}
-			}
-		printf("-----\n");
+			// }
 		i++;
 	}
 }

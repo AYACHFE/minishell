@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 11:54:49 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 13:43:25 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ void	here_doc(t_cmd	*cmd, t_minishell	*mini)
 			if (ft_strncmp(read, cmd->eof[j], ft_strlen(read) + 1) == 0)
 			{
 				j++;
+				free(read);
 				break ;
 			}
 			// if (ft_strchr(read, '$') != 0)
@@ -227,6 +228,7 @@ void	here_doc(t_cmd	*cmd, t_minishell	*mini)
 			// 	}
 			// 	ft_putchar_fd('\n', fd[1]);
 			// }
+			free(read);
 		}
 		close (fd[1]);
 		rd = dup(fd[0]);

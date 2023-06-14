@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 12:26:08 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 13:30:54 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,8 +226,9 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini)
 					{
 						//here_doc
 						cmd[i].here_doc = 1;
-						cmd[i].eof[eof_counter] = ft_strdup(general_info->str[++j]);
-						cmd[i].eof[++eof_counter] = NULL;
+						cmd[i].eof[eof_counter++] = ft_strdup(general_info->str[++j]);
+						// cmd[i].eof[++eof_counter] = NULL;
+						// eof_counter++;
 					}
 					else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '<'))
 					{
@@ -248,6 +249,7 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini)
 			}
 			cmd[i].general_info = general_info;
 			cmd[i].files[fl] = NULL;
+			cmd[i].eof[eof_counter] = NULL;
 			j++;
 			i++;
 	}

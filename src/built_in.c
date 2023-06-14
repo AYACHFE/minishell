@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 12:29:38 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 13:49:51 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,15 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	mini->right_sp = 0;
 	mini->left_sp = 0;
 
-	(void)mini;
-	(void)env;
 	str = readline("\033[0;34mMINISHELL-3.2$ \033[0m");
 	if (!str)
 		exit(mini->exit_code);
-	add_history(str);
 	if (count(str, ' ') == 0)
 	{
 		free(str);
 		return ;
 	}
+	add_history(str);
 	if (first_error_part(mini, str) == 1)
 	{
 		free(str);
@@ -51,25 +49,26 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 		return ;
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
 	ft_check_dollar(mini);
-	// int i = 0;
-	// puts("---->");
-	// while (i < cmd->general_info->cmd_nb)
-	// 	printf("'%s'\n", mini->cmd[i++]);
 	parcing(mini, cmd, str);
-	// if (count(str, ' ') > 0)
-		exec_1(mini, cmd, env);
-	
-	// ft_free_1();
+	exec_1(mini, cmd, env);
 	int	i;
 	i = 0;
+	while (mini->tmp_cmd[i])
+		free(mini->tmp_cmd[i++]);
+	free(mini->tmp_cmd);
+	// system("leaks minishell");
+	// ft_free_1();
 	i = 0;
 	while (ret[i])
 		free(ret[i++]);
+	i = 0;
 	int j = 0;
+	
 	if (count(str, ' ') > 0)
 	{
 		while (i < cmd->general_info->cmd_nb)
 		{
+			// puts("was here");
 			j = 0;
 			while (cmd[i].args[j])
 			{
@@ -79,19 +78,28 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 			while (cmd[i].files[j])
 				free(cmd[i].files[j++]);
 			j = 0;
-			while (cmd[i].eof[j])
-				free(cmd[i].eof[j++]);
+			while ( cmd[i].eof[j])
+			{
+				// printf("%p\n", cmd[i].eof);
+				free(cmd[i].eof[j]);
+				j++;
+			}
 			free(cmd[i].args);
 			free(cmd[i].files);
 			free(cmd[i].eof);
+			// printf("eof == %p\n",cmd[i].eof);
 			i++;
 		}
 	}
 	free(ret);
 	free(var);
 	free(str);
+	free(s);
 	free(cmd->general_info);
 	free(cmd);
+	
+	system("leaks minishell");
+	// exit(1);
 	
 }
 

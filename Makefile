@@ -6,7 +6,7 @@
 #    By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/06/14 12:30:32 by aachfenn         ###   ########.fr        #
+#    Updated: 2023/06/14 13:33:10 by aachfenn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,10 +23,10 @@ OBJ		= ${SRC:.c=.o}
 
 NAME	= minishell
 
-%.o : %.c
+%.o : %.c Makefile
 	${CC} ${CFLAGS} -c $< -o $@
 
-${NAME}	:	${OBJ} minishell.h Makefile
+${NAME}	:	${OBJ} minishell.h
 		make -C utils/ft_libft
 		${CC} ${CFLAGS} ${OBJ} utils/ft_libft/libft.a -o ${NAME} -lreadline
 

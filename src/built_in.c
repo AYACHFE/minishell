@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 13:49:51 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 15:16:35 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 {
 	char	*str;
 	t_cmd	*cmd;
-	// t_cmd	*cmd = NULL;
 	
 	char	*s;
 	char	*var;
@@ -51,56 +50,10 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	ft_check_dollar(mini);
 	parcing(mini, cmd, str);
 	exec_1(mini, cmd, env);
-	int	i;
-	i = 0;
-	while (mini->tmp_cmd[i])
-		free(mini->tmp_cmd[i++]);
-	free(mini->tmp_cmd);
+	to_free_1(mini, ret, var, str, s);
+	to_free(cmd);
+
 	// system("leaks minishell");
-	// ft_free_1();
-	i = 0;
-	while (ret[i])
-		free(ret[i++]);
-	i = 0;
-	int j = 0;
-	
-	if (count(str, ' ') > 0)
-	{
-		while (i < cmd->general_info->cmd_nb)
-		{
-			// puts("was here");
-			j = 0;
-			while (cmd[i].args[j])
-			{
-				free(cmd[i].args[j++]);
-			}
-			j = 0;
-			while (cmd[i].files[j])
-				free(cmd[i].files[j++]);
-			j = 0;
-			while ( cmd[i].eof[j])
-			{
-				// printf("%p\n", cmd[i].eof);
-				free(cmd[i].eof[j]);
-				j++;
-			}
-			free(cmd[i].args);
-			free(cmd[i].files);
-			free(cmd[i].eof);
-			// printf("eof == %p\n",cmd[i].eof);
-			i++;
-		}
-	}
-	free(ret);
-	free(var);
-	free(str);
-	free(s);
-	free(cmd->general_info);
-	free(cmd);
-	
-	system("leaks minishell");
-	// exit(1);
-	
 }
 
 int	built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env)
@@ -121,9 +74,9 @@ int	built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env)
 	return (0);
 }
 
+//built_ins that you should not fork for
 int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
-	//built_ins that you should not fork for
 	(void)env;
 	if ((ft_strncmp(cmd->args[0], "exit", 5) == 0) && cmd->general_info->cmd_nb == 1)
 	{

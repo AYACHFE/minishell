@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/13 22:32:12 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 12:29:38 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,16 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	if (!str)
 		exit(mini->exit_code);
 	add_history(str);
-	if (first_error_part(mini, str) == 1)
+	if (count(str, ' ') == 0)
+	{
+		free(str);
 		return ;
+	}
+	if (first_error_part(mini, str) == 1)
+	{
+		free(str);
+		return ;
+	}
 	s = ft_strdup(str);
 	var = prep(s);
 	ret = ft_split(var, 11);
@@ -43,38 +51,48 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 		return ;
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
 	ft_check_dollar(mini);
+	// int i = 0;
+	// puts("---->");
+	// while (i < cmd->general_info->cmd_nb)
+	// 	printf("'%s'\n", mini->cmd[i++]);
 	parcing(mini, cmd, str);
-	if (count(str, ' ') > 0)
+	// if (count(str, ' ') > 0)
 		exec_1(mini, cmd, env);
 	
 	// ft_free_1();
-	// int		i;
-	// i = 0;
-	// while (ret[i])
-	// 	free(ret[i++]);
-	// i = 0;
-	// int j = 0;
-	// while (i < cmd->general_info->cmd_nb)
-	// {
-	// 	j = 0;
-	// 	while (cmd[i].args[j])
-	// 		free(cmd[i].args[j++]);
-	// 	// j = 0;
-	// 	// while (cmd[i].files[j])
-	// 	// 	free(cmd[i].files[j++]);
-	// 	// j = 0;
-	// 	// while (cmd[i].eof[j])
-	// 	// 	free(cmd[i].eof[j++]);
-	// 	free(cmd[i].args);
-	// 	// free(cmd[i].files);
-	// 	// free(cmd[i].eof);
-	// 	i++;
-	// }
-	// free(ret);
-	// free(var);
-	// free(str);
-	// free(cmd);
-	// free(cmd->general_info);
+	int	i;
+	i = 0;
+	i = 0;
+	while (ret[i])
+		free(ret[i++]);
+	int j = 0;
+	if (count(str, ' ') > 0)
+	{
+		while (i < cmd->general_info->cmd_nb)
+		{
+			j = 0;
+			while (cmd[i].args[j])
+			{
+				free(cmd[i].args[j++]);
+			}
+			j = 0;
+			while (cmd[i].files[j])
+				free(cmd[i].files[j++]);
+			j = 0;
+			while (cmd[i].eof[j])
+				free(cmd[i].eof[j++]);
+			free(cmd[i].args);
+			free(cmd[i].files);
+			free(cmd[i].eof);
+			i++;
+		}
+	}
+	free(ret);
+	free(var);
+	free(str);
+	free(cmd->general_info);
+	free(cmd);
+	
 }
 
 int	built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env)

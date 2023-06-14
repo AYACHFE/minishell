@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/13 22:32:03 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 12:26:08 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	*args_counter(t_cmd_info	*general_info)
 	while (general_info->str[i])
 	{
 		j = 0;
-		while (general_info->str[i][0] != '|')
+		while (general_info->str[i] && general_info->str[i][0] != '|')
 		{
-			if (general_info->str[i][0] == '<' || general_info->str[i][0] == '>')
+			if (general_info->str[i] && (general_info->str[i][0] == '<' || general_info->str[i][0] == '>'))
 			{
 				i++;
 				j--;
@@ -45,7 +45,7 @@ int	*args_counter(t_cmd_info	*general_info)
 		i++;
 		k++;
 	}
-	tab[k] = '\0';
+	// tab[k] = '\0';
 	return (tab);
 }
 
@@ -191,9 +191,10 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini)
 		// k = 0;
 		l = 0;
 		fl = 0;
-			cmd[i].args = malloc(sizeof(char *) * tab[i] + 1);
-			cmd[i].files = malloc(sizeof(char * ) * general_info->files_nb);
-			cmd[i].eof = malloc(sizeof(char *) * general_info->here_doc_nb + 1);
+			cmd[i].args = malloc(sizeof(char *) * (tab[i] + 1));
+			//every time i allocate for the total nb of files
+			cmd[i].files = malloc(sizeof(char * ) *( general_info->files_nb + 1));
+			cmd[i].eof = malloc(sizeof(char *) * (general_info->here_doc_nb + 1));
 			cmd[i].fd_in = 0;
 			cmd[i].fd_out = 1;
 			//////////

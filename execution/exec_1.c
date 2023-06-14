@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/13 22:35:35 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 11:54:49 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,13 +291,6 @@ void	file_creation(t_cmd	*cmd, t_minishell	*mini)
 	(void)mini;
 	while (cmd->files[j])
 	{
-		// printf("--> '%s'\n", cmd->files[j]);
-		// printf("----> %d\n", mini->center_sp);
-		// if (cmd->files[j][3] == '\0')
-		// {
-		// 	ft_putstr_fd("minishell: No such file or directory\n", 2);
-		// 	exit(1);
-		// }
 		if (check_ambig(cmd->files[j], mini) == 1)
 			exit(1);
 		if (cmd->files[j][0] == '>' && cmd->files[j][1] == '>')

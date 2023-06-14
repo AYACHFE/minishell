@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 17:53:26 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 19:14:07 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	to_free_1(mini, ret, var, str, s);
 	to_free(cmd);
 
-	// system("leaks minishell");
+	system("leaks minishell");
 }
 
 int	built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
-	//built_ins that you should not fork for
+	//built_ins that you should not fork for 
 	(void)env;
 	(void)mini;
 	if ((ft_strncmp(cmd->args[0], "exit", 5) == 0) && cmd->general_info->cmd_nb == 1)

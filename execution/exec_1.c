@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/15 17:25:10 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:30:03 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,13 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
 	(void)env;
 	if (cmd->general_info->in_file_exist == 1)
 		exit(1);
+	if (cmd->args[0][0] == '.' && cmd->args[0][1] == '/')
+	{
+		if (access(ft_substr(cmd->args[0], 2, ft_strlen(cmd->args[0])), F_OK) == 0)
+		{
+			execve(ft_substr(cmd->args[0], 2, ft_strlen(cmd->args[0])), cmd->args, mini->my_env);
+		}
+	}
 	if (cmd->args[0][0] != '/')
 	{
 		while (mini->my_env[i] != NULL)

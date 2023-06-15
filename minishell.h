@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/15 18:03:49 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:56:27 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 #include <readline/history.h>
 #include <fcntl.h>
 
-
 typedef struct s_cmd_info
 {
 	int		in_file_exist;
@@ -32,8 +31,6 @@ typedef struct s_cmd_info
 	int		out_red_nb;
 	int		in_red_nb;
 	int		here_doc_nb;
-	// char	**files;
-	// char	**eof;
 	int		files_nb;
 	int		std_in;
 	int		std_out;
@@ -45,25 +42,14 @@ typedef struct s_cmd
 	char	*cmd;
 	char	**args;
 	int		pipe;
-
-	//file descriptors
-	int	fd_in;
-	int	fd_out;
-	
+	int		fd_in;
+	int		fd_out;
 	char	**files;
-	//
 	int		append;
-	// char	*append_file;
-	//
 	int		here_doc;
 	char	**eof;
-	//
 	int		out_red;
-	// char	*out_red_file;
-	//
 	int		in_red;
-	// char	*in_red_file;
-	
 	t_cmd_info	*general_info;
 }	t_cmd;
 
@@ -72,7 +58,6 @@ typedef struct s_minishell
 	char	**tmp_cmd;
 	char	**cmd;
 	int		cmd_nb;
-	//built_in
 	char	*home;
 	char	*variable;
 	char	**str;
@@ -81,7 +66,6 @@ typedef struct s_minishell
 	char	**my_export;
 	char	**tmp_my_env;
 	int		exit_code;
-
 	int		left_sp;
 	int		right_sp;
 	int		center_sp;
@@ -91,13 +75,13 @@ typedef struct s_minishell
 }	t_minishell;
 
 t_cmd *cmd; 
-// t_minishell	mini;
 
 //built_in
 void	built_in_cmd(t_minishell	*mini, char **env);
 void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env);
 void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env);
 int		ft_cd(t_cmd	*cmd, t_minishell	*mini);
+void	ft_cd_ext(t_minishell	*mini, int i, int *check);
 void	ft_pwd();
 int		built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env);
 int		built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env);

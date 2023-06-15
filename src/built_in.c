@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/15 17:57:07 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/15 19:53:15 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	}
 	s = ft_strdup(str);
 	var = prep(s, mini);
+	// printf("'%s'\n", var);
 	ret = ft_split(var, 11);
 	mini->cmd = ret;
 	mini->cmd_nb = count(var, 11);
@@ -120,21 +121,25 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 		execv_function(mini, cmd, env);
 }
 
+void	ft_cd_ext(t_minishell	*mini, int i, int *check)
+{
+	if (ft_strncmp(mini->my_env[i], "HOME", ft_cnt(mini->my_env[i])) == 0)
+	{
+		*check = 1;
+		return ;
+	}
+}
+
 int	ft_cd(t_cmd	*cmd, t_minishell	*mini)
 {
-	char *home;
-	
-	(void)mini;
-	home = getenv("HOME");
-	int	i = 0;
-	int	check = 0;
+	int	i;
+	int	check;
+
+	i = 0;
+	check = 0;
 	while (mini->my_env[i] != NULL)
 	{
-		if (ft_strncmp(mini->my_env[i], "HOME", ft_cnt(mini->my_env[i])) == 0)
-		{
-			check = 1;
-			break ;
-		}
+		ft_cd_ext(mini, i, &check);
 		i++;
 	}
 	if (check == 0 && !(cmd->args[1]))
@@ -143,7 +148,7 @@ int	ft_cd(t_cmd	*cmd, t_minishell	*mini)
 		return (1);
 	}
 	if (cmd->args[1] == NULL)
-		chdir(home);
+		chdir(getenv("HOME"));
 	else if (chdir(cmd->args[1]) != 0) 
 	{
 		mini->exit_code = 1;

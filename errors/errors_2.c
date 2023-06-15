@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:54:00 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/12 19:02:58 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:12:10 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,3 @@ int	ft_error_2(t_minishell	*mini)
 	}
 	return (0);
 }
-// export a="   "
-// echo nike > ""$a

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/15 15:20:16 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:03:49 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int		built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env);
 
 //exit
 void	ft_exit(t_cmd	*cmd, t_minishell	*mini);
+void	ft_exit_ext(t_cmd	*cmd);
 int		ft_toint_check(char *str);
 int		ft_toint_check_ext(char *str, int i, int res);
 
@@ -142,7 +143,6 @@ int		*args_counter(t_cmd_info	*general_info);
 void	tokenisation_1(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini, int *j, int	tab);
 void	tokens_redirection(t_cmd	*cmd, t_cmd_info	*general_info, int *j, int *eof_counter, int *fl);
 void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, int	tab);
-
 
 //error
 int		ft_double_single_quote(char *str);

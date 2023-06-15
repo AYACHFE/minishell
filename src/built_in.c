@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/15 16:35:02 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/15 17:57:07 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 
 int	built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
-	//built_ins that you should not fork for 
 	(void)env;
 	(void)mini;
 	if ((ft_strncmp(cmd->args[0], "exit", 5) == 0) && cmd->general_info->cmd_nb == 1)
@@ -98,12 +97,11 @@ int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
 	return (0);
 }
 
+//built_ins that you should fork for
 void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 {
-	//built_ins that you should fork for
 	if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
 		ft_exit(cmd, mini);
-	/////
 	else if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
 	{
 		mini->exit_code = 0;
@@ -119,9 +117,7 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 	else if ((ft_strncmp(cmd->args[0], "export", 7) == 0))
 		ft_export(cmd, mini);
 	else
-	{
 		execv_function(mini, cmd, env);
-	}
 }
 
 int	ft_cd(t_cmd	*cmd, t_minishell	*mini)

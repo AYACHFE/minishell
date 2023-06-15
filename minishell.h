@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 17:23:48 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/15 15:20:16 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,10 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd);
 void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini);
 int		cmd_counter(t_minishell	*mini);
 int		*args_counter(t_cmd_info	*general_info);
+void	tokenisation_1(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini, int *j, int	tab);
+void	tokens_redirection(t_cmd	*cmd, t_cmd_info	*general_info, int *j, int *eof_counter, int *fl);
+void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, int	tab);
+
 
 //error
 int		ft_double_single_quote(char *str);

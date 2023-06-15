@@ -6,12 +6,11 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 15:31:45 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/10 11:59:24 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/15 16:31:43 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 void	rem_var_env(t_minishell	*mini, int pos)
 {
@@ -70,6 +69,7 @@ void	search_in_export(t_minishell	*mini, char *str)
 		{
 			rem_var_export(mini, i);
 		}
+		free(sub);
 		i++;
 	}
 }

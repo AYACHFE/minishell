@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 17:53:13 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 19:50:10 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*prep(char	*str, t_minishell	*mini)
 	j = 0;
 	k = 0;
 	mini->do_not_exp = 0;
-	var = malloc(sizeof(char) * ft_strlen(str) + 20);
+	var = malloc(sizeof(char) * (ft_strlen(str) + 20));
 	while (str[i])
 	{
 		if (str[i] && (str[i] == '<' && str[i + 1] == '<') && (str[i + 2] == '"'))

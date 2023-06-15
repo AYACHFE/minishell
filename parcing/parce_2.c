@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 17:20:28 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/15 15:11:51 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	*args_counter(t_cmd_info	*general_info)
 
 	i = 0;
 	k = 0;
-	tab = malloc(sizeof(int) * general_info->cmd_nb + 1);
+	tab = malloc(sizeof(int) * (general_info->cmd_nb + 1));
 	while (general_info->str[i])
 	{
 		j = 0;
@@ -108,65 +108,63 @@ void	print_all_data(t_cmd	*cmd, t_cmd_info	*general_info)
 	}
 }
 
-void	tokens_redirection(t_cmd	*cmd, t_cmd_info	*general_info, int j, int eof_counter, int fl)
+void	tokens_redirection(t_cmd	*cmd, t_cmd_info	*general_info, int *j, int *eof_counter, int *fl)
 {
-	if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '>' && general_info->str[j][1] == '>'))
+	
+	if (general_info->str[*j + 1] != NULL && (general_info->str[*j][0] == '>' && general_info->str[*j][1] == '>'))
 	{
-		//append >>
 		cmd->append = 1;
-		// general_info->files[fl] = ft_strjoin(">>", general_info->str[j]);
-		// cmd->append_file = general_info->str[j];
-		cmd->files[fl] = ft_strjoin(">>", general_info->str[++j]);
-		fl++;
-		//
-		// cmd->fd_out = (open(general_info->str[j], O_RDWR | O_CREAT | O_APPEND, 0660));
-		// if (cmd->fd_out == -1)
-		// {
-		// 	perror("open");
-		// 	return ;
-		// }
+		cmd->files[(*fl)++] = ft_strjoin(">>", general_info->str[++(*j)]);
 	}
-	else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '>'))
+	else if (general_info->str[*j + 1] != NULL && (general_info->str[*j][0] == '>'))
 	{
-		//out_redirection
 		cmd->out_red = 1;
-		// cmd->out_red_file = general_info->str[++j];
-		// general_info->files[fl] = ft_strjoin("> ", general_info->str[j]);
-		cmd->files[fl] = ft_strjoin("> ", general_info->str[++j]);
-		fl++;
-		//
-		// cmd->fd_out = (open(general_info->str[j], O_RDWR | O_CREAT, 0660));
-		// if (cmd->fd_out == -1)
-		// {
-		// 	perror("open");
-		// 	return ;
-		// }
+		cmd->files[(*fl)++] = ft_strjoin("> ", general_info->str[++(*j)]);
 	}
-	else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '<' && general_info->str[j][1] == '<'))
+	else if (general_info->str[*j + 1] != NULL && (general_info->str[*j][0] == '<' && general_info->str[*j][1] == '<'))
 	{
-		//here_doc
 		cmd->here_doc = 1;
-		cmd->eof[eof_counter] = ft_strdup(general_info->str[++j]);
-		// general_info->eof[eof_counter] = ft_strdup(general_info->str[j]);
-		cmd->eof[++eof_counter] = NULL;
-		// general_info->eof[eof_counter] = NULL;
+		cmd->eof[(*eof_counter)++] = ft_strdup(general_info->str[++(*j)]);
 	}
-	else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '<'))
+	else if (general_info->str[*j + 1] != NULL && (general_info->str[*j][0] == '<'))
 	{
-		//in_redirection
 		cmd->in_red = 1;
-		// cmd->in_red_file = general_info->str[++j];
-		// general_info->files[fl] = ft_strjoin("< ", general_info->str[j]);
-		cmd->files[fl] = ft_strjoin("< ", general_info->str[j]);
-		fl++;
-		//
-		// if (access(general_info->str[j], F_OK) != 0)
-		// {
-		// 	perror(general_info->str[j]);
-		// 	break ;
-		// }
-		// cmd->fd_in = open(general_info->str[j], O_RDONLY);
+		cmd->files[(*fl)++] = ft_strjoin("< ", general_info->str[++(*j)]);
 	}
+}
+
+void	tokenisation_1(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini, int *j, int	tab)
+{
+	int	l;
+	int	eof_counter;
+	int	fl;
+	
+	l = 0;
+	fl = 0;
+	eof_counter = 0;
+	l = 0;
+	fl = 0;
+	cmd->append = 0;
+	cmd->out_red = 0;
+	cmd->out_red = 0;
+	cmd->here_doc = 0;
+	cmd->fd_in = 0;
+	cmd->fd_out = 1;
+	cmd->args = malloc(sizeof(char *) * (tab + 1));
+	cmd->files = malloc(sizeof(char *) * (general_info->files_nb + 1));
+	cmd->eof = malloc(sizeof(char *) * (general_info->here_doc_nb + 1));
+	while (general_info->str[*j] && (general_info->str[*j][0] != '|'))
+	{
+		if ((general_info->str[*j][0] == '>' || general_info->str[*j][0] == '<') && mini->no_exp == 0)
+			tokens_redirection(cmd, general_info, j, &eof_counter, &fl);
+		else if (general_info->str[*j])
+			cmd->args[l++] = ft_strdup(general_info->str[*j]);
+		cmd->args[l] = NULL;
+		(*j)++;
+	}
+	cmd->general_info = general_info;
+	cmd->files[fl] = NULL;
+	cmd->eof[eof_counter] = NULL;
 }
 
 void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini)
@@ -174,7 +172,6 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini)
 	int	i;
 	int	j;
 	int	l;
-	int	eof_counter;
 	int	*tab;
 	int	fl;
 	
@@ -185,73 +182,10 @@ void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini)
 	tab = args_counter(general_info);
 	while (i < general_info->cmd_nb)
 	{
-		eof_counter = 0;
-		// k = 0;
-		l = 0;
-		fl = 0;
-			cmd[i].args = malloc(sizeof(char *) * (tab[i] + 1));
-			//every time i allocate for the total nb of files
-			cmd[i].files = malloc(sizeof(char * ) *( general_info->files_nb + 1));
-			cmd[i].eof = malloc(sizeof(char *) * (general_info->here_doc_nb + 1));
-			cmd[i].fd_in = 0;
-			cmd[i].fd_out = 1;
-			//////////
-			cmd[i].append = 0;
-			cmd[i].out_red = 0;
-			cmd[i].out_red = 0;
-			cmd[i].here_doc = 0;
-			while (general_info->str[j] && (general_info->str[j][0] != '|'))
-			{
-				//this part is for redirection
-				if ((general_info->str[j][0] == '>' || general_info->str[j][0] == '<') && mini->no_exp == 0)
-				{
-					// tokens_redirection(&cmd[i], general_info, j, eof_counter, fl);
-					if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '>' && general_info->str[j][1] == '>'))
-					{
-						//append >>
-						cmd[i].append = 1;
-						cmd[i].files[fl] = ft_strjoin(">>", general_info->str[++j]);
-						fl++;
-					}
-					else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '>'))
-					{
-						//out_redirection
-						cmd[i].out_red = 1;
-						cmd[i].files[fl] = ft_strjoin("> ", general_info->str[++j]);
-						fl++;
-					}
-					else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '<' && general_info->str[j][1] == '<'))
-					{
-						//here_doc
-						cmd[i].here_doc = 1;
-						cmd[i].eof[eof_counter++] = ft_strdup(general_info->str[++j]);
-						// cmd[i].eof[++eof_counter] = NULL;
-						// eof_counter++;
-					}
-					else if (general_info->str[j + 1] != NULL && (general_info->str[j][0] == '<'))
-					{
-						//in_redirection
-						cmd[i].in_red = 1;
-						cmd[i].files[fl] = ft_strjoin("< ", general_info->str[++j]);
-						fl++;
-					}
-				}
-				//this part is for normal cmd with or whithout a pipe
-				else if (general_info->str[j])
-				{
-					cmd[i].args[l] = ft_strdup(general_info->str[j]);
-					l++;
-				}
-				cmd[i].args[l] = NULL;
-				j++;
-			}
-			cmd[i].general_info = general_info;
-			cmd[i].files[fl] = NULL;
-			cmd[i].eof[eof_counter] = NULL;
-			j++;
-			i++;
+		tokenisation_1(&cmd[i], general_info, mini, &j, tab[i]);
+		j++;
+		i++;
 	}
-	//////////
 	free(tab);
 	// print_all_data(cmd, general_info);
 }

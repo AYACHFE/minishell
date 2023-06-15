@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 19:14:07 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/14 19:58:51 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	char	*var;
 	char	**ret;
 
-	mini->center_sp = 0;
-	mini->right_sp = 0;
-	mini->left_sp = 0;
 	str = readline("\033[0;34mMINISHELL-3.2$ \033[0m");
 	if (!str)
 		exit(mini->exit_code);
@@ -40,7 +37,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	}
 	s = ft_strdup(str);
 	var = prep(s, mini);
-	// printf("'%d'\n",mini->do_not_exp);
 	ret = ft_split(var, 11);
 	mini->cmd = ret;
 	mini->cmd_nb = count(var, 11);
@@ -52,8 +48,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	exec_1(mini, cmd, env);
 	to_free_1(mini, ret, var, str, s);
 	to_free(cmd);
-
-	system("leaks minishell");
+	// system("leaks minishell");
 }
 
 int	built_in_cmd_3_check(t_minishell	*mini, t_cmd	*cmd, char **env)

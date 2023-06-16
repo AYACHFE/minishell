@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/15 18:30:03 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 10:24:46 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ void	here_doc(t_cmd	*cmd, t_minishell	*mini)
 		while (1)
 		{
 			read = readline("> ");
-			if (ft_strncmp(read, cmd->eof[j], ft_strlen(read) + 1) == 0)
+			if (read == NULL || (ft_strncmp(read, cmd->eof[j], ft_strlen(read) + 1) == 0))
 			{
 				j++;
 				free(read);

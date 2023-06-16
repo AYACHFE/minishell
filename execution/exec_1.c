@@ -6,395 +6,92 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 15:05:10 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 21:54:48 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	multi_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env)
+{
+	if (cmd[prep->i].args[0] && built_in_cmd_3(mini, &cmd[prep->i], env))
+	{
+		prep->i++;
+		return ;
+	}
+	if (cmd[prep->i].here_doc == 1)
+	{
+		dup2(cmd->general_info->std_in, 0);
+		dup2(cmd->general_info->std_out, 1);
+		here_doc(&cmd[prep->i], mini);
+		dup2(cmd[prep->i].fd_in, 0);
+		close(cmd[prep->i].fd_in);
+	}
+	if (pipe(prep->fd) == -1)
+		exit(0);
+	prep->pid[prep->i] = fork();
+	if (prep->pid[prep->i] == 0)
+	{
+		dup2(prep->fd[1], 1);
+		close(prep->fd[1]);
+		close(prep->fd[0]);
+		redirections(&cmd[prep->i], mini);
+		built_in_cmd_2(mini, &cmd[prep->i], env);
+		exit(0);
+	}
+}
+
+int	single_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env)
+{
+	if (cmd[prep->i].here_doc == 1)
+	{
+		dup2(cmd->general_info->std_in, 0);
+		dup2(cmd->general_info->std_out, 1);
+		here_doc(&cmd[prep->i], mini);
+		dup2(cmd[prep->i].fd_in, 0);
+		close(cmd[prep->i].fd_in);
+	}
+	if (cmd[prep->i].args[0] && built_in_cmd_3(mini, &cmd[prep->i], env))
+		return (1);
+	if (pipe(prep->fd) == -1)
+		exit(0);
+	prep->pid[prep->i] = fork();
+	if (prep->pid[prep->i] == 0)
+	{
+		close(prep->fd[0]);
+		close(prep->fd[1]);
+		redirections(&cmd[prep->i], mini);
+		built_in_cmd_2(mini, &cmd[prep->i], env);
+		exit(0);
+	}
+	return (0);
+}
+
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 {
-	int	i;
-	int	fd[2];
-	int	pid[cmd->general_info->cmd_nb];
-	int	stdi;
-	int	stdou;
-	int status;
+	t_prep	prep;
+	int 	status;
 
-	i = 0;
-	(void)cmd;
-	(void)mini;
-	(void)env;
-	stdi = dup(0);
-	stdou = dup(1);
 	cmd->general_info->std_in = dup(0);
 	cmd->general_info->std_out = dup(1);
-	while (i < cmd->general_info->cmd_nb - 1)
+	prep.i = 0;
+	prep.pid = malloc(sizeof(int) * cmd->general_info->cmd_nb);
+	while (prep.i < cmd->general_info->cmd_nb - 1)
 	{
-		if (cmd[i].args[0] && built_in_cmd_3(mini, &cmd[i], env))
-		{
-			i++;
-			return ;
-		}
-		if (cmd[i].here_doc == 1)
-		{
-			dup2(stdi, 0);
-			dup2(stdou, 1);
-			here_doc(&cmd[i], mini);
-			dup2(cmd[i].fd_in, 0);
-			close(cmd[i].fd_in);
-		}
-		if (pipe(fd) == -1)
-			exit(0);
-		pid[i] = fork();
-		if (pid[i] == 0)
-		{
-			dup2(fd[1], 1);
-			close(fd[1]);
-			close(fd[0]);
-			redirections(&cmd[i], mini);
-			built_in_cmd_2(mini, &cmd[i], env);
-			exit(0);
-		}
-		dup2(fd[0], 0);
-		close(fd[1]);
-		close(fd[0]);
-		i++;
+		multi_cmd(cmd, mini, &prep, env);
+		dup2(prep.fd[0], 0);
+		close(prep.fd[1]);
+		close(prep.fd[0]);
+		prep.i++;
 	}
-	/////////
-	if (cmd[i].here_doc == 1)
-	{
-		dup2(stdi, 0);
-		dup2(stdou, 1);
-		here_doc(&cmd[i], mini);
-		dup2(cmd[i].fd_in, 0);
-		close(cmd[i].fd_in);
-	}
-	//this part fixes "cd .. > out" but it drops the tester to 72%
-	// int	no_fork = built_in_cmd_3_check(mini, &cmd[i], env);
-	// if (cmd[i].args[0] && no_fork == 1)
-	// {
-	// 	if (cmd[i].files[0])
-	// 		file_creation(&cmd[i], mini);
-	// 	built_in_cmd_3(mini, &cmd[i], env);
-	// 	return ;
-	// }
-	if (cmd[i].args[0] && built_in_cmd_3(mini, &cmd[i], env))
+	if (single_cmd(cmd, mini, &prep, env) == 1)
 		return ;
-	if (pipe(fd) == -1)
-		exit(0);
-	pid[i] = fork();
-	if (pid[i] == 0)
-	{
-		close(fd[0]);
-		close(fd[1]);
-		redirections(&cmd[i], mini);
-		built_in_cmd_2(mini, &cmd[i], env);
-		exit(0);
-	}
-	dup2(stdi, 0);
-	dup2(stdou, 1);
-	close(fd[0]);
-	close(fd[1]);
-	i = 0;
-	while(i < cmd->general_info->cmd_nb)
-		waitpid(pid[i++], &status, 0);
+	dup2(cmd->general_info->std_in, 0);
+	dup2(cmd->general_info->std_out, 1);
+	close(prep.fd[0]);
+	close(prep.fd[1]);
+	prep.i = 0;
+	while(prep.i < cmd->general_info->cmd_nb)
+		waitpid(prep.pid[prep.i++], &status, 0);
 	mini->exit_code = WEXITSTATUS(status);
-}
-
-void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env)
-{
-	(void)mini;
-	int		i;
-	int		j;
-	int		path_nb;
-	char	**var = NULL;
-	char	*val;
-
-
-	i = 0;
-	j = 0;
-	//new
-	path_nb = 1;
-	(void)env;
-	if (cmd->general_info->in_file_exist == 1)
-		exit(1);
-	if (cmd->args[0][0] == '.' && cmd->args[0][1] == '/')
-	{
-		if (access(ft_substr(cmd->args[0], 2, ft_strlen(cmd->args[0])), F_OK) == 0)
-		{
-			execve(ft_substr(cmd->args[0], 2, ft_strlen(cmd->args[0])), cmd->args, mini->my_env);
-		}
-	}
-	if (cmd->args[0][0] != '/')
-	{
-		while (mini->my_env[i] != NULL)
-		{
-			if (ft_strncmp(mini->my_env[i], "PATH", 4) == 0)
-			{
-				var = ft_split(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
-				break ;
-			}
-			if (mini->my_env[i + 1] == NULL)
-			{
-				printf("minishell: No such file or directory\n");
-				exit(127);
-			}
-			i++;
-		}
-		path_nb = count(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
-		while (j < path_nb)
-		{
-			val = ft_strjoin(var[j], "/");
-			val = ft_strjoin(val, cmd->args[0]);
-			if (access(val, F_OK) == 0)
-			{
-				// free(var[j]);
-				// free(var);
-				execve(val, cmd->args, mini->my_env);
-			}
-			free(var[j]);
-			free(val);
-			j++;
-		}
-	}
-	else 
-	{
-		// puts("----->");
-		if (access(cmd->args[0], F_OK) == 0)
-		{
-			execve(cmd->args[0], cmd->args, mini->my_env);
-		}
-	}
-	mini->exit_code = 1;
-	// if (cmd->args[1][0] == '/')
-	if (cmd->args[0][0] == '/')
-	{
-		ft_putstr_fd("minishell: No such file or directory\n", 2);
-	}
-	else
-	{
-		char *str = ft_strjoin("minishell: ", cmd->args[0]);
-		char *str1 = ft_strjoin(str, ": command not found\n");
-		ft_putstr_fd(str1, 2);
-		free(str);
-		free(str1);
-	}
-	free(var);
-	mini->exit_code = 127;
-	exit(127);
-}
-
-void	here_doc_ext_1(char	**res, char	*read, int	*fd)
-{
-	int	i;
-
-	i = 0;
-	while (i < count(read, 32))
-	{
-		ft_putstr_fd(res[i++], fd[1]);
-		ft_putchar_fd(32, fd[1]);
-	}
-	ft_putchar_fd('\n', fd[1]);
-}
-
-int	here_doc_ext_2(char	*read, t_cmd	*cmd, t_prep	*prep)
-{
-	if (read == NULL || (ft_strncmp(read, cmd->eof[prep->j], ft_strlen(read) + 1) == 0))
-	{
-		prep->j++;
-		free(read);
-		return (1);
-	}
-	return (0);
-}
-
-void	here_doc_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, int	*fd)
-{
-	char	*read;
-	char	**res;
-	int		check;
-	int		i;
-
-	i = 0;
-	while (1)
-	{
-		read = readline("> ");
-		if (here_doc_ext_2(read, cmd, prep) == 1)
-			break ;
-		if ((ft_strchr(read, '$') != 0) && mini->do_not_exp == 0)
-		{
-			res = malloc(sizeof(char *) * (count(read, 32) + 1));
-			check = 1;
-			ft_check_dollar_heredoc(mini, read, res);
-		}
-		if (check == 0)
-			ft_putendl_fd(read, fd[1]);
-		else
-			here_doc_ext_1(res, read, fd);
-		free(read);
-	}
-}
-
-void	here_doc(t_cmd	*cmd, t_minishell	*mini)
-{
-	int		fd[2];
-	int		i;
-	int		j;
-	t_prep	prep;
-
-	i = 0;
-	j = 0;
-	prep.j = 0;
-	(void)mini;
-	while (cmd->eof[prep.j])
-	{
-		if (pipe(fd) == -1)
-			exit(0);
-		here_doc_ext(cmd, mini, &prep, fd);
-		close (fd[1]);
-		cmd->fd_in = dup(fd[0]);
-		close (fd[0]);
-	}
-}
-
-int	check_ambig_ext(char	*file, t_minishell	*mini)
-{
-	int	j;
-
-	j = 2;
-	if (mini->center_sp == 1 || mini->just_sp == 1)
-	{
-		ft_putendl_fd("minishell: ambiguous redirect", 2);
-		return (1);
-	}
-	if (mini->left_sp == 1)
-	{
-		while (file[j])
-		{
-			if (file[j] == 32 && (file[j - 1] != 32 && file[j - 1] != '>' && file[j - 2] != '>'))
-			{
-				ft_putendl_fd("minishell: ambiguous redirect", 2);
-				return (1);
-			}
-			j++;
-		}
-	}
-	return (0);
-}
-
-//search_for_ambig_redirections
-int	check_ambig(char	*file, t_minishell	*mini)
-{
-	int	j;
-
-	j = 2;
-	if (check_ambig_ext(file, mini) == 1)
-		return (1);
-	if (mini->right_sp == 1)
-	{
-		while (file[j])
-		{
-			if (file[j] == 32 && (file[j + 1] != '\0'))
-			{
-				ft_putendl_fd("minishell: ambiguous redirect", 2);
-				return (1);
-			}
-			j++;
-		}
-	}
-	return (0);
-}
-
-void	append_files(t_cmd	*cmd, int	j)
-{
-	cmd->fd_out = (open(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), O_RDWR | O_CREAT | O_APPEND, 0660));
-	if (cmd->fd_out == -1)
-	{
-		if (access(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), F_OK) != 0)
-		{
-			ft_putstr_fd("minishell: No such file or directory\n", 2);
-			exit(1);
-		}
-		if (access(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), W_OK) != 0)
-		{
-			printf("minishell: %s: Permission denied\n", ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])));
-			exit(1);
-		}
-	}
-}
-
-void	out_redirection_files(t_cmd	*cmd, int	j)
-{
-	cmd->fd_out = (open(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), O_RDWR | O_CREAT | O_TRUNC, 0660));
-	if (cmd->fd_out == -1)
-	{
-		if (access(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), F_OK) != 0)
-		{
-			ft_putstr_fd("minishell: No such file or directory\n", 2);
-			exit(1);
-		}
-		if (access(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), W_OK) != 0)
-		{
-			printf("minishell: %s: Permission denied\n", ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])));
-			exit(1);
-		}
-	}
-}
-
-void	in_redirection_files(t_cmd	*cmd, int	j)
-{
-	if (access(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), F_OK) != 0)
-	{
-		cmd->general_info->in_file_exist = 1;
-		ft_putstr_fd("minishell: No such file or directory\n", 2);
-		exit(1);
-	}
-	if (access(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), W_OK) != 0)
-	{
-		cmd->general_info->in_file_exist = 1;
-		printf("minishell: %s: Permission denied\n", ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])));
-		exit(1);
-	}
-	cmd->fd_in = open(ft_substr(cmd->files[j], 2, ft_strlen(cmd->files[j])), O_RDONLY);
-}
-
-void	file_creation(t_cmd	*cmd, t_minishell	*mini)
-{
-	int	j;
-
-	j = 0;
-	(void)mini;
-	while (cmd->files[j])
-	{
-		if (check_ambig(cmd->files[j], mini) == 1)
-			exit(1);
-		if (cmd->files[j][0] == '>' && cmd->files[j][1] == '>')
-			append_files(cmd, j);
-		else if (cmd->files[j][0] == '>')
-			out_redirection_files(cmd, j);
-		else if (cmd->files[j][0] == '<')
-			in_redirection_files(cmd, j);
-		j++;
-	}
-}
-
-void	redirections(t_cmd	*cmd, t_minishell	*mini)
-{
-	file_creation(cmd, mini);
-	if (cmd->in_red == 1)
-	{
-		dup2(cmd->fd_in, 0);
-		close(cmd->fd_in);
-	}
-	if (cmd->append == 1)
-	{
-		dup2(cmd->fd_out, 1);
-		close(cmd->fd_out);
-	}
-	else if (cmd->out_red == 1)
-	{
-		dup2(cmd->fd_out, 1);
-		close(cmd->fd_out);
-	}
 }

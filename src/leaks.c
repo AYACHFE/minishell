@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:13:16 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/14 15:15:06 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 15:11:30 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	to_free(t_cmd	*cmd)
 {
 	int	i;
-	int j;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -28,7 +28,7 @@ void	to_free(t_cmd	*cmd)
 		while (cmd[i].files[j])
 			free(cmd[i].files[j++]);
 		j = 0;
-		while ( cmd[i].eof[j])
+		while (cmd[i].eof[j])
 			free(cmd[i].eof[j++]);
 		free(cmd[i].args);
 		free(cmd[i].files);

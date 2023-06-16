@@ -6,20 +6,20 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 12:48:48 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 20:49:04 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	MINISHELL_H
-#define	MINISHELL_H
- 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "./utils/ft_libft/libft.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <fcntl.h>
+#ifndef MINISHELL_H
+# define MINISHELL_H
+
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include "./utils/ft_libft/libft.h"
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <fcntl.h>
 
 typedef struct s_prep
 {
@@ -28,8 +28,10 @@ typedef struct s_prep
 	int		eof_counter;
 	int		fl;
 	int		tab;
+	int		*pid;
 	char	*str;
 	char	*var;
+	int		fd[2];
 }	t_prep;
 
 typedef struct s_cmd_info
@@ -50,17 +52,17 @@ typedef struct s_cmd_info
 
 typedef struct s_cmd
 {
-	char	*cmd;
-	char	**args;
-	int		pipe;
-	int		fd_in;
-	int		fd_out;
-	char	**files;
-	int		append;
-	int		here_doc;
-	char	**eof;
-	int		out_red;
-	int		in_red;
+	char		*cmd;
+	char		**args;
+	int			pipe;
+	int			fd_in;
+	int			fd_out;
+	char		**files;
+	int			append;
+	int			here_doc;
+	char		**eof;
+	int			out_red;
+	int			in_red;
 	t_cmd_info	*general_info;
 }	t_cmd;
 
@@ -85,12 +87,11 @@ typedef struct s_minishell
 	int		do_not_exp;
 }	t_minishell;
 
-t_cmd *cmd; 
+t_cmd	*cmd; 
 
 //built_in
 void	built_in_cmd(t_minishell	*mini, char **env);
 void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env);
-void	execv_function(t_minishell	*mini, t_cmd	*cmd, char **env);
 int		ft_cd(t_cmd	*cmd, t_minishell	*mini);
 void	ft_cd_ext(t_minishell	*mini, int i, int *check);
 void	ft_pwd();
@@ -120,14 +121,14 @@ void	rem_var_export(t_minishell	*mini, int pos);
 
 //ft_export
 void	ft_export(t_cmd	*cmd, t_minishell *mini);
-void    ft_rem_var(char **str, t_minishell *mini, int t);
+void	ft_rem_var(char	**str, t_minishell	*mini, int t);
 void	ft_rem_var_export(char **str, t_minishell *mini, int t);
 void	print_export(t_minishell *mini);
 int		ft_double_single_quote(char *str);
-int		ft_check_var_exect(char *s,t_minishell *mini, int var);
+int		ft_check_var_exect(char *s, t_minishell *mini, int var);
 
 //parcing
-void	parcing(t_minishell	*mini,t_cmd	*cmd, char *s);
+void	parcing(t_minishell	*mini, t_cmd	*cmd, char *s);
 char	*prep(char	*str, t_minishell	*mini);
 void	prep_ext_1(t_minishell	*mini, t_prep	*prep, char	*str);
 void	prep_ext_2(t_minishell	*mini, t_prep	*prep, char	*str);
@@ -144,6 +145,15 @@ int		*args_counter(t_cmd_info	*general_info);
 void	tokenisation_1(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini, t_prep	*prep);
 void	tokens_redirection(t_cmd	*cmd, t_cmd_info	*general_info, t_prep	*prep);
 void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, int	tab);
+
+// //parce_2
+// void	to_struct(t_minishell	*mini, t_cmd	*cmd);
+// void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini);
+// int		cmd_counter(t_minishell	*mini);
+// int		*args_counter(t_cmd_info	*general_info);
+// void	tokenisation_1(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini, int *j, int	tab);
+// void	tokens_redirection(t_cmd	*cmd, t_cmd_info	*general_info, int *j, int *eof_counter, int *fl);
+// void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, int	tab);
 
 //error
 int		ft_double_single_quote(char *str);
@@ -169,10 +179,28 @@ int		ft_hsb3(char *str, int n);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
-void	file_creation(t_cmd	*cmd, t_minishell	*mini);
+int		check_ambig(char	*file, t_minishell	*mini);
+int		check_ambig_ext(char	*file, t_minishell	*mini);
+
+//execution_2
+void	execv_function(t_minishell	*mini, t_cmd	*cmd);
+void	execve_func_ext(t_minishell	*mini, t_cmd	*cmd);
+void	execve_func_ext_1(t_minishell	*mini, t_cmd	*cmd, int	i, char	**var);
+void	execve_error(t_minishell	*mini, t_cmd	*cmd);
+
+//here_doc
+void	ft_check_dollar_heredoc(t_minishell *mini, char	*s, char	**res);
 void	here_doc(t_cmd	*cmd, t_minishell	*mini);
+void	here_doc_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, int	*fd);
+void	here_doc_ext_1(char	**res, char	*read, int	*fd);
+int		here_doc_ext_2(char	*read, t_cmd	*cmd, t_prep	*prep);
+
+//file_creation
 void	redirections(t_cmd	*cmd, t_minishell	*mini);
-void    ft_check_dollar_heredoc(t_minishell *mini, char	*s, char	**res);
+void	file_creation(t_cmd	*cmd, t_minishell	*mini);
+void	append_files(t_cmd	*cmd, int	j);
+void	out_redirection_files(t_cmd	*cmd, int	j);
+void	in_redirection_files(t_cmd	*cmd, int	j);
 
 //leaks
 void	to_free(t_cmd	*cmd);

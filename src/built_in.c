@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 12:20:48 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 20:11:15 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 	else if ((ft_strncmp(cmd->args[0], "export", 7) == 0))
 		ft_export(cmd, mini);
 	else
-		execv_function(mini, cmd, env);
+		execv_function(mini, cmd);
 }
 
 void	ft_cd_ext(t_minishell	*mini, int i, int *check)

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/15 18:56:27 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 11:33:01 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <fcntl.h>
+
+typedef struct s_prep
+{
+	int		i;
+	int		j;
+	char	*str;
+	char	*var;
+}	t_prep;
 
 typedef struct s_cmd_info
 {

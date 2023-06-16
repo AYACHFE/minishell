@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 18:58:53 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 22:07:14 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	parcing(t_minishell	*mini, t_cmd	*cmd, char *s)
 void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, \
 t_minishell	*mini)
 {
-	int	i;
-	int	j;
-	int	*tab;
+	int		i;
+	int		j;
+	int		*tab;
 	t_prep	prep;
 
 	j = 0;
@@ -53,6 +53,8 @@ t_minishell	*mini, t_prep	*prep)
 	int	l;
 
 	l = 0;
+	prep->eof_counter = 0;
+	prep->fl = 0;
 	init_tokenisation(cmd, general_info, prep->tab);
 	while (general_info->str[prep->j] && (general_info->str[prep->j][0] != '|'))
 	{
@@ -113,109 +115,6 @@ t_prep	*prep)
 	}
 }
 
-
-/////////////
-
-// //this_is_the_function_that_places_every_cmd_in_a_atruct
-// void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, \
-// t_minishell	*mini)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	l;
-// 	int	*tab;
-// 	int	fl;
-
-// 	l = 0;
-// 	j = 0;
-// 	i = 0;
-// 	fl = 0;
-// 	tab = args_counter(general_info);
-// 	while (i < general_info->cmd_nb)
-// 	{
-// 		tokenisation_1(&cmd[i], general_info, mini, &j, tab[i]);
-// 		j++;
-// 		i++;
-// 	}
-// 	free(tab);
-// 	// print_all_data(cmd, general_info);
-// }
-
-// //this_function_is_an_extention_of_to_struct_2
-// void	tokenisation_1(t_cmd	*cmd, t_cmd_info	*general_info, \
-// t_minishell	*mini, int *j, int tab)
-// {
-// 	int	l;
-// 	int	eof_counter;
-// 	int	fl;
-
-// 	l = 0;
-// 	fl = 0;
-// 	eof_counter = 0;
-// 	l = 0;
-// 	fl = 0;
-// 	init_tokenisation(cmd, general_info, tab);
-// 	while (general_info->str[*j] && (general_info->str[*j][0] != '|'))
-// 	{
-// 		if ((general_info->str[*j][0] == '>' || general_info->str[*j][0] \
-// 		== '<') && mini->no_exp == 0)
-// 			tokens_redirection(cmd, general_info, j, &eof_counter, &fl);
-// 		else if (general_info->str[*j])
-// 			cmd->args[l++] = ft_strdup(general_info->str[*j]);
-// 		cmd->args[l] = NULL;
-// 		(*j)++;
-// 	}
-// 	cmd->general_info = general_info;
-// 	cmd->files[fl] = NULL;
-// 	cmd->eof[eof_counter] = NULL;
-// }
-
-// //initialise_data_needed_by_tokenisation_1
-// void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, int tab)
-// {
-// 	cmd->append = 0;
-// 	cmd->out_red = 0;
-// 	cmd->out_red = 0;
-// 	cmd->here_doc = 0;
-// 	cmd->fd_in = 0;
-// 	cmd->fd_out = 1;
-// 	cmd->args = malloc(sizeof(char *) * (tab + 1));
-// 	cmd->files = malloc(sizeof(char *) * (general_info->files_nb + 1));
-// 	cmd->eof = malloc(sizeof(char *) * (general_info->here_doc_nb + 1));
-// }
-
-// //this_funct_searsh_for_redirections
-// void	tokens_redirection(t_cmd	*cmd, t_cmd_info	*general_info, \
-// int *j, int *eof_counter, int *fl)
-// {
-// 	if (general_info->str[*j + 1] != NULL && (general_info->str[*j][0] \
-// 	== '>' && general_info->str[*j][1] == '>'))
-// 	{
-// 		cmd->append = 1;
-// 		cmd->files[(*fl)++] = ft_strjoin(">>", general_info->str[++(*j)]);
-// 	}
-// 	else if (general_info->str[*j + 1] != NULL && (general_info->str[*j][0] \
-// 	== '>'))
-// 	{
-// 		cmd->out_red = 1;
-// 		cmd->files[(*fl)++] = ft_strjoin("> ", general_info->str[++(*j)]);
-// 	}
-// 	else if (general_info->str[*j + 1] != NULL && (general_info->str[*j][0] \
-// 	== '<' && general_info->str[*j][1] == '<'))
-// 	{
-// 		cmd->here_doc = 1;
-// 		cmd->eof[(*eof_counter)++] = ft_strdup(general_info->str[++(*j)]);
-// 	}
-// 	else if (general_info->str[*j + 1] != NULL && (general_info->str[*j][0] \
-// 	== '<'))
-// 	{
-// 		cmd->in_red = 1;
-// 		cmd->files[(*fl)++] = ft_strjoin("< ", general_info->str[++(*j)]);
-// 	}
-// }
-
-
-// /////////////
 int	args_counter_ext(t_cmd_info	*general_info, int *i, int *j)
 {
 	if ((general_info->str[*i] && (general_info->str[*i][0] == '<' \

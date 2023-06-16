@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 11:33:01 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 12:10:56 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,12 @@ int		ft_check_var_exect(char *s,t_minishell *mini, int var);
 //parcing
 void	parcing(t_minishell	*mini,t_cmd	*cmd, char *s);
 char	*prep(char	*str, t_minishell	*mini);
+void	prep_ext_1(t_minishell	*mini, t_prep	*prep, char	*str);
+void	prep_ext_2(t_minishell	*mini, t_prep	*prep, char	*str);
+void	prep_ext_3(t_minishell	*mini, t_prep	*prep, char	*str);
+void	prep_ext_4(t_prep	*prep, char	*str);
+void	prep_ext_5(t_prep	*prep, char	*str);
+void	prep_ext_6(t_minishell	*mini, t_prep	*prep, char	*str);
 
 //parce_2
 void	to_struct(t_minishell	*mini, t_cmd	*cmd);

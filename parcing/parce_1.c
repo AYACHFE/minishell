@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 11:39:22 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 12:14:58 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,121 +21,126 @@ void	parcing(t_minishell	*mini, t_cmd	*cmd, char *s)
 	to_struct(mini, cmd);
 }
 
-// void	prep_ext_2()
-// {
-	
-// }
+//puts a marker at the end of every string 
+char	*prep(char	*str, t_minishell	*mini)
+{
+	t_prep	prep;
 
-void	prep_ext_1(t_minishell	*mini, char	*str, char	*var , int *i, int *j)
+	prep.i = 0;
+	prep.j = 0;
+	mini->do_not_exp = 0;
+	prep.var = malloc(sizeof(char) * (ft_strlen(str) + 20));
+	while (str[prep.i])
+	{
+		prep_ext_1(mini, &prep, str);
+		prep.i++;
+		prep.j++;
+		prep.var[prep.j] = '\0';
+	}
+	return (prep.var);
+}
+
+void	prep_ext_1(t_minishell	*mini, t_prep	*prep, char	*str)
+{
+	if (str[prep->i] && (str[prep->i] == '<' && str[prep->i + 1] \
+	== '<') && (str[prep->i + 2] == '"'))
+		prep_ext_2(mini, prep, str);
+	else if (str[prep->i] && (str[prep->i] == '<' && str[prep->i + 1] \
+	== '<') && (str[prep->i + 2] == '\''))
+		prep_ext_3(mini, prep, str);
+	else if (((str[prep->i] >= 9 && str[prep->i] <= 13) || str[prep->i] == 32))
+		str[prep->i] = 11;
+	else if (str[prep->i] == '"')
+		prep_ext_4(prep, str);
+	else if (str[prep->i] == '\'')
+		prep_ext_5(prep, str);
+	if ((str[prep->i] == '>' && str[prep->i + 1] == '>') || (str[prep->i] \
+	== '<' && str[prep->i + 1] == '<'))
+		prep_ext_6(mini, prep, str);
+	else if ((str[prep->i] == '|' || str[prep->i] == '>' || str[prep->i] == \
+	'<' || (str[prep->i] == '>' && str[prep->i + 1] == '>') || (str[prep->i] \
+	== '<' && str[prep->i + 1] == '<')))
+	{
+		prep->var[prep->j] = 11;
+		prep->var[++prep->j] = str[prep->i];
+		prep->var[++prep->j] = 11;
+	}
+	else
+		prep->var[prep->j] = str[prep->i];
+}
+
+void	prep_ext_2(t_minishell	*mini, t_prep	*prep, char	*str)
+{
+	mini->do_not_exp = 1;
+	prep->var[prep->j] = 11;
+	prep->var[++prep->j] = str[prep->i];
+	prep->var[++prep->j] = str[++prep->i];
+	prep->var[++prep->j] = 11;
+	prep->var[++prep->j] = str[++prep->i];
+	prep->i++;
+	prep->j++;
+	while (str[prep->i] != '"')
+		prep->var[prep->j++] = str[prep->i++];
+}
+
+void	prep_ext_3(t_minishell	*mini, t_prep	*prep, char	*str)
+{
+	mini->do_not_exp = 1;
+	prep->var[prep->j] = 11;
+	prep->var[++prep->j] = str[prep->i];
+	prep->var[++prep->j] = str[++prep->i];
+	prep->var[++prep->j] = 11;
+	prep->var[++prep->j] = str[++prep->i];
+	prep->i++;
+	prep->j++;
+	while (str[prep->i] != '\'')
+		prep->var[prep->j++] = str[prep->i++];
+}
+
+void	prep_ext_4(t_prep	*prep, char	*str)
+{
+	if (((str[prep->i - 1] >= 9 && str[prep->i - 1] <= 13) || str[prep->i - 1] == 32))
+		str[prep->i - 1] = 11;
+	prep->var[prep->j - 1] = str[prep->i - 1];
+	prep->var[prep->j] = str[prep->i];
+	prep->i++;
+	prep->j++;
+	while (str[prep->i] && str[prep->i] != '"')
+	{
+		prep->var[prep->j++] = str[prep->i++];
+	}
+}
+
+void	prep_ext_5(t_prep	*prep, char	*str)
+{
+	if (((str[prep->i - 1] >= 9 && str[prep->i - 1] <= 13) || str[prep->i - 1] == 32))
+		str[prep->i - 1] = 11;
+	prep->var[prep->j - 1] = str[prep->i - 1];
+	prep->var[prep->j] = str[prep->i];
+	prep->i++;
+	prep->j++;
+	while (str[prep->i] != '\'')
+		prep->var[prep->j++] = str[prep->i++];
+}
+
+void	prep_ext_6(t_minishell	*mini, t_prep	*prep, char	*str)
 {
 	int	k;
 
 	k = 0;
-	if (str[*i] && (str[*i] == '<' && str[*i + 1] == '<') && (str[*i + 2] == '"'))
+	if (str[prep->i] && (str[prep->i] == '<' && str[prep->i + 1] == '<'))
 	{
-		mini->do_not_exp = 1;
-		var[*j] = 11;
-		var[++(*j)] = str[*i];
-		var[++(*j)] = str[++(*i)];
-		var[++(*j)] = 11;
-		var[++(*j)] = str[++(*i)];
-		(*i)++;
-		(*j)++;
-		while (str[*i] != '"')
-			var[(*j)++] = str[(*i)++];
-	}
-	else if (str[*i] && (str[*i] == '<' && str[*i + 1] == '<') && (str[*i + 2] == '\''))
-	{
-		mini->do_not_exp = 1;
-		var[*j] = 11;
-		var[++(*j)] = str[*i];
-		var[++(*j)] = str[++(*i)];
-		var[++(*j)] = 11;
-		var[++(*j)] = str[++(*i)];
-		(*i)++;
-		(*j)++;
-		while (str[*i] != '\'')
-			var[(*j)++] = str[(*i)++];
-	}
-	//////
-	else if (((str[*i] >= 9 && str[*i] <= 13) || str[*i] == 32))
-		str[*i] = 11;
-	else if (str[*i] == '"')
-	{
-		if (((str[*i - 1] >= 9 && str[*i - 1] <= 13) || str[*i - 1] == 32))
-			str[*i - 1] = 11;
-		var[*j - 1] = str[*i - 1];
-		var[*j] = str[*i];
-		(*i)++;
-		(*j)++;
-		while (str[*i] && str[*i] != '"')
+		k = prep->i;
+		k += 2;
+		while (str[k] && ((str[k] >= 9 && str[k] <= 13) || str[k] == 32))
 		{
-			var[(*j)++] = str[(*i)++];
+			k++;
+			if (str[k] && (str[k] == '"' || str[k] == '\''))
+				mini->do_not_exp = 1;
 		}
 	}
-	else if (str[*i] == '\'')
-	{
-		if (((str[*i - 1] >= 9 && str[*i - 1] <= 13) || str[*i - 1] == 32))
-			str[*i - 1] = 11;
-		var[*j - 1] = str[*i - 1];
-		var[*j] = str[*i];
-		(*i)++;
-		(*j)++;
-		while (str[*i] != '\'')
-			var[(*j)++] = str[(*i)++];
-	}
-	if ((str[*i] == '>' && str[*i + 1] == '>') || (str[*i] == '<' && str[*i + 1] == '<'))
-	{
-		if (str[*i] && (str[*i] == '<' && str[*i + 1] == '<'))
-		{
-			k = *i;
-			k += 2;
-			while (str[k] && ((str[k] >= 9 && str[k] <= 13) || str[k] == 32))
-			{
-				k++;
-				if (str[k] && (str[k] == '"' || str[k] == '\''))
-					mini->do_not_exp = 1;
-			}
-		}
-		var[*j] = 11;
-		var[++(*j)] = str[*i];
-		var[++(*j)] = str[++(*i)];
-		var[++(*j)] = 11;
-	}
-	else if ((str[*i] == '|' || str[*i] == '>' || str[*i] == '<' || (str[*i] == '>' && \
-	str[*i + 1] == '>') || (str[*i] == '<' && str[*i + 1] == '<')))
-	{
-		var[*j] = 11;
-		var[++(*j)] = str[*i];
-		var[++(*j)] = 11;
-	}
-	else
-		var[*j] = str[*i];
-}
-
-//puts a marker at the end of every string 
-char	*prep(char	*str, t_minishell	*mini)
-{
-	char	*var;
-	int		i;
-	int		j;
-	// int		k;
-	// t_prep	prep;
-
-	i = 0;
-	j = 0;
-	// k = 0;
-	// prep.i = 0;
-	// prep.j = 0;
-	// prep.var;
-	mini->do_not_exp = 0;
-	var = malloc(sizeof(char) * (ft_strlen(str) + 20));
-	while (str[i])
-	{
-		prep_ext_1(mini, str, var, &i, &j);
-		i++;
-		j++;
-		var[j] = '\0';
-	}
-	return (var);
+	prep->var[prep->j] = 11;
+	prep->var[++prep->j] = str[prep->i];
+	prep->var[++prep->j] = str[++prep->i];
+	prep->var[++prep->j] = 11;
 }

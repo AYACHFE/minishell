@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 19:30:08 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 20:13:29 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 22:14:51 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd)
 {
 	int		i;
 	int		j;
-	int		path_nb;
 	char	**var;
 
 	i = 0;
 	j = 0;
-	path_nb = 1;
 	var = NULL;
 	if (cmd->general_info->in_file_exist == 1)
 		exit(1);
 	if (cmd->args[0][0] == '.' && cmd->args[0][1] == '/')
 	{
-		if (access(ft_substr(cmd->args[0], 2, ft_strlen(cmd->args[0])), F_OK) == 0)
-			execve(ft_substr(cmd->args[0], 2, ft_strlen(cmd->args[0])), cmd->args, mini->my_env);
+		if (access(ft_substr(cmd->args[0], 2, ft_strlen(\
+		cmd->args[0])), F_OK) == 0)
+			execve(ft_substr(cmd->args[0], 2, ft_strlen(\
+			cmd->args[0])), cmd->args, mini->my_env);
 	}
 	if (cmd->args[0][0] != '/')
 		execve_func_ext(mini, cmd);
@@ -54,7 +54,8 @@ void	execve_func_ext(t_minishell	*mini, t_cmd	*cmd)
 	{
 		if (ft_strncmp(mini->my_env[i], "PATH", 4) == 0)
 		{
-			var = ft_split(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
+			var = ft_split(ft_substr(mini->my_env[i], 5, \
+			ft_strlen(mini->my_env[i])), ':');
 			break ;
 		}
 		if (mini->my_env[i + 1] == NULL)
@@ -67,14 +68,16 @@ void	execve_func_ext(t_minishell	*mini, t_cmd	*cmd)
 	execve_func_ext_1(mini, cmd, i, var);
 }
 
-void	execve_func_ext_1(t_minishell	*mini, t_cmd	*cmd, int i, char	**var)
+void	execve_func_ext_1(t_minishell	*mini, t_cmd	\
+*cmd, int i, char	**var)
 {
 	char	*val;
 	int		path_nb;
 	int		j;
 
 	j = 0;
-	path_nb = count(ft_substr(mini->my_env[i], 5, ft_strlen(mini->my_env[i])), ':');
+	path_nb = count(ft_substr(mini->my_env[i], 5, ft_strlen(\
+	mini->my_env[i])), ':');
 	while (j < path_nb)
 	{
 		val = ft_strjoin(var[j], "/");

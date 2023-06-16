@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 13:17:52 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 13:30:25 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,9 @@ t_minishell	*mini)
 {
 	int	i;
 	int	j;
-	// int	l;
 	int	*tab;
 	t_prep	prep;
-	// int	fl;
 
-	// l = 0;
 	j = 0;
 	i = 0;
 	prep.eof_counter = 0;
@@ -47,7 +44,6 @@ t_minishell	*mini)
 		i++;
 	}
 	free(tab);
-	// print_all_data(cmd, general_info);
 }
 
 //this_function_is_an_extention_of_to_struct_2
@@ -55,15 +51,8 @@ void	tokenisation_1(t_cmd	*cmd, t_cmd_info	*general_info, \
 t_minishell	*mini, t_prep	*prep)
 {
 	int	l;
-	// int	eof_counter;
-	// int	fl;
 
 	l = 0;
-	// fl = 0;
-	// eof_counter = 0;
-	// l = 0;
-	// fl = 0;
-	
 	init_tokenisation(cmd, general_info, prep->tab);
 	while (general_info->str[prep->j] && (general_info->str[prep->j][0] != '|'))
 	{
@@ -225,47 +214,3 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd)
 	+ general_info->in_red_nb;
 	to_struct_2(cmd, general_info, mini);
 }
-
-//this function should be removed after its just helps to debug
-// void	print_all_data(t_cmd	*cmd, t_cmd_info	*general_info)
-// {
-// 	//prints all the struct data , and the data is about the cmds
-// 	int	i;
-// 	int	j;
-// 	int	eof_counter;
-// 	// int	fl;
-// 	int	l;
-
-// 	i = 0;
-// 	j = 0;	
-// 	while (i < general_info->cmd_nb)
-// 	{
-// 		l = 0;
-// 		while (cmd[i].args[l] != NULL)
-// 		{
-// 			printf("--->cmd[%d].args[%d]--> %s\n",i, l, cmd[i].args[l]);
-// 			l++;
-// 		}
-// 		// fl = 0;
-// 		// while (cmd[i].files[fl])
-// 		// {
-// 		// 	printf("cmd[%d].files[%d] == %s\n", i, fl, cmd[i].files[fl]);
-// 		// 	fl++;
-// 		// }
-// 		// 	if (cmd[i].append == 1 || cmd[i].here_doc == 1 || cmd[i].out_red == 1 \
-// 		// 	|| cmd[i].in_red == 1)
-// 		// 	{
-// 		// 		printf("---____--> cmd[%d].fd_out ---> %d\n", i, cmd[i].fd_out);
-// 		// 		printf("---____--> cmd[%d].fd_in ---> %d\n", i, cmd[i].fd_in);
-// 		// 		//here_doc
-// 		// 		printf("---____--> %d\n", cmd[i].here_doc);
-// 				eof_counter = 0;
-// 				while (cmd[i].eof[eof_counter] != NULL)
-// 				{
-// 					printf("cmd[%d].eof[%d] = %s\n", i, eof_counter,cmd[i].eof[eof_counter]);
-// 					eof_counter++;
-// 				}
-// 			// }
-// 		i++;
-// 	}
-// }

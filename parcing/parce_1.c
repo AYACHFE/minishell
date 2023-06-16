@@ -6,20 +6,11 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:59:12 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 12:14:58 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 13:10:05 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-//you should split the readline return with ("" , '', |, <<, >>, <, >)
-
-void	parcing(t_minishell	*mini, t_cmd	*cmd, char *s)
-{
-	(void)mini;
-	(void)s;
-	to_struct(mini, cmd);
-}
 
 //puts a marker at the end of every string 
 char	*prep(char	*str, t_minishell	*mini)

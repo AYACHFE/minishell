@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 12:10:56 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/16 12:48:48 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ typedef struct s_prep
 {
 	int		i;
 	int		j;
+	int		eof_counter;
+	int		fl;
+	int		tab;
 	char	*str;
 	char	*var;
 }	t_prep;
@@ -138,8 +141,8 @@ void	to_struct(t_minishell	*mini, t_cmd	*cmd);
 void	to_struct_2(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini);
 int		cmd_counter(t_minishell	*mini);
 int		*args_counter(t_cmd_info	*general_info);
-void	tokenisation_1(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini, int *j, int	tab);
-void	tokens_redirection(t_cmd	*cmd, t_cmd_info	*general_info, int *j, int *eof_counter, int *fl);
+void	tokenisation_1(t_cmd	*cmd, t_cmd_info	*general_info, t_minishell	*mini, t_prep	*prep);
+void	tokens_redirection(t_cmd	*cmd, t_cmd_info	*general_info, t_prep	*prep);
 void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, int	tab);
 
 //error

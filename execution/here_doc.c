@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 19:00:47 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 19:01:47 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/17 14:26:36 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	here_doc(t_cmd	*cmd, t_minishell	*mini)
 	i = 0;
 	j = 0;
 	prep.j = 0;
-	(void)mini;
 	while (cmd->eof[prep.j])
 	{
 		if (pipe(fd) == -1)

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/12 21:21:00 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/17 14:19:30 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	ft_tmp_my_env(t_minishell *mini)
 		j = 0;
 		while(mini->my_env[i][j])
 			j++;
-		mini->tmp_my_env[i] = malloc(j + 3);
+		mini->tmp_my_env[i] = malloc(j + 4);
 		j = 0;
 		d = 0;
 		while(mini->my_env[i][j])

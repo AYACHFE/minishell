@@ -6,11 +6,19 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 19:30:08 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 22:14:51 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/17 15:30:10 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	execute_programs(t_cmd	*cmd, t_minishell	*mini)
+{
+	if (access(ft_substr(cmd->args[0], 2, ft_strlen(\
+	cmd->args[0])), F_OK) == 0)
+		execve(ft_substr(cmd->args[0], 2, ft_strlen(\
+		cmd->args[0])), cmd->args, mini->my_env);
+}
 
 void	execv_function(t_minishell	*mini, t_cmd	*cmd)
 {
@@ -25,13 +33,18 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd)
 		exit(1);
 	if (cmd->args[0][0] == '.' && cmd->args[0][1] == '/')
 	{
-		if (access(ft_substr(cmd->args[0], 2, ft_strlen(\
-		cmd->args[0])), F_OK) == 0)
-			execve(ft_substr(cmd->args[0], 2, ft_strlen(\
-			cmd->args[0])), cmd->args, mini->my_env);
+		execute_programs(cmd, mini);
+		// if (access(ft_substr(cmd->args[0], 2, ft_strlen(\
+		// cmd->args[0])), F_OK) == 0)
+		// 	execve(ft_substr(cmd->args[0], 2, ft_strlen(\
+		// 	cmd->args[0])), cmd->args, mini->my_env);
 	}
 	if (cmd->args[0][0] != '/')
+	{
+		if (mini->my_env[0] == NULL)
+			execve_error(mini, cmd);
 		execve_func_ext(mini, cmd);
+	}
 	else
 	{
 		if (access(cmd->args[0], F_OK) == 0)
@@ -60,7 +73,7 @@ void	execve_func_ext(t_minishell	*mini, t_cmd	*cmd)
 		}
 		if (mini->my_env[i + 1] == NULL)
 		{
-			printf("minishell: No such file or directory\n");
+			ft_putendl_fd("minishell: No such file or directory", 2);
 			exit(127);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 22:52:18 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/17 20:31:09 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ typedef struct s_prep
 	int		eof_counter;
 	int		fl;
 	int		tab;
-	int		*pid;
 	char	*str;
 	char	*var;
 	int		fd[2];
+	size_t	nb;
+	int		*pid;
 }	t_prep;
 
 typedef struct s_cmd_info
@@ -172,6 +173,8 @@ void	ft_check_sp(char *s, t_minishell *mini);
 char	*ft_substr1(char const *s, unsigned int start, size_t len);
 int		ft_hsb(char *s);
 int		ft_hsb3(char *str, int n);
+
+void	ft_check_dollar1(t_minishell *mini);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);

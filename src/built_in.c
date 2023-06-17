@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/17 15:28:49 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/17 21:47:58 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	str = readline("\033[0;34mMINISHELL-3.2$ \033[0m");
 	if (!str)
 		exit(mini->exit_code);
-	if (count(str, ' ') == 0)
+	if (count(str, ' ') == 0 && count(str, '\t') == 0)
 	{
 		free(str);
 		return ;
@@ -49,6 +49,7 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	to_free_1(mini, ret, var, str, s);
 	to_free(cmd);
 	// system("leaks minishell");
+	
 }
 
 //built_ins that you should not fork for

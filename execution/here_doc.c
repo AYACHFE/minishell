@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 19:00:47 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/17 14:26:36 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/17 22:10:45 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	here_doc_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, int	*fd)
 	int		i;
 
 	i = 0;
+	check = 0;
+	(void)mini;
 	while (1)
 	{
 		read = readline("> ");

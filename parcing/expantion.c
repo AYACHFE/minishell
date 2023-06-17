@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/14 13:38:41 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/17 21:44:22 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ char	*ft_strjoin2(char const *s1, char const *s2)
 	p[k] = '\0';
 	return (p);
 }
-
-
-
 
 
 char	*ft_substr1(char const *s, unsigned int start, size_t len)
@@ -370,16 +367,6 @@ char *ft_change_var(char *str, t_minishell *mini, int tmp)
 				n = j;    
 			}		  
 		}
-		// else if(mini->my_env[i] != '\0' && str[0] == '\'')
-		// {
-		//     s = ft_substr(str, n, ft_strlennn(str));
-		//     str_jn = ft_strjoin(str_jn, s);
-		//     while (str[n] != '\'' && str[n] != '\0')
-		//         n++;
-		//     printf("---->%d\n", n);    
-		//     n++;
-		//     n = j;    
-		// }
 		else
 		{
 			j = n;
@@ -408,7 +395,6 @@ void    ft_check_dollar(t_minishell *mini)
 	int deuble;
 	int k;
 	int	s;
-	// char *check = NULL;
 
 	k = 0;
 	
@@ -456,7 +442,6 @@ void    ft_check_dollar(t_minishell *mini)
         }
         if (tmp > 0 && mini->cmd[i][s] != '\0')
         {
-            // printf("-->%s\n", mini->cmd[i]);
             mini->tmp_cmd[j] = ft_change_var(mini->cmd[i], mini, tmp);
             j++;
         }
@@ -476,12 +461,6 @@ void    ft_check_dollar(t_minishell *mini)
 					j++;
                     break;
 				}
-                // if (single == 0)
-                // {
-                //     puts("bngb");
-                //     while(mini->cmd[i][k] == '\"')
-                //         k++;
-                // } 
 				else
 				{
                 	mini->tmp_cmd[j] = ft_substr1(mini->cmd[i], k, ft_hsb(mini->cmd[i]));
@@ -495,17 +474,7 @@ void    ft_check_dollar(t_minishell *mini)
         i++;
     }
     mini->tmp_cmd[j] = NULL;
-    // i = 0;
-    // while(mini->tmp_cmd[i])
-    //     i++;
-    // check = malloc(i + 1);
     i = 0;
-    // while(i < 3)
-    // {
-    //     printf("---->%s\n", mini->tmp_cmd[i]);
-    //     i++;
-    // }
-    // ft_error(check, 1);
 }
 
 
@@ -516,7 +485,6 @@ void ft_check_sp(char *s, t_minishell *mini)
 
 	i = 0;
 	j = 0;
-	// printf("-->'%s'\n", s);
 	mini->left_sp = 0;
 	mini->right_sp = 0;
 	mini->center_sp = 0;
@@ -534,7 +502,6 @@ void ft_check_sp(char *s, t_minishell *mini)
 			j++;
 			while (s[j] && s[j] == 32)
 				j++;
-			// printf("-->%d, s-->'%c'\n", j, s[j]);
 			if (s[j + 1] == '\0')
 			{
 				mini->just_sp = 1;
@@ -553,13 +520,11 @@ void ft_check_sp(char *s, t_minishell *mini)
 				j++;
 			if (s[j] == '\0')
 			{
-				// printf("'%d'right'%c'\n",j, s[j]);
 				mini->right_sp = 1;
 				return ;
 			}
 			else if (s[i] != '\0')
 			{
-				// printf("'%d'center'%c'\n",j, s[j]);
 				mini->center_sp = 1;
 				return ;
 			}

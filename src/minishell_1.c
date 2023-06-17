@@ -6,11 +6,20 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/03 19:31:34 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/17 21:51:08 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void sigint_handler(int sig) 
+{
+	(void) sig;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	// rl_replace_line("", 0);
+	rl_redisplay();
+}
 
 int main(int ac, char **av, char **env)
 {
@@ -23,6 +32,7 @@ int main(int ac, char **av, char **env)
 	mini.exit_code = 0;
 	while (1)
 	{
+		signal(SIGINT, sigint_handler);
 		built_in_cmd(&mini, env);
 	}
 }

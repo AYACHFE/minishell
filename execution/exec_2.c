@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 19:30:08 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/17 15:30:10 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 10:22:50 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,7 @@ void	execv_function(t_minishell	*mini, t_cmd	*cmd)
 	if (cmd->general_info->in_file_exist == 1)
 		exit(1);
 	if (cmd->args[0][0] == '.' && cmd->args[0][1] == '/')
-	{
 		execute_programs(cmd, mini);
-		// if (access(ft_substr(cmd->args[0], 2, ft_strlen(\
-		// cmd->args[0])), F_OK) == 0)
-		// 	execve(ft_substr(cmd->args[0], 2, ft_strlen(\
-		// 	cmd->args[0])), cmd->args, mini->my_env);
-	}
 	if (cmd->args[0][0] != '/')
 	{
 		if (mini->my_env[0] == NULL)
@@ -109,7 +103,15 @@ void	execve_error(t_minishell	*mini, t_cmd	*cmd)
 	char	*str1;
 
 	mini->exit_code = 1;
-	if (cmd->args[0][0] == '/')
+	if ((cmd->args[0][0] == '/' && cmd->args[0][1] == 'b' && \
+	cmd->args[0][2] == 'i' && cmd->args[0][3] == 'n') && (\
+	cmd->args[0][4] == '\0'))
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(cmd->args[0], 2);
+		ft_putendl_fd(": is a directory", 2);
+	}
+	else if (cmd->args[0][0] == '/')
 		ft_putstr_fd("minishell: No such file or directory\n", 2);
 	else
 	{

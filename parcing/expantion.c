@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/17 21:44:22 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 09:51:31 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -525,7 +525,7 @@ void ft_check_sp(char *s, t_minishell *mini)
 			}
 			else if (s[i] != '\0')
 			{
-				mini->center_sp = 1;
+			mini->center_sp = 1;
 				return ;
 			}
 		}

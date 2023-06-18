@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 19:30:08 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 10:22:50 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 10:59:54 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void	execve_error(t_minishell	*mini, t_cmd	*cmd)
 		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(cmd->args[0], 2);
 		ft_putendl_fd(": is a directory", 2);
+		exit (126);
 	}
 	else if (cmd->args[0][0] == '/')
 		ft_putstr_fd("minishell: No such file or directory\n", 2);

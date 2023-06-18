@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/17 14:19:30 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 11:55:04 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,18 +105,54 @@ int ft_cnt (char *str)
 	return(i);	
 }
 
-void	ft_tmp_my_env(t_minishell *mini)
+
+////////////////norm
+void	ft_tmp_my_env_3(t_minishell	*mini, int *i, int *d, int *j)
+{
+	if(mini->my_env[*i][*j] == '$' || mini->my_env[*i][*j] == '\"')
+	{
+		mini->tmp_my_env[*i][*d] = '\\';
+		mini->tmp_my_env[*i][++(*d)] = mini->my_env[*i][*j];
+	}
+	else
+		mini->tmp_my_env[*i][*d] = mini->my_env[*i][*j];
+	(*d)++;
+	(*j)++;
+	if(mini->my_env[*i][*j] == '\0')
+		mini->tmp_my_env[*i][*d] = '\"';
+}
+
+void	ft_tmp_my_env_2(t_minishell	*mini, int *i, int *d, int *j)
+{
+	while(mini->my_env[*i][*j])
+	{
+		if (mini->my_env[*i][*j] == '=' && mini->my_env[*i][*j] != '\0')
+		{
+			mini->tmp_my_env[*i][*d] = mini->my_env[*i][*j];
+			mini->tmp_my_env[*i][++(*d)] = '\"';
+			(*d)++;
+			(*j)++;
+			while(mini->my_env[*i][*j] != '\0')
+				ft_tmp_my_env_3(mini, i, d, j);
+			if(mini->my_env[*i][*j] == '\0')
+			{
+				mini->tmp_my_env[*i][*d] = '\"';
+				return ;	
+			}
+		}
+		else
+			mini->tmp_my_env[*i][*d] = mini->my_env[*i][*j];
+		(*d)++;
+		(*j)++;
+	}
+}
+
+void	ft_tmp_my_env_1(t_minishell	*mini)
 {
 	int	i;
 	int	j;
 	int	d;
-	// int	tmp = 0;
 
-	i = 0;
-	j = 0;
-	while (mini->my_env[i])
-		i++;
-	mini->tmp_my_env = malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while(mini->my_env[i])
 	{
@@ -126,52 +162,24 @@ void	ft_tmp_my_env(t_minishell *mini)
 		mini->tmp_my_env[i] = malloc(j + 4);
 		j = 0;
 		d = 0;
-		while(mini->my_env[i][j])
-		{
-			if (mini->my_env[i][j] == '=' && mini->my_env[i][j] != '\0')
-			{
-				mini->tmp_my_env[i][d] = mini->my_env[i][j];
-				mini->tmp_my_env[i][++d] = '\"';
-				d++;
-				j++;
-				while(mini->my_env[i][j] != '\0')
-				{
-					if(mini->my_env[i][j] == '$' || mini->my_env[i][j] == '\"')
-					{
-						mini->tmp_my_env[i][d] = '\\';
-						mini->tmp_my_env[i][++d] = mini->my_env[i][j];
-					}
-					else
-						mini->tmp_my_env[i][d] = mini->my_env[i][j];
-					d++;
-					j++;
-					if(mini->my_env[i][j] == '\0')
-						mini->tmp_my_env[i][d] = '\"';
-				}
-				if(mini->my_env[i][j] == '\0')
-				{
-					mini->tmp_my_env[i][d] = '\"';
-					break;	
-				}
-			}
-			else
-				mini->tmp_my_env[i][d] = mini->my_env[i][j];
-			d++;
-			j++;
-		}
-		// if (mini->my_env[i][j] != '=' && mini->my_env[i][j + 1] != '\0')
-		// 	mini->tmp_my_env[i][d] = '\"';
+		ft_tmp_my_env_2(mini, &i, &d, &j);
 		mini->tmp_my_env[i][++d] = '\0';
 		i++;
 	}
 	mini->tmp_my_env[i] = NULL;
-	// i = 0;
-	// while(mini->tmp_my_env[i])
-	// {
-	// 	printf("--->%s\n", mini->tmp_my_env[i]);
-	// 	i++;
-	// }
 }
+
+void	ft_tmp_my_env(t_minishell *mini)
+{
+	int	i;
+
+	i = 0;
+	while (mini->my_env[i])
+		i++;
+	mini->tmp_my_env = malloc(sizeof(char *) * (i + 1));
+	ft_tmp_my_env_1(mini);
+}
+////////////////norm
 
 void	ft_add_declare(t_minishell *mini)
 {

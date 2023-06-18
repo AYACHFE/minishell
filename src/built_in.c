@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 13:28:37 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:50:49 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,20 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	if (ft_error_2(mini) == 1)
 		return ;
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
-	// ft_check_dollar(mini);
 	ft_check_dollar1(mini);
 	parcing(mini, cmd, str);
 	exec_1(mini, cmd, env);
-	to_free_1(mini, ret, var, str, s);
+	to_free_1(mini, ret);
+	to_free_ext(var, str, s);
 	to_free(cmd);
 	// system("leaks minishell");
 }
 
 //built_ins that you should not fork for
-int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd, char **env)
+int	built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd)
 {
-	(void)env;
-	if (cmd->args[0] && (ft_strncmp(cmd->args[0], "exit", 5) == 0) && cmd->general_info->cmd_nb == 1)
+	if (cmd->args[0] && (ft_strncmp(cmd->args[0], "exit", 5) == 0) \
+	&& cmd->general_info->cmd_nb == 1)
 	{
 		ft_exit(cmd, mini);
 		return (1);
@@ -96,7 +96,8 @@ void	built_in_cmd_2(t_minishell	*mini, t_cmd	*cmd, char **env)
 		mini->exit_code = 0;
 		ft_pwd();
 	}
-	else if ((ft_strncmp(cmd->args[0], "env", 4) == 0) && cmd->general_info->cmd_nb == 1)
+	else if ((ft_strncmp(cmd->args[0], "env", 4) == 0) \
+	&& cmd->general_info->cmd_nb == 1)
 		ft_env(env, mini);
 	else if ((ft_strncmp(cmd->args[0], "export", 7) == 0))
 		ft_export(cmd, mini);

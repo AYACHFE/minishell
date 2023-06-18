@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:13:16 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 12:36:09 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:23:29 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	to_free(t_cmd	*cmd)
 	free(cmd);
 }
 
-void	to_free_1(t_minishell	*mini, char	**ret, char	*var, char	*str, char	*s)
+void	to_free_1(t_minishell	*mini, char	**ret)
 {
 	int	i;
 
@@ -51,6 +51,10 @@ void	to_free_1(t_minishell	*mini, char	**ret, char	*var, char	*str, char	*s)
 	while (ret[i])
 		free(ret[i++]);
 	free(ret);
+}
+
+void	to_free_ext(char	*var, char	*str, char	*s)
+{
 	free(var);
 	free(str);
 	free(s);

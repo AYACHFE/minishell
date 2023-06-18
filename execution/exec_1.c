@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 12:25:45 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:43:25 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,23 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 		prep->i++;
 	}
 	if (single_cmd(cmd, mini, prep, env) == 1)
+	{
+		free(prep->pid);
+		free(prep);
 		return ;
+	}
 	dup2(cmd->general_info->std_in, 0);
 	dup2(cmd->general_info->std_out, 1);
 	close(prep->fd[0]);
 	close(prep->fd[1]);
 	exit_code(prep, cmd, mini);
+	free(prep->pid);
+	free(prep);
 }
 
 void	multi_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env)
 {
-	if (cmd[prep->i].args[0] && built_in_cmd_3(mini, &cmd[prep->i], env))
+	if (cmd[prep->i].args[0] && built_in_cmd_3(mini, &cmd[prep->i]))
 	{
 		prep->i++;
 		return ;
@@ -87,7 +93,7 @@ int	single_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env)
 		dup2(cmd[prep->i].fd_in, 0);
 		close(cmd[prep->i].fd_in);
 	}
-	if (cmd[prep->i].args[0] && built_in_cmd_3(mini, &cmd[prep->i], env))
+	if (cmd[prep->i].args[0] && built_in_cmd_3(mini, &cmd[prep->i]))
 		return (1);
 	if (pipe(prep->fd) == -1)
 		exit(0);

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 18:54:24 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 20:59:43 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ int	built_in_cmd_ext(t_minishell	*mini, char	*str)
 {
 	if (!str)
 	{
-		if (rl_catch_signals)
-		{
-			mini->exit_code = 1;
-			return (1);
-		}
+		// if (rl_catch_signals)
+		// {
+		// 	mini->exit_code = 1;
+		// 	return (1);
+		// }
 		exit(mini->exit_code);
 	}
 	if (*str != 0)

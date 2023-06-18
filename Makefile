@@ -6,7 +6,7 @@
 #    By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/06/18 16:51:25 by aachfenn         ###   ########.fr        #
+#    Updated: 2023/06/18 20:59:00 by aachfenn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ OBJ		= ${SRC:.c=.o}
 
 NAME	= minishell
 
-RLFLAGS =	-L/Users/aachfenn/goinfre/homebrew/opt/readline/lib
+# RLFLAGS =	-L/Users/aachfenn/goinfre/homebrew/opt/readline/lib
+
 RLINCLUDE	=	-I/Users/aachfenn/goinfre/homebrew/opt/readline/include/
 
 %.o : %.c Makefile

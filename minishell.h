@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 18:09:20 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 19:47:37 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,8 @@ void	ft_expand_heredoc(int n, char *s, t_minishell *mini, char	**res);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
+int		exec_1_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, \
+char	**env);
 int		multi_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env);
 int		single_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	\
 *prep, char	**env);

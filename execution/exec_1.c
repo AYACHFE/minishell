@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 18:16:08 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 20:58:27 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,27 @@
 void	exit_code(t_prep	*prep, t_cmd	*cmd, t_minishell	*mini)
 {
 	int	status;
-	// unsigned char *str;
 
 	prep->i = 0;
 	while (prep->i < cmd->general_info->cmd_nb)
 		waitpid(prep->pid[prep->i++], &status, 0);
-	mini->exit_code = WEXITSTATUS(status);
+	if (status == 2)
+		mini->exit_code = 130;
+	else
+		mini->exit_code = status >> 8;
 }
 
-void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
+int	exec_1_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env)
 {
-	t_prep	*prep;
-	int		checker;
+	int	checker;
 
-	cmd->general_info->std_in = dup(0);
-	cmd->general_info->std_out = dup(1);
-	prep = malloc(sizeof(t_prep));
-	prep->i = 0;
-	prep->pid = malloc(sizeof(int *) * (cmd->general_info->cmd_nb + 2));
 	while (prep->i < cmd->general_info->cmd_nb - 1)
 	{
 		if (multi_cmd(cmd, mini, prep, env) == -1)
 		{
 			free(prep->pid);
 			free(prep);
-			return ;
+			return (1);
 		}
 		dup2(prep->fd[0], 0);
 		close(prep->fd[1]);
@@ -51,8 +47,22 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	{
 		free(prep->pid);
 		free(prep);
-		return ;
+		return (1);
 	}
+	return (0);
+}
+
+void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
+{
+	t_prep	*prep;
+
+	cmd->general_info->std_in = dup(0);
+	cmd->general_info->std_out = dup(1);
+	prep = malloc(sizeof(t_prep));
+	prep->i = 0;
+	prep->pid = malloc(sizeof(int *) * (cmd->general_info->cmd_nb + 2));
+	if (exec_1_ext(cmd, mini, prep, env) == 1)
+		return ;
 	dup2(cmd->general_info->std_in, 0);
 	dup2(cmd->general_info->std_out, 1);
 	close(prep->fd[0]);

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/17 15:31:04 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 12:37:09 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,12 @@ t_minishell	*mini, t_prep	*prep)
 	prep->eof_counter = 0;
 	prep->fl = 0;
 	init_tokenisation(cmd, general_info, prep->tab);
+	if (general_info->str[prep->j][0] == '|' && general_info->str[prep->j][1] != '\0')
+	{
+		cmd->args[l++] = ft_strdup(general_info->str[prep->j++]);
+		cmd->args[l] = NULL;
+		mini->exit_code = 127;
+	}
 	while (general_info->str[prep->j] && (general_info->str[prep->j][0] != '|'))
 	{
 		if ((general_info->str[prep->j][0] == '>' || \

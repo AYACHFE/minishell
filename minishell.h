@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/17 20:31:09 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:04:32 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,9 @@ typedef struct s_minishell
 	int		just_sp;
 	int		no_exp;
 	int		do_not_exp;
+	int		deuble;
+	int		ambg;
+	int		max;
 }	t_minishell;
 
 t_cmd	*cmd; 
@@ -149,7 +152,7 @@ void	tokens_redirection(t_cmd	*cmd, t_cmd_info	*general_info, t_prep	*prep);
 int		cmd_counter(t_minishell	*mini);
 int		*args_counter(t_cmd_info	*general_info);
 int		args_counter_ext(t_cmd_info	*general_info, int *i, int *j);
-void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, int	tab);
+void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, int tab);
 void	init_general_info(t_cmd_info	*general_info, t_minishell	*mini);
 
 //error
@@ -159,22 +162,29 @@ int		ft_error(char *str, int i);
 
 //ft_error_2
 int		ft_error_2(t_minishell	*mini);
+int		first_error_part(t_minishell	*mini, char	*str);
+int		pipes_error(t_minishell	*mini, int i);
+int		more_pipes_error(t_minishell	*mini, int i);
+
+//ft_error_2_ext
 int		check_first_cmd(char	*s);
 int		check_first_cmd_d(char	*s);
 int		check_first_cmd_s(char	*s);
-int		first_error_part(t_minishell	*mini, char	*str);
+int		check_first_cmd_ext(char	*s, int i, int check);
 
-//expanding
-void	ft_check_dollar(t_minishell *mini);
-char	*ft_change_var(char *str, t_minishell *mini, int tmp);
-int		ft_strlenn(char *str);
-int		ft_strlennn(char *str);
-void	ft_check_sp(char *s, t_minishell *mini);
-char	*ft_substr1(char const *s, unsigned int start, size_t len);
-int		ft_hsb(char *s);
-int		ft_hsb3(char *str, int n);
-
+//expantion
 void	ft_check_dollar1(t_minishell *mini);
+void	ft_expand(int n, char *s, t_minishell *mini);
+void	handle_single(char *s, int *i, int *j, t_minishell *mini, int *n);
+void	handle_double(char *s, int *i, int *j, t_minishell *mini, int *n);
+int		expand_var(char *s, char *d, int *j, t_minishell *mini);
+int		get_len(char *s, t_minishell *mini, int len);
+char	*get_value(char *str, t_minishell *mini);
+char	*get_key(char *str);
+
+//expantion heredoc
+void	ft_check_dollar_heredoc(t_minishell *mini, char	*var, char	**res);
+void	ft_expand_heredoc(int n, char *s, t_minishell *mini, char	**res);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);

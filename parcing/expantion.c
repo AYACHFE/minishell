@@ -6,477 +6,11 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/18 09:51:31 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 14:49:18 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	*ft_strjoin2(char const *s1, char const *s2)
-{
-	int		i;
-	int		j;
-	char	*p;
-	int		len;
-	int		k;
-
-	k = 0;
-	i = 0;
-	j = 0;
-	if (!s1 && !s2)
-		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2);
-	p = malloc(sizeof(char) * (len + 1));
-	if (!p)
-		return (NULL);
-	while (s1 && s1[i])
-		p[k++] = s1[i++];
-	while (s2 && s2[j])
-	{
-		if(s2[j] == ' ')
-			j++;
-		else	
-			p[k++] = s2[j++];
-	}
-	p[k] = '\0';
-	return (p);
-}
-
-
-char	*ft_substr1(char const *s, unsigned int start, size_t len)
-{
-	int			i;
-	int			l;
-	size_t		len_s;
-	const char	*ss;
-	char		*p;
-	int deuble = 0;
-	int single = 0;
-
-	if (!s)
-		return (0);
-	ss = s;
-	len_s = ft_strlen(s);
-	i = 0;
-	if (start >= len_s)
-		return (ft_strdup(""));
-	if (len > len_s)
-		len = len_s - start;
-	p = malloc((len + 1) * sizeof(char));
-	if (!p)
-		return (NULL);
-	l = (int)len;
- 
-	while (l > i)
-	{
-		if (ss[start] == '\"' && ((single % 2) == 0))
-		{
-			deuble++;
-			start++;
-		}
-		else if (ss[start] == '\'' && ((deuble % 2) == 0))
-		{
-			single++;
-			start++;
-		}
-		else
-		{
-			p[i] = ss[start];
-			start++;
-			i++;
-		}
-	}
-	p[i] = '\0';
-	return (p);
-}
-
-
-
-int ft_strlenn(char *str)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	while (str[i] == '\"' || str[i] == '$' || str[i] == '\'')
-	{
-		j++;
-		i++;   
-	}
-	while(str[i] != '$' && str[i] != '\0' && str[i] != '\"' && str[i] != '\'')
-	{
-		if (str[i] == '\"')
-			j++;
-		i++;   
-	}
-	return(i - j);
-}
-
-int ft_hsb(char *s)
-{
-	char c;
-	int  i = 0;
-	int j = 0;
-	int deuble = 0;
-	int single = 0;
-
-	c = '\'';
-	while (s[i])
-	{
-		if (s[i] == '\'' || s[i] == '\"')
-		{
-			if(s[i] == '\"' && ((single % 2) == 0))
-			{
-				deuble++;
-				j++;
-			}
-			if(s[i] == '\'' && ((deuble % 2) == 0))
-			{
-				single++;
-				j++;
-			}
-		}
-		i++;
-	}
-	return (i - j);           
-}
-
-int ft_strlennn(char *str)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	
-	while(str[i] != '\0' && str[i] != '\"' && str[i] != '$')
-	{
-		i++;   
-	}
-	return(i);
-}
-int ft_hsb3(char *s, int n)
-{
-	// printf("%s\n", s);
-	int j = 0;
-	int p = n;
-
-	while (s[p] && s[p] != '$')
-	{
-		if (s[p] == '\'' || s[p] == '\"')
-		{
-			j++;
-		}
-		p++;
-	}
-	// printf("..%d\n", j);
-	return (p - n - j);           
-}
-
-// int ft_strcmp(char *s1, char *s2)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while ((s1[i] && s2[i]))
-// 	{
-// 		if (s1[i] != s2[i])
-// 		{
-// 			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-
-
-char *ft_change_var(char *str, t_minishell *mini, int tmp)
-{
-	int i;
-	int j;
-	int d;
-	int n;
-	int	max;
-	char *s;
-	char *str_jn = NULL;
-	mini->no_exp = 0;
-	 
-	j = 0;
-	i = 0;
-	n = 0;
-	while (tmp && str[n])
-	{
-		while(str[n] == '\"' )
-			n++;
-		if (str[n] == '$')
-		{
-			j = n;
-			j++;
-			while (str[j] != '$' && str[j] != '\0' && ft_isdigit(str[j]) == 0 && str[j] != '-' && str[j] != '@')
-				j++;
-			s = ft_substr(str, n+1 , j);
-			i = 0;
-			while (mini->my_env[i])
-			{
-				d = 0;
-				max = ft_cnt(mini->my_env[i]);
-				if(ft_cnt(mini->my_env[i]) < ft_cnt(s))
-					max = ft_cnt(s);
-				if (ft_strncmp(mini->my_env[i], s, max) == 0)
-				{
-					d = 0;   
-					while (mini->my_env[i][d])
-					{
-						if (mini->my_env[i][d] == '=')
-							break; 
-						d++;            
-					}    
-				}
-				if (mini->my_env[i][d] == '=')
-					break;
-				else
-					i++;
-			}
-			tmp--;
-			// free (s);
-			if(mini->my_env[i] == '\0')
-            {
-                if (ft_strncmp(s, "?", 1) == 0)
-                {
-                    s = ft_itoa(mini->exit_code);
-                    str_jn = ft_strjoin(str_jn, s);
-					n++;
-                    while (str[n] != '$' && str[n] != '\"' && str[n] != '\0' && ft_isalpha(str[n]) == 0)
-                        n++;
-					if(str[n] == '\0')
-							break;
-					else
-					{
-						if(str[n] != '$' && str[n] != '\"' && str[n] != '\'')
-						{
-							s = ft_substr(str, n, ft_hsb3(str, n));
-							str_jn = ft_strjoin(str_jn, s);
-							free(s);
-							n++;
-							while (str[n] != '$' && str[n])
-								n++;
-							if(str[n] == '\0')
-								break;	
-						}		
-					}					
-								
-				}
-            	else if(ft_strchr(str, '\'') != NULL)
-				{
-					s = ft_substr1(str, n, ft_hsb(str));
-            	    str_jn = ft_strjoin(str_jn, s);
-            	    while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
-            	        n++;
-					if(str[n] == '\0')
-							break;	
-				}
-            	else
-            	{
-					n++;
-            	    while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
-            	        n++;
-					if(str[n] == '\0')
-							break;
-					else
-					{
-						n++;	
-						if(str[n] != '$' && str[n] != '\"' && str[n] != '\'')
-						{
-							s = ft_substr(str, n, ft_hsb3(str, n));
-							str_jn = ft_strjoin(str_jn, s);
-							free(s);
-							n++;
-							while (str[n] != '$' && str[n])
-								n++;
-							if(str[n] == '\0')
-								break;	
-						}		
-					}			
-						
-            	}
-            }
-			else if (mini->my_env[i] == '\0' && str[0] == '\"' && str[1] == '$'  && str[2] == '\'')
-			{
-				n = n + 1;
-				s = ft_substr(str, n, ft_strlennn(str));
-				str_jn = ft_strjoin(str_jn, s);
-				while (str[n] != '\'' && str[n])
-					n++;
-				if(str[n] == '\0')
-					break;	
-			}
-			// else if(mini->my_env[i] == '\0')
-			// {
-			// 	// s = "@";
-			// 	// str_jn = ft_strjoin(str_jn, s);
-			// 	while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
-			// 		n++;
-			// }
-			else if (mini->my_env[i] != '\0')
-			{
-				s = ft_substr(mini->my_env[i], d + 1, ft_strlen(mini->my_env[i]));
-				ft_check_sp(mini->my_env[i], mini);
-				if(ft_strncmp(s, ">", 2) == 0 || ft_strncmp(s, ">>", 3) == 0 || ft_strncmp(s, "<", 2) == 0 || ft_strncmp(s, "<<", 3) == 0)
-					mini->no_exp = 1;
-				// if(s[0] != ' ' && s[1] != '\0')
-				str_jn = ft_strjoin(str_jn, s); 
-				free(s);
-				n++;
-				while (str[n] != '$' && str[n] != '\"' && ft_isdigit(str[n]) == 0 && str[n] && str[n] != '-' && str[n] != '@')
-					n++;
-				if(str[n] == '\0')
-					break;
-				else
-				{
-					if(str[n] != '-' && str[n] != '$' )
-						n++;	
-					if(str[n] != '$' && str[n] != '\"' && str[n] != '\'')
-					{
-						s = ft_substr(str, n, ft_hsb3(str, n));
-						str_jn = ft_strjoin(str_jn, s);
-						free(s);
-						n++;
-						while (str[n] != '$' && str[n])
-							n++;
-						if(str[n] == '\0')
-							break;	
-					}		
-				}			
-			}
-			n = j;
-
-		}
-		else if(mini->my_env[i] != '\0' && str[0] == '\'')
-		{
-		    s = ft_substr(str, n, ft_strlennn(str));
-		    str_jn = ft_strjoin(str_jn, s);
-		    while (str[n] != '\'' && str[n] != '\0')
-		        n++;
-			if(str[n] == '\0')
-				break;
-			else
-			{	
-				n++;
-				n = j;    
-			}		  
-		}
-		else
-		{
-			j = n;
-			if (str[n] == '\"')
-				n++;
-			while (str[j] != '$' && str[j] != '\0')
-				j++;       
-			s = ft_substr(str, n, ft_strlenn(str));
-			str_jn = ft_strjoin(str_jn, s);
-			if(str[n] == '\0')
-				break;
-			else	
-				n = j;
-		}
-	}
-	return (str_jn);   
-}
-
-void    ft_check_dollar(t_minishell *mini)
-{
-	int i;
-	int j;
-	int d;
-	int tmp;
-	int single;
-	int deuble;
-	int k;
-	int	s;
-
-	k = 0;
-	
-	i = 0;
-	j = 0;
-	d = 0;
-	s = 0;
-	single = 0;
-	tmp = 0;
-	deuble = 0;
-	mini->tmp_cmd = malloc(sizeof(char *) * (mini->cmd_nb + 1));
-	while (mini->cmd[i])
-    {
-        d = 0;
-        while(mini->cmd[i][s])
-        {
-            if(mini->cmd[i][s] == '$')
-            {
-                s++;
-            }
-            else
-              break;     
-        }
-        if(mini->cmd[i][s] == '\0')
-        {
-            mini->tmp_cmd[j] = ft_strdup("$");
-            j++;
-        }
-
-        if (mini->cmd[i][d] == '\'')
-        {
-            d++;
-            single = 1;
-        }
-        if (mini->cmd[i][d] == '\"' && single != 1)
-        {
-            deuble =1;
-            d++;
-        }
-        while(mini->cmd[i][d] && single != 1 )
-        {
-            if (mini->cmd[i][d] == '$')
-                tmp++;
-            d++;    
-        }
-        if (tmp > 0 && mini->cmd[i][s] != '\0')
-        {
-            mini->tmp_cmd[j] = ft_change_var(mini->cmd[i], mini, tmp);
-            j++;
-        }
-        else if (mini->cmd[i][s] != '\0')
-        {
-            if (deuble == 0 && single != 1)
-            {
-                mini->tmp_cmd[j] = ft_substr(mini->cmd[i], 0, ft_strlen(mini->cmd[i]));
-                j++;
-            }
-            else
-            {
-               	k = 0;
-                if (deuble == 1 && mini->cmd[i][k + 1] == '\"' && mini->cmd[i][k + 2] == '\0')
-				{
-					mini->tmp_cmd[j] = ft_strdup("\0");
-					j++;
-                    break;
-				}
-				else
-				{
-                	mini->tmp_cmd[j] = ft_substr1(mini->cmd[i], k, ft_hsb(mini->cmd[i]));
-                	j++;    
-				}      
-            }
-                
-        }
-        s = 0;
-        tmp = 0;
-        i++;
-    }
-    mini->tmp_cmd[j] = NULL;
-    i = 0;
-}
-
 
 void ft_check_sp(char *s, t_minishell *mini)
 {
@@ -531,4 +65,223 @@ void ft_check_sp(char *s, t_minishell *mini)
 		}
 		i++;	
 	}
+}
+
+
+/////////////////////////
+
+
+
+char	*get_key(char *str)
+{
+	char	*s;
+	int		n;
+
+	n = 0;
+	if (str[n] == '$')
+			return (ft_strdup("$"));
+	n = 0;
+	if ((ft_strchr("@", *str) || !ft_isalpha(*str)) && *str != '_')
+		return (ft_substr(str, 0, 1));
+	if (str[n] == '?')
+		s = ft_substr(str, n, 2);
+	else
+	{
+		while (str[n] && str[n] != '\"' && str[n] != '\'' && str[n] != '$' && str[n] != '-')
+			n++;
+	}
+	return (ft_substr(str, 0, n));
+}
+
+char *get_value_2(t_minishell *mini, char *str, int i)
+{
+	int	d;
+
+	while (mini->my_env[++i])
+	{
+		d = 0;
+		mini->max = ft_cnt(mini->my_env[i]);
+		if (ft_cnt(mini->my_env[i]) < ft_cnt(str))
+			mini->max = ft_cnt(str);
+		if (ft_strncmp(mini->my_env[i], str, mini->max) == 0)
+		{
+			while (mini->my_env[i][d])
+			{
+				if (mini->my_env[i][d] == '=')
+				{
+					mini->ambg = i;
+					return (ft_substr(mini->my_env[i], d + 1, \
+					ft_strlen(mini->my_env[i])));
+				}
+				else
+					d++;
+			}
+		}
+	}
+	return(NULL);
+}
+
+
+char	*get_value(char *str, t_minishell *mini)
+{
+	int	i;
+
+	i = -1;
+	if (str[0] == '?')
+		return (ft_itoa(mini->exit_code));
+	else if (str[0] == '$')
+		return (ft_strdup(""));
+	if(get_value_2(mini, str, 0) != NULL)
+		return(get_value_2(mini, str, 0));
+	return NULL;
+}
+
+int	get_len(char *s, t_minishell *mini, int len)
+{
+	int		i;
+	char	*value;
+	char	*key;
+	int		dq;
+
+	i = 0;
+	dq = 0;
+	while (s[i])
+	{
+		if (s[i] == '$' && ((s[i + 1] && dq == 0) || (s[i + 1] != '"' && dq == 1)))
+		{
+			key = get_key(&s[++i]);
+			value = get_value(key, mini);
+			len += ft_strlen(value);
+			i += ft_strlen(key);
+			free(key);
+			free(value);
+		}
+		if (s[i++] == '"')
+			dq = !dq;
+		len++;
+	}
+	return (len);
+}
+
+int	expand_var(char *s, char *d, int *j, t_minishell *mini)
+{
+	char	*key;
+	char	*value;
+	int		i;
+
+	i = 0;
+	key = get_key(s);
+	value = get_value(key, mini);
+	if(value && mini->ambg != -1)
+	{
+		ft_check_sp(mini->my_env[mini->ambg], mini);
+		if(ft_strncmp(value, ">", 2) == 0 || ft_strncmp(value, ">>", 3) == 0 || ft_strncmp(value, "<", 2) == 0 || ft_strncmp(value, "<<", 3) == 0)
+			mini->no_exp = 1;
+	}
+	while (value && value[i])
+	{
+		d[*j] = value[i];
+		(*j)++;
+		i++;
+	}
+	d[*j] = '\0';
+	return (ft_strlen(key));
+}
+
+void handle_double(char *s, int *i, int *j, t_minishell *mini, int *n)
+{
+	char	*key;
+	char 	*value;	
+	int		d;
+	int		k;
+	
+	k = 0;
+	while (s[k] != '"' && s[k])
+	{
+		if (s[k] == '$' && s[k + 1] != '"')
+		{
+			k++;
+			d = 0;
+			key = get_key(&s[k]);
+			value = get_value(key, mini);
+			while (value && value[d])
+			{
+				mini->tmp_cmd[*n][*j] = value[d];
+				(*j)++;
+				d++;
+			}
+			*i += ft_strlen(key);
+			k += ft_strlen(key);
+		}
+		else
+		{
+			mini->tmp_cmd[*n][*j] = s[k];
+			(*j)++;
+			k++;
+		}
+	}
+	mini->tmp_cmd[*n][*j] = '\0';
+	k++;
+	*i += k;
+}
+
+void	handle_single(char *s, int *i, int *j, t_minishell *mini, int *n)
+{
+	if (mini->deuble == 0)
+		(*i)++;
+	while (s[*i] != '\'' && s[*i])
+	{
+		mini->tmp_cmd[*n][*j] = s[*i];
+			(*i)++;
+			(*j)++;
+	}
+	if (s[*i] == '\'')
+		(*i)++;
+}
+
+void	ft_expand(int n, char *s, t_minishell *mini)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	mini->deuble = 0;
+	while (s[i])
+	{
+		if (s[i] == '$' && s[i + 1])
+		{
+			i++;
+			i += expand_var(&s[i], mini->tmp_cmd[n], &j, mini);
+		}
+		else if (s[i] == '"')
+		{
+			i++;
+			handle_double(&s[i], &i, &j, mini, &n);
+		}
+		else if (s[i] == '\'' && mini->deuble == 0)
+			handle_single(&(s[i]), &i, &j, mini, &n);
+		else
+			mini->tmp_cmd[n][j++] = s[i++];
+	}
+	mini->tmp_cmd[n][j] = '\0';
+}
+
+void	ft_check_dollar1(t_minishell *mini)
+{
+	int	len;
+	int	i;
+
+	i = 0;
+	mini->no_exp = 0;
+	mini->ambg = -1;
+	mini->tmp_cmd = malloc(sizeof(char *) * (mini->cmd_nb + 1));
+	while (mini->cmd[i])
+	{
+			len = get_len(mini->cmd[i], mini, 0);
+			mini->tmp_cmd[i] = ft_calloc(len + 1, 1);
+			ft_expand(i, mini->cmd[i], mini);
+			i++;
+	}
+	mini->tmp_cmd[i] = NULL;
 }

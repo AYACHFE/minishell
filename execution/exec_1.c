@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 10:57:36 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 12:25:45 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	exit_code(t_prep	*prep, t_cmd	*cmd, t_minishell	*mini)
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 {
 	t_prep	*prep;
-	// int		status;
 
 	cmd->general_info->std_in = dup(0);
 	cmd->general_info->std_out = dup(1);
@@ -47,10 +46,6 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	close(prep->fd[0]);
 	close(prep->fd[1]);
 	exit_code(prep, cmd, mini);
-	// prep->i = 0;
-	// while (prep->i < cmd->general_info->cmd_nb)
-	// 	waitpid(prep->pid[prep->i++], &status, 0);
-	// mini->exit_code = WEXITSTATUS(status);
 }
 
 void	multi_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env)

@@ -6,93 +6,54 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 10:43:22 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/17 22:10:32 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:05:00 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void    ft_check_dollar_heredoc(t_minishell *mini, char	*var, char	**res)
+void	ft_expand_heredoc(int n, char *s, t_minishell *mini, char	**res)
 {
-	int i;
-	int j;
-	int d;
-	int tmp;
-	int single;
-	int deuble;
-	int k;
-	int	s;
-	char	**str;
+	int	i;
+	int	j;
 
-	k = 0;
-	
 	i = 0;
 	j = 0;
-	d = 0;
-	s = 0;
-	single = 0;
-	tmp = 0;
-	deuble = 0;
+	mini->deuble = 0;
+	while (s[i])
+	{
+		if (s[i] == '$' && s[i + 1])
+		{
+			i++;
+			i += expand_var(&s[i], res[n], &j, mini);
+		}
+		else if (s[i] == '"')
+		{
+			i++;
+			handle_double(&s[i], &i, &j, mini, &n);
+		}
+		else if (s[i] == '\'' && mini->deuble == 0)
+			handle_single(&(s[i]), &i, &j, mini, &n);
+		else
+			res[n][j++] = s[i++];
+	}
+	res[n][j] = '\0';
+}
+
+void	ft_check_dollar_heredoc(t_minishell *mini, char	*var, char	**res)
+{
+	char	**str;
+	int		len;
+	int		i;
+
+	i = 0;
 	str = ft_split(var, 32);
 	while (str[i])
 	{
-		d = 0;
-		while(str[i][s])
-		{
-			if(str[i][s] == '$')
-			{
-				s++;
-			}
-			else
-			  break;     
-		}
-		if(str[i][s] == '\0')
-		{
-			res[j] = ft_strdup("$");
-			j++;
-		}
-
-		if (str[i][d] == '\'')
-		{
-			d++;
-			single = 1;
-		}
-		if (str[i][d] == '\"' && single != 1)
-		{
-			deuble =1;
-			d++;
-		}
-		while(str[i][d] && single != 1 )
-		{
-			if (str[i][d] == '$')
-				tmp++;
-			d++;    
-		}
-		if (tmp > 0 && str[i][s] != '\0')
-		{
-			res[j] = ft_change_var(str[i], mini, tmp);
-			j++;
-		}
-		else if (str[i][s] != '\0')
-		{
-			if (deuble == 0 && single != 1)
-			{
-				res[j] = ft_substr(str[i], 0, ft_strlen(str[i]));
-				j++;
-			}
-			else
-			{
-				k = 0;
-				if (deuble == 1 && str[i][k + 1] == '\"' && str[i][k + 2] == '\0')
-					break;      
-				res[j] = ft_substr1(str[i], k, ft_hsb(str[i]));
-				j++;    
-			}
-				
-		}
-		s = 0;
-		tmp = 0;
+		len = get_len(str[i], mini, 0);
+		res[i] = ft_calloc(len + 1, 1);
+		ft_expand_heredoc(i, str[i], mini, res);
 		i++;
 	}
-	res[j] = NULL;
+	res[i] = NULL;
 }

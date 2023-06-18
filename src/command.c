@@ -6,62 +6,86 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:12:02 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/18 11:55:04 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 14:27:49 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-void ft_echo(t_cmd	*cmd)
-{
-	
-	int i;
-	int	l;
-	char *home;
 
-	i = 2;
-	l = 0;
-	home = getenv("HOME");
-	if (cmd->args[1]&& ft_strlen(cmd->args[1]) == 0)
-	{
-		printf("\n");
-		return;
-	}
-	if (cmd->args[1] == NULL)
-	{
-		printf("\n");
-		return;
-	}
-	if (cmd->args[1][0] == '~' && ft_strlen(cmd->args[1]) == 1)
-		printf("%s\n", home);
-	// else if (mini->str[1][0] == '$')
-	// {
-	// 	mini->variable = mini->str[1];
-	// }
-	else if (ft_strncmp(cmd->args[1], "-nn", ft_strlen(cmd->args[1])) == 0)
-	{
-		i = 2;
-		while (ft_strncmp(cmd->args[i], "-nn", ft_strlen(cmd->args[i])) == 0)
-			i++;
-		while(cmd->args[i])
-		{
-			printf("%s", cmd->args[i]);
-			if(cmd->args[i + 1] != '\0')
-				printf(" ");
-			i++;
-		}
-	}
-	else
-	{
-		i = 1;
-	   	while(cmd->args[i])
-		{
-			printf("%s", cmd->args[i]);
-			if(cmd->args[i + 1] != '\0')
-				printf(" ");
-			i++;
-		}
-		printf("\n");
-	}
+void    ft_putstr_fd1(char *s, int fd)
+{
+    int    i;
+    int sp;
+
+    i = 0;
+    sp = 0;
+    if (!s)
+        return ;
+    while(s[i] == ' ' && s[i])
+        i++;
+    while (s[i] != '\0')
+    {
+            while((s[i] == ' ' || s[i] == '\t' ) && s[i])
+            {
+                i++;
+                sp = 1;
+            }
+            if(sp == 1)
+            {
+                sp = 0;
+                write(fd, " ", 1);
+            }
+            write(fd, &s[i], 1);
+            i++;
+    }
+}
+ 
+void ft_echo(t_cmd    *cmd)
+{
+
+    int i;
+    int    l;
+
+    // printf("''%s''\n", cmd->args[1]);
+    i = 2;
+    l = 0;
+    if (cmd->args[1]&& ft_strlen(cmd->args[1]) == 0)
+    {
+        printf("\n");
+        return;
+    }
+    if (cmd->args[1] == NULL)
+    {
+        printf("\n");
+        return;
+    }
+    else if (ft_strncmp(cmd->args[1], "-nn", ft_strlen(cmd->args[1])) == 0)
+    {
+        i = 2;
+        while (ft_strncmp(cmd->args[i], "-nn", ft_strlen(cmd->args[i])) == 0)
+            i++;
+        while(cmd->args[i])
+        {
+
+            ft_putstr_fd(cmd->args[i], 1);
+            if(cmd->args[i + 1] != '\0')
+                write(1, " ", 1);
+            i++;
+        }
+    }
+    else
+    {
+        i = 1;
+           while(cmd->args[i])
+        {
+
+            ft_putstr_fd1(cmd->args[i], 1);
+            if(cmd->args[i + 1] != '\0')
+                write(1, " ", 1);
+            i++;
+        }
+        printf("\n");
+    }
 }
 
 

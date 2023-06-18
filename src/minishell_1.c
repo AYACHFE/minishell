@@ -6,33 +6,44 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 14:28:25 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 18:46:10 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void sigint_handler(int sig) 
+void sigint_handler(int sig)
 {
 	(void) sig;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	// rl_replace_line("", 0);
-	rl_redisplay();
+	if (sig == SIGINT)
+	{
+		rl_catch_signals = 1;
+		close(0);
+	}
+	else if (sig == SIGQUIT)
+		return ;
 }
 
-int main(int ac, char **av, char **env)
+// int	rl_catch_signals = 0;
+
+int	main(int ac, char **av, char **env)
 {
 	t_minishell	mini;
+	int			fd;
 
 	(void)ac;
 	(void)av;
 	ft_env_1(env, &mini);
 	ft_add_declare(&mini);
 	mini.exit_code = 0;
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigint_handler);
+	fd = dup(0);
 	while (1)
 	{
-		signal(SIGINT, sigint_handler);
+		rl_catch_signals = 0;
+		dup2(fd, 0);
 		built_in_cmd(&mini, env);
+		// system("leaks minishell -q");
 	}
 }

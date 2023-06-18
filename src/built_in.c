@@ -6,11 +6,37 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 15:50:49 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 18:54:24 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	built_in_cmd_ext(t_minishell	*mini, char	*str)
+{
+	if (!str)
+	{
+		if (rl_catch_signals)
+		{
+			mini->exit_code = 1;
+			return (1);
+		}
+		exit(mini->exit_code);
+	}
+	if (*str != 0)
+		add_history(str);
+	if (count(str, ' ') == 0 || count(str, '\t') == 0)
+	{
+		free(str);
+		return (1);
+	}
+	if (first_error_part(mini, str) == 1)
+	{
+		free(str);
+		return (1);
+	}
+	return (0);
+}
 
 // the engine of this program
 void	built_in_cmd(t_minishell	*mini, char **env)
@@ -22,19 +48,8 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	char	**ret;
 
 	str = readline("MINISHELL-3.2$ ");
-	if (!str)
-		exit(mini->exit_code);
-	if (count(str, ' ') == 0 || count(str, '\t') == 0)
-	{
-		free(str);
+	if (built_in_cmd_ext(mini, str) == 1)
 		return ;
-	}
-	add_history(str);
-	if (first_error_part(mini, str) == 1)
-	{
-		free(str);
-		return ;
-	}
 	s = ft_strdup(str);
 	var = prep(s, mini);
 	ret = ft_split(var, 11);
@@ -49,7 +64,6 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	to_free_1(mini, ret);
 	to_free_ext(var, str, s);
 	to_free(cmd);
-	// system("leaks minishell");
 }
 
 //built_ins that you should not fork for

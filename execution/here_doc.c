@@ -6,13 +6,13 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 19:00:47 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/17 22:10:45 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 18:16:08 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	here_doc(t_cmd	*cmd, t_minishell	*mini)
+int	here_doc(t_cmd	*cmd, t_minishell	*mini)
 {
 	int		fd[2];
 	int		i;
@@ -26,14 +26,16 @@ void	here_doc(t_cmd	*cmd, t_minishell	*mini)
 	{
 		if (pipe(fd) == -1)
 			exit(0);
-		here_doc_ext(cmd, mini, &prep, fd);
+		if (here_doc_ext(cmd, mini, &prep, fd) == -1)
+			return (-1);
 		close (fd[1]);
 		cmd->fd_in = dup(fd[0]);
 		close (fd[0]);
 	}
+	return (0);
 }
 
-void	here_doc_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, int	*fd)
+int	here_doc_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, int	*fd)
 {
 	char	*read;
 	char	**res;
@@ -46,6 +48,14 @@ void	here_doc_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, int	*fd)
 	while (1)
 	{
 		read = readline("> ");
+		if (!read)
+		{
+			if (rl_catch_signals)
+			{
+				mini->exit_code = 1;
+				return -1;
+			}
+		}
 		if (here_doc_ext_2(read, cmd, prep) == 1)
 			break ;
 		if ((ft_strchr(read, '$') != 0) && mini->do_not_exp == 0)
@@ -60,6 +70,7 @@ void	here_doc_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, int	*fd)
 			here_doc_ext_1(res, read, fd);
 		free(read);
 	}
+	return (0);
 }
 
 void	here_doc_ext_1(char	**res, char	*read, int	*fd)

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 13:50:59 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 15:43:25 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 18:16:08 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	exit_code(t_prep	*prep, t_cmd	*cmd, t_minishell	*mini)
 {
 	int	status;
+	// unsigned char *str;
 
 	prep->i = 0;
 	while (prep->i < cmd->general_info->cmd_nb)
@@ -25,6 +26,7 @@ void	exit_code(t_prep	*prep, t_cmd	*cmd, t_minishell	*mini)
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 {
 	t_prep	*prep;
+	int		checker;
 
 	cmd->general_info->std_in = dup(0);
 	cmd->general_info->std_out = dup(1);
@@ -33,13 +35,19 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	prep->pid = malloc(sizeof(int *) * (cmd->general_info->cmd_nb + 2));
 	while (prep->i < cmd->general_info->cmd_nb - 1)
 	{
-		multi_cmd(cmd, mini, prep, env);
+		if (multi_cmd(cmd, mini, prep, env) == -1)
+		{
+			free(prep->pid);
+			free(prep);
+			return ;
+		}
 		dup2(prep->fd[0], 0);
 		close(prep->fd[1]);
 		close(prep->fd[0]);
 		prep->i++;
 	}
-	if (single_cmd(cmd, mini, prep, env) == 1)
+	checker = single_cmd(cmd, mini, prep, env);
+	if (checker == 1 || checker == -1)
 	{
 		free(prep->pid);
 		free(prep);
@@ -54,18 +62,19 @@ void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env)
 	free(prep);
 }
 
-void	multi_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env)
+int	multi_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env)
 {
 	if (cmd[prep->i].args[0] && built_in_cmd_3(mini, &cmd[prep->i]))
 	{
 		prep->i++;
-		return ;
+		return (0);
 	}
 	if (cmd[prep->i].here_doc == 1)
 	{
 		dup2(cmd->general_info->std_in, 0);
 		dup2(cmd->general_info->std_out, 1);
-		here_doc(&cmd[prep->i], mini);
+		if (here_doc(&cmd[prep->i], mini) == -1)
+			return (-1);
 		dup2(cmd[prep->i].fd_in, 0);
 		close(cmd[prep->i].fd_in);
 	}
@@ -81,6 +90,7 @@ void	multi_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env)
 		built_in_cmd_2(mini, &cmd[prep->i], env);
 		exit(0);
 	}
+	return (0);
 }
 
 int	single_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env)
@@ -89,7 +99,8 @@ int	single_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env)
 	{
 		dup2(cmd->general_info->std_in, 0);
 		dup2(cmd->general_info->std_out, 1);
-		here_doc(&cmd[prep->i], mini);
+		if (here_doc(&cmd[prep->i], mini) == -1)
+			return (-1);
 		dup2(cmd[prep->i].fd_in, 0);
 		close(cmd[prep->i].fd_in);
 	}

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 15:23:42 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 18:09:20 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int		ft_cd(t_cmd	*cmd, t_minishell	*mini);
 void	ft_cd_ext(t_minishell	*mini, int i, int *check);
 void	ft_pwd(void);
 int		built_in_cmd_3(t_minishell	*mini, t_cmd	*cmd);
+int		built_in_cmd_ext(t_minishell	*mini, char	*str);
 
 //exit
 void	ft_exit(t_cmd	*cmd, t_minishell	*mini);
@@ -189,7 +190,7 @@ void	ft_expand_heredoc(int n, char *s, t_minishell *mini, char	**res);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
-void	multi_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env);
+int		multi_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env);
 int		single_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	\
 *prep, char	**env);
 
@@ -206,8 +207,8 @@ int		check_ambig_ext(char	*file, t_minishell	*mini);
 
 //here_doc
 void	ft_check_dollar_heredoc(t_minishell *mini, char	*s, char	**res);
-void	here_doc(t_cmd	*cmd, t_minishell	*mini);
-void	here_doc_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, \
+int		here_doc(t_cmd	*cmd, t_minishell	*mini);
+int		here_doc_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, \
 int	*fd);
 void	here_doc_ext_1(char	**res, char	*read, int	*fd);
 int		here_doc_ext_2(char	*read, t_cmd	*cmd, t_prep	*prep);
@@ -222,7 +223,6 @@ void	in_redirection_files(t_cmd	*cmd, int j);
 //leaks
 void	to_free(t_cmd	*cmd);
 void	to_free_1(t_minishell	*mini, char	**ret);
-// void	to_free_1(t_minishell	*mini, char	**ret, char	*var, char	*str, char	*s);
 void	to_free_ext(char	*var, char	*str, char	*s);
 
 #endif

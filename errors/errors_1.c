@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:06:09 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/18 14:50:03 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/18 22:41:13 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int ft_double_single_quote(char *str)
 {
-	int i;
-	int j;
-	int tmp;
-	char c;
+	int		i;
+	int		j;
+	int		tmp;
+	char	c;
 
 	i = 0;
 	tmp = 1;
@@ -33,7 +33,7 @@ int ft_double_single_quote(char *str)
 				if (str[j] == c)
 				{
 					tmp = 1;
-					break;
+					break ;
 				}
 				else
 					j++;
@@ -48,19 +48,20 @@ int ft_double_single_quote(char *str)
 	return (tmp);
 }
 
-int	ft_error_pipe(char *s)
-{
-	int i;
 
-	i = 0;
+
+int	ft_error_pipe_par2(char *s, int *i)
+{
+
+	*i = 0;
 	if (check_first_cmd(s) == 2)
 		return (2);
-	i = 0;
-	while (s[i] == '\"' || s[i] == '\'' || s[i] == ' ')
+	*i = 0;
+	while (s[*i] == '\"' || s[*i] == '\'' || s[*i] == ' ')
 	{
-		i++;
+		(*i)++;
 	}
-	if (s[i] == '|')
+	if (s[*i] == '|')
 	{
 		ft_putstr_fd("minishell: syntax error\n", 2);
 		return (0);
@@ -70,6 +71,10 @@ int	ft_error_pipe(char *s)
 		ft_putstr_fd("minishell: syntax error\n", 2);
 		return (0);
 	}
+	return (1);
+}
+int	ft_error_pipe_par3(char *s, int i)
+{
 	while (s[i])
 	{
 		if (s[i] == '|' && (s[i + 1] == '\0' || (s[i + 1] == '>' || (s[i + 1] == '>' && s[i + 2] == '>'))))
@@ -92,9 +97,29 @@ int	ft_error_pipe(char *s)
 	return (1);
 }
 
-int ft_error_output(char *s, int l)
+
+
+int	ft_error_pipe(char *s)
 {
 	int i;
+	int j;
+
+	i = 0;
+	j = ft_error_pipe_par2(s, &i);
+	if (j == 0)
+		return (0);
+	if (j == 2)
+		return (2);	
+	if (ft_error_pipe_par3(s, i) == 0)
+		return (0);	
+	return (1);
+}
+
+
+
+int	ft_error_output_par2(char *s, int l)
+{
+	int	i;
 
 	i = 0;
 	if (s[0] == '>' && s[1] == '\0')
@@ -105,6 +130,15 @@ int ft_error_output(char *s, int l)
 			ft_putstr_fd("minishell: syntax error\n", 2);
 		return (0);
 	}
+	return(1);
+}
+
+int	ft_error_output_par3(char *s, int l)
+{
+	int i;
+	
+	i = 0;
+	
 	while (s[i])
 	{
 		if (s[i] == '>' && (s[i + 1] == '\0' || (s[i + 1] == '>' && s[i + 2] == '>') || (s[i + 1] == '<')))
@@ -127,7 +161,17 @@ int ft_error_output(char *s, int l)
 	}
 	return (1);
 }
-int ft_error_input(char *s, int l)
+
+int	ft_error_output(char *s, int l)
+{
+	if(ft_error_output_par2(s, l) == 0)
+		return (0);
+	if(ft_error_output_par3(s, l) == 0)
+		return (0);	
+	return (1);
+}
+
+int ft_error_input_pr2(char *s, int l)
 {
 	int i;
 
@@ -140,6 +184,13 @@ int ft_error_input(char *s, int l)
 			ft_putstr_fd("minishell: syntax error\n", 2);
 		return (0);
 	}
+	return (1);
+}
+int ft_error_input_pr3(char *s, int l)
+{
+	int i;
+
+	i = 0;
 	while (s[i])
 	{
 		if (s[i] == '<' && (s[i + 1] == '\0' || (s[i + 1] == '|' || (s[i + 1] == '<' && s[i + 2] == '<'))))
@@ -163,9 +214,29 @@ int ft_error_input(char *s, int l)
 	return (1);
 }
 
-int ft_error_appends(char *s, int l)
+
+
+
+int ft_error_input(char *s, int l)
 {
-	int i;
+	if (ft_error_input_pr2(s, l) == 0)
+		return(0);
+	if (ft_error_input_pr3(s, l) == 0)
+		return(0);
+	
+	return (1);
+}
+
+
+
+
+
+
+
+
+int	ft_error_appends_pr2(char *s, int	l)
+{
+	int	i;
 
 	i = 0;
 	if (s[0] == '>' && s[1] == '>' && s[2] == '\0')
@@ -176,6 +247,13 @@ int ft_error_appends(char *s, int l)
 			ft_putstr_fd("minishell: syntax error\n", 2);
 		return (0);
 	}
+	return (1);
+}
+int	ft_error_appends_pr3(char *s, int	l)
+{
+	int	i;
+
+	i = 0;
 	while (s[i])
 	{
 		if ((s[i] == '>' && s[i + 1] == '>') && (s[i + 2] == '\0' || (s[i + 2] == '|' || (s[i + 1] == '>' && s[i + 2] == '<'))))
@@ -199,9 +277,19 @@ int ft_error_appends(char *s, int l)
 	return (1);
 }
 
-int ft_error_here_document(char *s, int l)
+
+int	ft_error_appends(char *s, int l)
 {
-	int i;
+	if (ft_error_appends_pr2(s, l) == 0)
+		return(0);
+	if (ft_error_appends_pr3(s, l) == 0)
+		return(0);
+	return (1);
+}
+
+int	ft_error_here_document_pr2(char *s, int l)
+{
+	int	i;
 
 	i = 0;
 	if (s[0] == '<' && s[1] == '<' && s[2] == '\0')
@@ -226,6 +314,14 @@ int ft_error_here_document(char *s, int l)
 			return (0);
 		}
 	}
+	return (1);
+}
+
+
+int	ft_error_here_document_pr3(char *s, int l)
+{
+	int i;
+
 	i = 0;
 	while (s[i])
 	{
@@ -247,10 +343,19 @@ int ft_error_here_document(char *s, int l)
 		}
 		i++;
 	}
+	return(1);
+}
+
+int	ft_error_here_document(char *s, int l)
+{
+	if(ft_error_here_document_pr2(s, l) == 0)
+		return (0);
+	if(ft_error_here_document_pr3(s, l) == 0)
+		return (0);	
 	return (1);
 }
 
-int ft_error(char *str, int i)
+int	ft_error(char *str, int i)
 {
 	int	ret;
 

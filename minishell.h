@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 19:47:37 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 10:40:48 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_prep
 {
 	int		i;
 	int		j;
+	int		n;
 	int		eof_counter;
 	int		fl;
 	int		tab;
@@ -121,13 +122,43 @@ void	rem_var_env(t_minishell	*mini, int pos);
 void	search_in_export(t_minishell	*mini, char *str);
 void	rem_var_export(t_minishell	*mini, int pos);
 
-//ft_export
-void	ft_export(t_cmd	*cmd, t_minishell *mini);
-void	ft_rem_var(char	**str, t_minishell	*mini, int t);
-void	ft_rem_var_export(char **str, t_minishell *mini, int t);
+//---------------------------------------EXPORT---------------------------------------//
+char	*ft_strdup1(char *s1);
+int		check_valid_exp(char *arg, int check);
+int		export_check(t_minishell	*mini, char	*s);
+int		chec_var_env_exp(char *s,t_minishell *mini, int var);
 void	print_export(t_minishell *mini);
-int		ft_double_single_quote(char *str);
-int		ft_check_var_exect(char *s, t_minishell *mini, int var);
+// -------------------------------------------------------//
+void	ft_count_arg_valid(t_cmd	*cmd, int *i, int *t);
+void	ft_remplir_arg__(t_cmd	*cmd, char	**arg, int *i, int *t);
+void	ft_remplir_arg(t_cmd	*cmd, char	**arg);
+void	check_valid_identifier(t_minishell	*mini, char	**arg, int	*t);
+// -------------------------------------------------------//
+void	add_env(t_minishell	*mini, char	**str, char	**my_tmp);
+void	add_var_env(char **str, t_minishell *mini, int t);
+// -------------------------------------------------------//
+void	ft_add_double_ext_1(char	*s, char	*str, int	*i, int	*tmp);
+char	*ft_add_double(char *s);
+void	add_var_export_pr2(char	**str, char	**my_tmp, int	*n);
+void	add_var_export_pr1(t_minishell	*mini, char	**str, char	**my_tmp, int	*n);
+void	add_var_export(char **str, t_minishell *mini, int t);
+//-------------------------------------------------------------------------------------//
+
+//---------------------------------------EXPANDING--------------------------------------//
+void	ft_export(t_cmd	*cmd, t_minishell *mini);
+void	ft_check_dollar1(t_minishell *mini);
+int		get_len(char *s, t_minishell *mini, int len);
+char	*get_value(char *str, t_minishell *mini);
+char	*get_value_2(t_minishell *mini, char *str, int i);
+char	*get_key(char *str);
+// -------------------------------------------------------//
+int		expand_var(char *s, char *d, t_prep	*prep, t_minishell *mini);
+void	handle_double(char *s, t_minishell *mini, t_prep	*prep);
+void	handle_single(char *s, t_minishell *mini, t_prep	*prep);
+void	ft_expand(t_prep	*prep, char *s, t_minishell *mini);
+void 	ft_check_sp(char *s, t_minishell *mini);
+void	handle_double_1(char *s, t_minishell *mini, t_prep	*prep, int *k);
+//--------------------------------------------------------------------------------------//
 
 //parce_1
 char	*prep(char	*str, t_minishell	*mini);
@@ -174,19 +205,12 @@ int		check_first_cmd_d(char	*s);
 int		check_first_cmd_s(char	*s);
 int		check_first_cmd_ext(char	*s, int i, int check);
 
-//expantion
-void	ft_check_dollar1(t_minishell *mini);
-void	ft_expand(int n, char *s, t_minishell *mini);
-void	handle_single(char *s, int *i, int *j, t_minishell *mini, int *n);
-void	handle_double(char *s, int *i, int *j, t_minishell *mini, int *n);
-int		expand_var(char *s, char *d, int *j, t_minishell *mini);
-int		get_len(char *s, t_minishell *mini, int len);
-char	*get_value(char *str, t_minishell *mini);
-char	*get_key(char *str);
 
 //expantion heredoc
 void	ft_check_dollar_heredoc(t_minishell *mini, char	*var, char	**res);
-void	ft_expand_heredoc(int n, char *s, t_minishell *mini, char	**res);
+void	ft_expand_heredoc(t_prep	*prep, char *s, t_minishell *mini, char	**res);
+void	handle_double_heredoc(char *s, t_minishell *mini, t_prep	*prep, char	**res);
+void	handle_single_heredoc(char *s, t_minishell *mini, t_prep	*prep, char	**res);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);

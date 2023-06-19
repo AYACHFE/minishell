@@ -6,16 +6,18 @@
 #    By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/06/18 20:59:00 by aachfenn         ###   ########.fr        #
+#    Updated: 2023/06/18 22:48:26 by aachfenn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		=	src/minishell_1.c src/built_in.c src/command.c src/unset.c src/ft_export.c \
-			parcing/parce_1.c parcing/parce_2.c parcing/expantion.c errors/errors_1.c \
+SRC		=	src/minishell_1.c src/built_in.c src/command.c src/unset.c \
+			parcing/parce_1.c parcing/parce_2.c errors/errors_1.c \
 			errors/errors_2.c execution/exec_1.c src/exit.c execution/expantion_heredoc.c \
 			src/leaks.c execution/here_doc.c execution/file_creation.c execution/exec_2.c \
 			execution/exec_3.c parcing/parce_1_ext.c parcing/parce_2_ext.c src/built_in_ext.c \
-			errors/errors_2_ext.c
+			errors/errors_2_ext.c ft_export/ft_export_1.c ft_export/ft_export_2.c \
+			ft_export/ft_export_3.c ft_export/ft_export_4.c expanding/expantion.c \
+			expanding/expantion_2.c
 
 CC		= cc
 

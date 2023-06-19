@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/19 13:17:42 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:19:51 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,5 @@ int	main(int ac, char **av, char **env)
 		rl_catch_signals = 0;
 		dup2(fd, 0);
 		built_in_cmd(&mini, env);
-		system("leaks minishell -q");
 	}
 }

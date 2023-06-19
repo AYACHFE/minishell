@@ -6,7 +6,7 @@
 #    By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 13:44:57 by aachfenn          #+#    #+#              #
-#    Updated: 2023/06/19 13:16:33 by aachfenn         ###   ########.fr        #
+#    Updated: 2023/06/19 13:23:05 by aachfenn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,8 +50,5 @@ clean	:
 fclean	:	clean
 		make fclean -C utils/ft_libft
 		${RM} minishell
-
-it		:	all
-			./minishell
 
 re		: fclean all

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/19 10:45:30 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:44:07 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*get_value_2(t_minishell *mini, char *str, int i)
 {
 	int	d;
 
-	while (mini->my_env[++i])
+	while (mini->my_env[i])
 	{
 		d = 0;
 		mini->max = ft_cnt(mini->my_env[i]);
@@ -58,6 +58,7 @@ char	*get_value_2(t_minishell *mini, char *str, int i)
 					d++;
 			}
 		}
+		i++;
 	}
 	return (NULL);
 }

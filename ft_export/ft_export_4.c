@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 12:32:42 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/19 11:09:02 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:47:33 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_add_double_ext_1(char	*s, char	*str, int	*i, int	*tmp)
 		{
 			str[++(*i)] = '"';
 			str[++(*i)] = '"';
+			str[++(*i)] = '\0';
 			return ;
 		}
 		else if (ft_strchr(s, '=') != NULL && s[j] == '=' && *tmp == 0)

@@ -6,25 +6,23 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 20:59:19 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:17:42 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void sigint_handler(int sig)
+void	sigint_handler(int sig)
 {
 	(void) sig;
 	if (sig == SIGINT)
 	{
-		// rl_catch_signals = 1;
+		rl_catch_signals = 1;
 		close(0);
 	}
 	else if (sig == SIGQUIT)
 		return ;
 }
-
-// int	rl_catch_signals;
 
 int	main(int ac, char **av, char **env)
 {
@@ -41,9 +39,9 @@ int	main(int ac, char **av, char **env)
 	fd = dup(0);
 	while (1)
 	{
-		// rl_catch_signals = 0;
+		rl_catch_signals = 0;
 		dup2(fd, 0);
 		built_in_cmd(&mini, env);
-		// system("leaks minishell -q");
+		system("leaks minishell -q");
 	}
 }

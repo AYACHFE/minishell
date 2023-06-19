@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 12:54:44 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 18:16:08 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 10:53:41 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,9 @@ t_minishell	*mini, t_prep	*prep)
 	int	l;
 
 	l = 0;
-	prep->eof_counter = 0;
-	prep->fl = 0;
-	init_tokenisation(cmd, general_info, prep->tab);
-	if (general_info->str[prep->j][0] == '|' && general_info->str[prep->j][1] != '\0')
+	init_tokenisation(cmd, general_info, prep->tab, prep);
+	if (general_info->str[prep->j][0] == '|' && \
+	general_info->str[prep->j][1] != '\0')
 	{
 		cmd->args[l++] = ft_strdup(general_info->str[prep->j++]);
 		cmd->args[l] = NULL;
@@ -71,7 +70,6 @@ t_minishell	*mini, t_prep	*prep)
 		cmd->args[l] = NULL;
 		prep->j++;
 	}
-	
 	cmd->general_info = general_info;
 	cmd->files[prep->fl] = NULL;
 	cmd->eof[prep->eof_counter] = NULL;

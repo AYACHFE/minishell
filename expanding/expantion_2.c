@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 12:25:24 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/19 10:23:58 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 11:20:17 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,8 @@ int	expand_var(char *s, char *d, t_prep	*prep, t_minishell *mini)
 	if (value && mini->ambg != -1)
 	{
 		ft_check_sp(mini->my_env[mini->ambg], mini);
-		if (ft_strncmp(value, ">", 2) == 0 || \
-			ft_strncmp(value, ">>", 3) == 0 || \
-			ft_strncmp(value, "<", 2) == 0 || \
-			ft_strncmp(value, "<<", 3) == 0)
+		if (ft_strncmp(value, ">", 2) == 0 || ft_strncmp(value, ">>", 3) == 0 \
+		|| ft_strncmp(value, "<", 2) == 0 || ft_strncmp(value, "<<", 3) == 0)
 			mini->no_exp = 1;
 	}
 	while (value && value[i])
@@ -43,9 +41,7 @@ int	expand_var(char *s, char *d, t_prep	*prep, t_minishell *mini)
 	return (i);
 }
 
-
-
-void handle_double_1(char *s, t_minishell *mini, t_prep	*prep, int *k)
+void	handle_double_1(char *s, t_minishell *mini, t_prep	*prep, int *k)
 {
 	int			d;
 	char		*key;
@@ -112,7 +108,8 @@ void	ft_expand(t_prep	*prep, char *s, t_minishell *mini)
 		if (s[prep->i] == '$' && s[prep->i + 1])
 		{
 			prep->i++;
-			prep->i += expand_var(&s[prep->i], mini->tmp_cmd[prep->n], prep, mini);
+			prep->i += expand_var(&s[prep->i], \
+			mini->tmp_cmd[prep->n], prep, mini);
 		}
 		else if (s[prep->i] == '"')
 		{
@@ -126,59 +123,3 @@ void	ft_expand(t_prep	*prep, char *s, t_minishell *mini)
 	}
 	mini->tmp_cmd[prep->n][prep->j] = '\0';
 }
-
-void	ft_check_sp(char *s, t_minishell *mini)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	mini->left_sp = 0;
-	mini->right_sp = 0;
-	mini->center_sp = 0;
-	mini->just_sp = 0;
-	while (s[i])
-	{
-		if (s[i] == '=' && s[i + 1] == '\0')
-		{
-			mini->just_sp = 1;
-			return ;
-		}
-		if (s[i] == '=' && s[i + 1] == 32)
-		{
-			j = i;
-			j++;
-			while (s[j] && s[j] == 32)
-				j++;
-			if (s[j + 1] == '\0')
-			{
-				mini->just_sp = 1;
-				return ;
-			}
-		}
-		if (s[i] == '=' && s[i + 1] == 32)
-		{
-			mini->left_sp = 1;
-			return ;
-		}
-		else if (s[i] == 32)
-		{
-			j = i;
-			while (s[j] && s[j] == 32)
-				j++;
-			if (s[j] == '\0')
-			{
-				mini->right_sp = 1;
-				return ;
-			}
-			else if (s[i] != '\0')
-			{
-				mini->center_sp = 1;
-				return ;
-			}
-		}
-		i++;
-	}
-}
-

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:54:00 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 15:05:50 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 12:46:11 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	first_error_part(t_minishell	*mini, char	*str)
 	return (0);
 }
 
-int	pipes_error(t_minishell	*mini, int i)
+int	pipes_error_ext(t_minishell	*mini, int i)
 {
 	if (mini->cmd[i][0] == '|' && mini->cmd[i + 1] == NULL)
 	{
@@ -38,51 +38,32 @@ int	pipes_error(t_minishell	*mini, int i)
 		mini->exit_code = 2;
 		return (1);
 	}
-	if (mini->cmd[i + 1] && mini->cmd[i][0] == '"' && mini->cmd[i][1] == '"' && mini->cmd[i + 1][0] == '|')
+	if (mini->cmd[i + 1] && mini->cmd[i][0] == '"' && \
+		mini->cmd[i][1] == '"' && mini->cmd[i + 1][0] == '|')
 	{
 		ft_putendl_fd("minishell: command not found", 2);
 		mini->exit_code = 0;
 		return (1);
-	}
-	if (mini->cmd[i + 1] && (mini->cmd[i][0] == '\'' && mini->cmd[i][1] == '\'') && mini->cmd[i + 1][0] == '|')
-	{
-		ft_putendl_fd("minishell: command not found", 2);
-		mini->exit_code = 0;
-		return (1);
-	}
-	if ((mini->cmd[i][0] == '>' && mini->cmd[i][1] == '>') && mini->cmd[i + 1][0] == '|')
-	{
-		ft_putendl_fd("minishell: syntax error", 2);
-		mini->exit_code = 2;
-		return(1);
 	}
 	return (0);
 }
 
-int	more_pipes_error(t_minishell	*mini, int i)
+int	pipes_error(t_minishell	*mini, int i)
 {
-	if (mini->cmd[i][0] == '>' && mini->cmd[i + 1][0] == '|')
+	if (pipes_error_ext(mini, i) == 1)
+		return (1);
+	if (mini->cmd[i + 1] && (mini->cmd[i][0] == '\'' \
+	&& mini->cmd[i][1] == '\'') && mini->cmd[i + 1][0] == '|')
+	{
+		ft_putendl_fd("minishell: command not found", 2);
+		mini->exit_code = 0;
+		return (1);
+	}
+	if ((mini->cmd[i][0] == '>' && mini->cmd[i][1] == '>') \
+	&& mini->cmd[i + 1][0] == '|')
 	{
 		ft_putendl_fd("minishell: syntax error", 2);
 		mini->exit_code = 2;
-		return (1);
-	}
-	if (mini->cmd[i][0] == '<' && mini->cmd[i + 1][0] == '|')
-	{
-		ft_putendl_fd("minishell: syntax error", 2);
-		mini->exit_code = 2;
-		return (1);
-	}
-	if (mini->cmd[i][0] == '|' && (mini->cmd[i + 1][0] == '"' && mini->cmd[i + 1][1] == '"'))
-	{
-		ft_putendl_fd("minishell: command not found", 2);
-		mini->exit_code = 127;
-		return (1);
-	}
-	if (mini->cmd[i][0] == '|' && (mini->cmd[i + 1][0] == '\'' && mini->cmd[i + 1][1] == '\''))
-	{
-		ft_putendl_fd("minishell: command not found", 2);
-		mini->exit_code = 127;
 		return (1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 20:14:55 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/16 20:15:30 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 12:00:33 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,16 @@ int	check_ambig_ext(char	*file, t_minishell	*mini)
 			j++;
 		}
 	}
+	return (0);
+}
+
+int	mutli_cmd_ext(t_cmd	*cmd, t_prep	*prep, t_minishell	*mini)
+{
+	dup2(cmd->general_info->std_in, 0);
+	dup2(cmd->general_info->std_out, 1);
+	if (here_doc(&cmd[prep->i], mini) == -1)
+		return (-1);
+	dup2(cmd[prep->i].fd_in, 0);
+	close(cmd[prep->i].fd_in);
 	return (0);
 }

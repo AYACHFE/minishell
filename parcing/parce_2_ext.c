@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 22:38:30 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 18:16:08 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 10:53:29 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,11 @@ void	init_general_info(t_cmd_info	*general_info, t_minishell	*mini)
 }
 
 //initialise_data_needed_by_tokenisation_1
-void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, int tab)
+void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, \
+int tab, t_prep	*prep)
 {
+	prep->eof_counter = 0;
+	prep->fl = 0;
 	cmd->append = 0;
 	cmd->out_red = 0;
 	cmd->out_red = 0;

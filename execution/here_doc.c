@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 19:00:47 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 21:20:58 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:18:21 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,17 @@ int	here_doc(t_cmd	*cmd, t_minishell	*mini)
 	return (0);
 }
 
-int	here_doc_ext_3(char	*read, t_minishell	*mini, t_cmd	*cmd, t_prep	*prep)
+int	here_doc_ext_3(char	*read, t_minishell *mini, t_cmd *cmd, t_prep *prep)
 {
 	(void)mini;
-	// if (!read)
-	// {
-	// 	if (rl_catch_signals)
-	// 	{
-	// 		mini->exit_code = 1;
-	// 		return (-1);
-	// 	}
-	// }
+	if (!read)
+	{
+		if (rl_catch_signals)
+		{
+			mini->exit_code = 1;
+			return (-1);
+		}
+	}
 	if (here_doc_ext_2(read, cmd, prep) == 1)
 		return (1);
 	return (0);
@@ -64,12 +64,11 @@ int	here_doc_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, int	*fd)
 {
 	char	*read;
 	char	**res;
-	int		check;
 	int		ret;
 	int		i;
 
 	i = 0;
-	check = 0;
+	prep->check = 0;
 	res = NULL;
 	while (1)
 	{
@@ -82,10 +81,10 @@ int	here_doc_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, int	*fd)
 		if ((ft_strchr(read, '$') != 0) && mini->do_not_exp == 0)
 		{
 			res = malloc(sizeof(char *) * (count(read, 32) + 1));
-			check = 1;
+			prep->check = 1;
 			ft_check_dollar_heredoc(mini, read, res);
 		}
-		here_doc_checker(read, check, fd, res);
+		here_doc_checker(read, prep->check, fd, res);
 	}
 	return (0);
 }
@@ -101,16 +100,4 @@ void	here_doc_ext_1(char	**res, char	*read, int	*fd)
 		ft_putchar_fd(32, fd[1]);
 	}
 	ft_putchar_fd('\n', fd[1]);
-}
-
-int	here_doc_ext_2(char	*read, t_cmd	*cmd, t_prep	*prep)
-{
-	if (read == NULL || (ft_strncmp(read, cmd->eof[prep->j], \
-	ft_strlen(read) + 1) == 0))
-	{
-		prep->j++;
-		free(read);
-		return (1);
-	}
-	return (0);
 }

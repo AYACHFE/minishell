@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 10:41:45 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/18 19:31:58 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/19 10:46:05 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ int	export_check(t_minishell	*mini, char	*s)
 	int	j;
 	int	d;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	d = 11;
-	while (mini->my_export[i])
+	while (mini->my_export[++i])
 	{
 		while (mini->my_export[i][d] == s[j] && s[j] != '=' \
 		&& mini->my_export[i][d] && s[j])
@@ -84,7 +84,6 @@ int	export_check(t_minishell	*mini, char	*s)
 			d = 11;
 			j = 0;
 		}
-		i++;
 	}
 	return (0);
 }

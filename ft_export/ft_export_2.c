@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 12:32:37 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/18 22:42:56 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 10:47:49 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,23 @@ void	ft_count_arg_valid(t_cmd	*cmd, int *i, int *t)
 	int	j;
 
 	j = 0;
-	if(cmd->args[2] == '\0')
+	if (cmd->args[2] == '\0')
 		*t = 0;
 	else
 	{	
-		while(cmd->args[*i])
+		while (cmd->args[*i])
 		{
 			j = *i + 1;
-			while(cmd->args[j])
+			while (cmd->args[j])
 			{
-				if(ft_strncmp(cmd->args[*i], cmd->args[j], ft_strlen(cmd->args[*i])) == 0)
+				if (ft_strncmp(cmd->args[*i], cmd->args[j], \
+				ft_strlen(cmd->args[*i])) == 0)
 				{
 					(*t)++;
 					break ;
 				}
 				else
-					j++;	
+					j++;
 			}
 			(*i)++;
 		}
@@ -44,20 +45,21 @@ void	ft_remplir_arg__(t_cmd	*cmd, char	**arg, int *i, int *t)
 	int	j;
 
 	j = *i + 1;
-	while(cmd->args[j])
+	while (cmd->args[j])
 	{
-		if(ft_strncmp(cmd->args[*i], cmd->args[j], ft_strlen(cmd->args[*i])) == 0)
-			break;
+		if (ft_strncmp(cmd->args[*i], cmd->args[j], \
+		ft_strlen(cmd->args[*i])) == 0)
+			break ;
 		else
 			j++;
 	}
-	if(cmd->args[j] == '\0')
+	if (cmd->args[j] == '\0')
 		arg[(*t)++] = cmd->args[*i];
 }
 
 void	ft_remplir_arg(t_cmd	*cmd, char	**arg)
 {
-	int i;
+	int	i;
 	int	j;
 	int	t;
 
@@ -99,22 +101,21 @@ void	check_valid_identifier(t_minishell	*mini, char	**arg, int	*t)
 
 void	ft_export(t_cmd	*cmd, t_minishell *mini)
 {
-	int i;
-	int	t;
-	char **arg;
+	int		i;
+	int		t;
+	char	**arg;
 
 	i = 1;
 	t = 0;
 	ft_count_arg_valid(cmd, &i, &t);
 	arg = malloc((i - t + 1) * (sizeof(char *)));
-
 	ft_remplir_arg(cmd, arg);
 	t = 0;
 	check_valid_identifier(mini, arg, &t);
 	if (cmd->args[1])
 	{
-		add_var_env(arg ,mini, t);
-		add_var_export(arg ,mini, t);
+		add_var_env(arg, mini, t);
+		add_var_export(arg, mini, t);
 		free(arg);
 	}
 	else

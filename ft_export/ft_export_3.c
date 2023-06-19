@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 12:32:40 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/18 20:53:46 by rarraji          ###   ########.fr       */
+/*   Updated: 2023/06/19 10:48:30 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	add_env(t_minishell	*mini, char	**str, char	**my_tmp)
 	d = j;
 	i = 0;
 	j = 0;
-	while(str[i] && (ft_strchr(str[i], '=') != NULL))
+	while (str[i] && (ft_strchr(str[i], '=') != NULL))
 	{
-		if(check_valid_exp(str[i], 0) == 0)
+		if (check_valid_exp(str[i], 0) == 0)
 			i++;
 		else
 			my_tmp[d++] = ft_strdup1(str[i++]);
@@ -41,20 +41,20 @@ void	add_env(t_minishell	*mini, char	**str, char	**my_tmp)
 	my_tmp[d] = NULL;
 }
 
-void	add_var_env(char **str, t_minishell *mini, int	t)
+void	add_var_env(char **str, t_minishell *mini, int t)
 {
-	char **my_tmp;
-	int i;
-	int j;
+	char	**my_tmp;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
 	while (mini->my_env[j])
-		j++;	
-	my_tmp = malloc(sizeof(char *) * (j + t + 1)); 
+		j++;
+	my_tmp = malloc(sizeof(char *) * (j + t + 1));
 	add_env(mini, str, my_tmp);
 	i = 0;
-	while (mini->my_env[i]) 
+	while (mini->my_env[i])
 	{
 		free(mini->my_env[i]);
 		i++;

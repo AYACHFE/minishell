@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:18:58 by rarraji           #+#    #+#             */
-/*   Updated: 2023/06/19 10:39:20 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 10:45:30 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*get_value_2(t_minishell *mini, char *str, int i)
 char	*get_value(char *str, t_minishell *mini)
 {
 	int		i;
-	char 	*value;
+	char	*value;
 
 	i = -1;
 	value = get_value_2(mini, str, 0);

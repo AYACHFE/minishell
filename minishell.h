@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:48 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/19 10:40:48 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 12:19:05 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_prep
 	int		i;
 	int		j;
 	int		n;
+	int		check;
 	int		eof_counter;
 	int		fl;
 	int		tab;
@@ -122,11 +123,11 @@ void	rem_var_env(t_minishell	*mini, int pos);
 void	search_in_export(t_minishell	*mini, char *str);
 void	rem_var_export(t_minishell	*mini, int pos);
 
-//---------------------------------------EXPORT---------------------------------------//
+//---------------------------------------EXPORT------------//
 char	*ft_strdup1(char *s1);
 int		check_valid_exp(char *arg, int check);
 int		export_check(t_minishell	*mini, char	*s);
-int		chec_var_env_exp(char *s,t_minishell *mini, int var);
+int		chec_var_env_exp(char *s, t_minishell	*mini, int var);
 void	print_export(t_minishell *mini);
 // -------------------------------------------------------//
 void	ft_count_arg_valid(t_cmd	*cmd, int *i, int *t);
@@ -140,11 +141,12 @@ void	add_var_env(char **str, t_minishell *mini, int t);
 void	ft_add_double_ext_1(char	*s, char	*str, int	*i, int	*tmp);
 char	*ft_add_double(char *s);
 void	add_var_export_pr2(char	**str, char	**my_tmp, int	*n);
-void	add_var_export_pr1(t_minishell	*mini, char	**str, char	**my_tmp, int	*n);
+void	add_var_export_pr1(t_minishell	*mini, char	**str, \
+char	**my_tmp, int	*n);
 void	add_var_export(char **str, t_minishell *mini, int t);
-//-------------------------------------------------------------------------------------//
+//---------------------------------------------------------//
 
-//---------------------------------------EXPANDING--------------------------------------//
+//---------------------------------------EXPANDING----------//
 void	ft_export(t_cmd	*cmd, t_minishell *mini);
 void	ft_check_dollar1(t_minishell *mini);
 int		get_len(char *s, t_minishell *mini, int len);
@@ -156,9 +158,19 @@ int		expand_var(char *s, char *d, t_prep	*prep, t_minishell *mini);
 void	handle_double(char *s, t_minishell *mini, t_prep	*prep);
 void	handle_single(char *s, t_minishell *mini, t_prep	*prep);
 void	ft_expand(t_prep	*prep, char *s, t_minishell *mini);
-void 	ft_check_sp(char *s, t_minishell *mini);
+void	ft_check_sp(char *s, t_minishell *mini);
 void	handle_double_1(char *s, t_minishell *mini, t_prep	*prep, int *k);
-//--------------------------------------------------------------------------------------//
+//----------------------------------------------------------//
+
+//expantion_3
+void	ft_check_sp_1(char	*s, t_minishell	*mini, int	*j, int i);
+void	ft_check_sp_2(char	*s, t_minishell	*mini, int	*j, int i);
+
+//command_ext
+void	ft_tmp_my_env_pos(t_minishell *mini, int pos);
+void	ft_tmp_my_env_1(t_minishell	*mini);
+void	ft_tmp_my_env_2(t_minishell	*mini, int *i, int *d, int *j);
+void	ft_tmp_my_env_3(t_minishell	*mini, int *i, int *d, int *j);
 
 //parce_1
 char	*prep(char	*str, t_minishell	*mini);
@@ -185,13 +197,30 @@ t_prep	*prep);
 int		cmd_counter(t_minishell	*mini);
 int		*args_counter(t_cmd_info	*general_info);
 int		args_counter_ext(t_cmd_info	*general_info, int *i, int *j);
-void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, int tab);
+void	init_tokenisation(t_cmd	*cmd, t_cmd_info	*general_info, \
+int tab, t_prep	*prep);
 void	init_general_info(t_cmd_info	*general_info, t_minishell	*mini);
 
 //error
+int		ft_error(char *str, int i);
 int		ft_double_single_quote(char *str);
+void	ft_double_single_quote_ext(char	*str, t_prep	*prep);
+int		ft_error_pipe_par2(char *s, int *i);
+int		ft_error_pipe_par3(char *s, int i);
 int		ft_error_pipe(char *s);
 int		ft_error(char *str, int i);
+int		ft_error_output_par2(char *s, int l);
+int		ft_error_output_par3(char *s, int l);
+int		ft_error_output(char *s, int l);
+int		ft_error_input_pr2(char *s, int l);
+int		ft_error_input_pr3(char *s, int l);
+int		ft_error_input(char *s, int l);
+int		ft_error_appends_pr2(char *s, int l);
+int		ft_error_appends_pr3(char *s, int l);
+int		ft_error_appends(char *s, int l);
+int		ft_error_here_document_pr2(char *s, int l);
+int		ft_error_here_document_pr3(char *s, int l);
+int		ft_error_here_document(char *s, int l);
 
 //ft_error_2
 int		ft_error_2(t_minishell	*mini);
@@ -205,17 +234,20 @@ int		check_first_cmd_d(char	*s);
 int		check_first_cmd_s(char	*s);
 int		check_first_cmd_ext(char	*s, int i, int check);
 
-
 //expantion heredoc
 void	ft_check_dollar_heredoc(t_minishell *mini, char	*var, char	**res);
-void	ft_expand_heredoc(t_prep	*prep, char *s, t_minishell *mini, char	**res);
-void	handle_double_heredoc(char *s, t_minishell *mini, t_prep	*prep, char	**res);
-void	handle_single_heredoc(char *s, t_minishell *mini, t_prep	*prep, char	**res);
+void	ft_expand_heredoc(t_prep	*prep, char *s, \
+t_minishell *mini, char	**res);
+void	handle_double_heredoc(char *s, t_minishell *mini, \
+t_prep	*prep, char	**res);
+void	handle_single_heredoc(char *s, t_minishell *mini, \
+t_prep	*prep, char	**res);
 
 //execution
 void	exec_1(t_minishell	*mini, t_cmd	*cmd, char	**env);
 int		exec_1_ext(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, \
 char	**env);
+int		mutli_cmd_ext(t_cmd	*cmd, t_prep	*prep, t_minishell	*mini);
 int		multi_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	*prep, char	**env);
 int		single_cmd(t_cmd	*cmd, t_minishell	*mini, t_prep	\
 *prep, char	**env);

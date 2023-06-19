@@ -6,41 +6,14 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 10:43:22 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/19 10:38:31 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 10:44:24 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// void	ft_expand_heredoc(t_prep	*prep, char *s, t_minishell *mini, char	**res)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	j = 0;
-// 	mini->deuble = 0;
-// 	while (s[i])
-// 	{
-// 		if (s[i] == '$' && s[i + 1])
-// 		{
-// 			i++;
-// 			i += expand_var(&s[i], res[n], &j, mini);
-// 		}
-// 		else if (s[i] == '"')
-// 		{
-// 			i++;
-// 			handle_double(&s[i], &i, &j, mini, &n);
-// 		}
-// 		else if (s[i] == '\'' && mini->deuble == 0)
-// 			handle_single(&(s[i]), &i, &j, mini, &n);
-// 		else
-// 			res[n][j++] = s[i++];
-// 	}
-// 	res[n][j] = '\0';
-// }
-
-void	handle_single_heredoc(char *s, t_minishell *mini, t_prep	*prep, char	**res)
+void	handle_single_heredoc(char *s, t_minishell *mini, \
+t_prep	*prep, char	**res)
 {
 	if (mini->deuble == 0)
 		prep->i++;
@@ -54,7 +27,8 @@ void	handle_single_heredoc(char *s, t_minishell *mini, t_prep	*prep, char	**res)
 		(prep->i)++;
 }
 
-void	handle_double_heredoc(char *s, t_minishell *mini, t_prep	*prep, char	**res)
+void	handle_double_heredoc(char *s, t_minishell *mini, \
+t_prep	*prep, char	**res)
 {
 	int		k;
 
@@ -75,7 +49,8 @@ void	handle_double_heredoc(char *s, t_minishell *mini, t_prep	*prep, char	**res)
 	prep->i += k;
 }
 
-void	ft_expand_heredoc(t_prep	*prep, char *s, t_minishell *mini, char	**res)
+void	ft_expand_heredoc(t_prep	*prep, char *s, \
+t_minishell *mini, char	**res)
 {
 	mini->deuble = 0;
 	prep->i = 0;

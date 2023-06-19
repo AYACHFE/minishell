@@ -6,7 +6,7 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 15:45:13 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/06/18 20:59:43 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:16:20 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ int	built_in_cmd_ext(t_minishell	*mini, char	*str)
 {
 	if (!str)
 	{
-		// if (rl_catch_signals)
-		// {
-		// 	mini->exit_code = 1;
-		// 	return (1);
-		// }
+		if (rl_catch_signals)
+		{
+			mini->exit_code = 1;
+			return (1);
+		}
 		exit(mini->exit_code);
 	}
 	if (*str != 0)
@@ -33,6 +33,23 @@ int	built_in_cmd_ext(t_minishell	*mini, char	*str)
 	if (first_error_part(mini, str) == 1)
 	{
 		free(str);
+		return (1);
+	}
+	return (0);
+}
+
+int	built_errors_leaks(t_minishell	*mini, char	**ret, char	*var)
+{
+	int	i;
+
+	i = 0;
+	mini->cmd = ret;
+	mini->cmd_nb = count(var, 11);
+	if (ft_error_2(mini) == 1)
+	{
+		while (ret[i])
+			free(ret[i++]);
+		free(ret);
 		return (1);
 	}
 	return (0);
@@ -53,10 +70,11 @@ void	built_in_cmd(t_minishell	*mini, char **env)
 	s = ft_strdup(str);
 	var = prep(s, mini);
 	ret = ft_split(var, 11);
-	mini->cmd = ret;
-	mini->cmd_nb = count(var, 11);
-	if (ft_error_2(mini) == 1)
+	if (built_errors_leaks(mini, ret, var) == 1)
+	{
+		to_free_ext(var, str, s);
 		return ;
+	}
 	cmd = malloc(sizeof(t_cmd) * cmd_counter(mini));
 	ft_check_dollar1(mini);
 	parcing(mini, cmd, str);

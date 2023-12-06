@@ -6,18 +6,41 @@
 /*   By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:37:51 by aachfenn          #+#    #+#             */
-/*   Updated: 2023/05/11 13:45:14 by aachfenn         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:19:51 by aachfenn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int main(int ac, char **av)
+void	sigint_handler(int sig)
 {
-	int	i;
-	int	j;
+	(void) sig;
+	if (sig == SIGINT)
+	{
+		rl_catch_signals = 1;
+		close(0);
+	}
+	else if (sig == SIGQUIT)
+		return ;
+}
 
-	i = 0;
-	j = 0;
+int	main(int ac, char **av, char **env)
+{
+	t_minishell	mini;
+	int			fd;
 
+	(void)ac;
+	(void)av;
+	ft_env_1(env, &mini);
+	ft_add_declare(&mini);
+	mini.exit_code = 0;
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigint_handler);
+	fd = dup(0);
+	while (1)
+	{
+		rl_catch_signals = 0;
+		dup2(fd, 0);
+		built_in_cmd(&mini, env);
+	}
 }

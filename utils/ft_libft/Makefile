@@ -6,7 +6,7 @@
 #    By: aachfenn <aachfenn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/05 17:33:21 by aachfenn          #+#    #+#              #
-#    Updated: 2022/10/21 17:01:46 by aachfenn         ###   ########.fr        #
+#    Updated: 2023/06/17 10:48:22 by aachfenn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ OBJS	= ${SRCS:.c=.o}
 
 NAME	= libft.a
 
-CC		= gcc
+CC		= cc
 
 CFLAGS	= -Wall -Wextra -Werror
 
